@@ -1,0 +1,52 @@
+.header {
+    background: var(--background);
+}
+
+.nav {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.nav_list {
+    composes: pt-3 pb-3 pr-5 pl-5 from global;
+    display: grid;
+    align-items: center;
+    grid-template-columns: max-content max-content 1fr max-content;
+    margin: 0;
+}
+
+.nav_item {
+    composes: p-5 text from global;
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+}
+
+.nav_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-inactive-color);
+    font-weight: 400;
+}
+
+.nav_link:hover {
+    color: var(--text-primary-color);
+}
+    .nav_link:hover svg {
+        fill: var(--text-primary-color);
+    }
+
+.nav_link--active {
+    composes: nav_link;
+    color: var(--text-primary-color);
+}
+    .nav_link--active svg {
+        fill: var(--text-primary-color);
+    }
+
+.logo_wrapper {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
