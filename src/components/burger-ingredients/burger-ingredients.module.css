@@ -1,0 +1,50 @@
+.ingredients_container {
+    composes: pr-5 from global;
+    width: 50%;
+    max-height: calc(100vh - 88px);
+    display: grid;
+    grid-template-rows: min-content min-content minmax(0,1fr);
+}
+.title {
+    composes: pt-10 pb-4 from global;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tabs > div {
+    flex-grow: 1;
+}
+
+.ingredients {
+    composes: pr-5 from global;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.ingredients_collection {
+    composes: pb-3 from global;
+}
+
+.ingredients_title {
+    composes: pt-5 from global;
+}
+
+.ingredients_list {
+    composes: pb-5 from global;
+    clear: both;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}

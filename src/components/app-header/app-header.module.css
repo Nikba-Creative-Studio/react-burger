@@ -1,24 +1,35 @@
+.container {
+    composes: container from '../app/app.module.css';
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: flex-start;
+    align-items: center;
+    position: relative;
+}
 .header {
     background: var(--background);
+    composes: pt-3 pb-3 from global;
 }
 
 .nav {
-    max-width: 1280px;
-    margin: 0 auto;
+    max-width: 1240px;
 }
 
 .nav_list {
-    composes: pt-3 pb-3 pr-5 pl-5 from global;
-    display: grid;
-    align-items: center;
-    grid-template-columns: max-content max-content 1fr max-content;
+    
+    list-style: none;
+    padding: 0;
     margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    justify-self: flex-start;
 }
 
 .nav_item {
-    composes: p-5 text from global;
-    display: grid;
-    grid-template-columns: repeat(2, max-content);
+    composes: pt-5 pb-5 pr-10 text from global;
 }
 
 .nav_link {
@@ -32,9 +43,11 @@
 
 .nav_link:hover {
     color: var(--text-primary-color);
+    transition: var(--common-transition);
 }
     .nav_link:hover svg {
         fill: var(--text-primary-color);
+        transition: var(--common-transition);
     }
 
 .nav_link--active {
@@ -46,7 +59,9 @@
     }
 
 .logo_wrapper {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+    justify-self: center;
+}
+
+.profile_wrapper {
+    justify-self: flex-end;
 }

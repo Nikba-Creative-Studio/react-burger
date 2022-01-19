@@ -1,0 +1,22 @@
+.ingredient {
+    composes: pb-3 pl-4 pr-4 from global;
+    list-style: none;
+    text-align: center;
+    position: relative;
+    width: 50%;
+}
+
+.price_wrapper {
+    composes: pt-1 from global;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price {
+    composes: text text_type_digits-default mr-2 from global;
+}
+
+.name {
+   composes: pt-2 text text_type_main-default from global; 
+}
