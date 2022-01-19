@@ -211,3 +211,63 @@ export const data =
        "__v":0
     }
  ]
+
+ export const constructData = 
+[
+   {
+      "_id":"60666c42cc7b410027a1a9b1",
+      "name":"Краторная булка N-200i",
+      "type":"bun",
+      "proteins":80,
+      "fat":24,
+      "carbohydrates":53,
+      "calories":420,
+      "price":1255,
+      "image":"https://code.s3.yandex.net/react/code/bun-02.png",
+      "image_mobile":"https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+      "image_large":"https://code.s3.yandex.net/react/code/bun-02-large.png",
+      "__v":0
+   },
+   {
+      "_id":"60666c42cc7b410027a1a9b8",
+      "name":"Соус фирменный Space Sauce",
+      "type":"sauce",
+      "proteins":50,
+      "fat":22,
+      "carbohydrates":11,
+      "calories":14,
+      "price":80,
+      "image":"https://code.s3.yandex.net/react/code/sauce-04.png",
+      "image_mobile":"https://code.s3.yandex.net/react/code/sauce-04-mobile.png",
+      "image_large":"https://code.s3.yandex.net/react/code/sauce-04-large.png",
+      "__v":0
+   },
+   {
+      "_id":"60666c42cc7b410027a1a9b3",
+      "name":"Филе Люминесцентного тетраодонтимформа",
+      "type":"main",
+      "proteins":44,
+      "fat":26,
+      "carbohydrates":85,
+      "calories":643,
+      "price":988,
+      "image":"https://code.s3.yandex.net/react/code/meat-03.png",
+      "image_mobile":"https://code.s3.yandex.net/react/code/meat-03-mobile.png",
+      "image_large":"https://code.s3.yandex.net/react/code/meat-03-large.png",
+      "__v":0
+   },
+   {
+      "_id":"60666c42cc7b410027a1a9be",
+      "name":"Мини-салат Экзо-Плантаго",
+      "type":"main",
+      "proteins":1,
+      "fat":2,
+      "carbohydrates":3,
+      "calories":6,
+      "price":4400,
+      "image":"https://code.s3.yandex.net/react/code/salad.png",
+      "image_mobile":"https://code.s3.yandex.net/react/code/salad-mobile.png",
+      "image_large":"https://code.s3.yandex.net/react/code/salad-large.png",
+      "__v":0
+   }
+]

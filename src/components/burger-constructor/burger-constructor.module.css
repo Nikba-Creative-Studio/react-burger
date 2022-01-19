@@ -1,0 +1,4 @@
+.constructor_container {
+    composes: pr-5 from global;
+    width: 50%;
+}
