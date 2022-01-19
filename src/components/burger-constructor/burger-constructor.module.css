@@ -1,0 +1,55 @@
+.constructor_container {
+    composes: pt-25 pr-5 from global;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.ingredients {
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    overflow-y: scroll;
+    max-height: calc(100vh - 470px);
+}
+
+.ingredients_item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    width: 100%;
+}
+
+.constructor_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.total_wrapper {
+    composes: mr-10 from global;
+}
+
+.total {
+    composes: text text_type_digits-medium mr-2 from global;
+}
+
+.ingredients::-webkit-scrollbar {
+    width: 8px;
+    background-color: rgba(47, 47, 55, 1);
+}
+
+.ingredients::-webkit-scrollbar-thumb {
+    background-color: rgba(133, 133, 173, 1);
+}
+
+.ingredients::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(99, 99, 128);
+}

@@ -1,0 +1,67 @@
+.container {
+    composes: container from '../app/app.module.css';
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: flex-start;
+    align-items: center;
+    position: relative;
+}
+.header {
+    background: var(--background);
+    composes: pt-3 pb-3 from global;
+}
+
+.nav {
+    max-width: 1240px;
+}
+
+.nav_list {
+    
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    justify-self: flex-start;
+}
+
+.nav_item {
+    composes: pt-5 pb-5 pr-10 text from global;
+}
+
+.nav_link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-inactive-color);
+    font-weight: 400;
+}
+
+.nav_link:hover {
+    color: var(--text-primary-color);
+    transition: var(--common-transition);
+}
+    .nav_link:hover svg {
+        fill: var(--text-primary-color);
+        transition: var(--common-transition);
+    }
+
+.nav_link--active {
+    composes: nav_link;
+    color: var(--text-primary-color);
+}
+    .nav_link--active svg {
+        fill: var(--text-primary-color);
+    }
+
+.logo_wrapper {
+    justify-self: center;
+}
+
+.profile_wrapper {
+    justify-self: flex-end;
+}
