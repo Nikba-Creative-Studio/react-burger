@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './ingredient.module.css';
+
+import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const Ingredient = ({ image, price, name, _id }) => {
@@ -13,5 +15,15 @@ export const Ingredient = ({ image, price, name, _id }) => {
             </div>
             <h3 className={styles.name}>{name}</h3>
             <Counter count={1} size="default" />
-        </li>)
+        </li>
+    )
+}
+
+
+// Ingredient Props Typechecking With PropTypes
+Ingredient.propTypes = {
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired
 }

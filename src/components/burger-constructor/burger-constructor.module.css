@@ -43,12 +43,10 @@
 
 .ingredients::-webkit-scrollbar {
     width: 8px;
-    height: 464px;
     background-color: rgba(47, 47, 55, 1);
 }
 
 .ingredients::-webkit-scrollbar-thumb {
-    height: 292px;
     background-color: rgba(133, 133, 173, 1);
 }
 
