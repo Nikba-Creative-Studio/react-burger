@@ -1,3 +1,35 @@
 .ingredient_details {
-    composes: pt-4 from global;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
+
+.image {
+    composes: mb-4 from global;
+}
+
+.name {
+    composes: text text_type_main-medium from global;
+}
+
+.details {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.details_item {
+    composes: mt-8 mb-10 text text_type_main-default text_color_inactive from global;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+    .details_item_value {
+        composes: mt-2 text text_type_digits-default from global;
+    }

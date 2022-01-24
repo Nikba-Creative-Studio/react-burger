@@ -5,7 +5,7 @@ import { Modal } from '../../modal/modal';
 
 export const IngredientDetails = ({ ...props }) => {
 
-    const { name, calories, proteins, fat, carbohydrates, image } = props.data;
+    const { name, calories, proteins, fat, carbohydrates, image_large } = props.data;
     const { onClose } = props;
 
     return (
@@ -14,13 +14,13 @@ export const IngredientDetails = ({ ...props }) => {
             title="Детали ингредиента"
         >
             <div className={styles.ingredient_details}>
-                <img src={image} alt={name} />
-                <h3>{name}</h3>
-                <ul>
-                    <li>Калории,ккал <span>{calories}</span></li>
-                    <li>Белки, г <span>{proteins}</span></li>
-                    <li>Жиры, г <span>{fat}</span></li>
-                    <li>Углеводы, г <span>{carbohydrates}</span></li>
+                <img className={styles.image} src={image_large} alt={name} />
+                <h3 className={styles.name}>{name}</h3>
+                <ul className={styles.details}>
+                    <li className={styles.details_item}>Калории,ккал <span className={styles.details_item_value}>{calories}</span></li>
+                    <li className={styles.details_item}>Белки, г <span className={styles.details_item_value}>{proteins}</span></li>
+                    <li className={styles.details_item}>Жиры, г <span className={styles.details_item_value}>{fat}</span></li>
+                    <li className={styles.details_item}>Углеводы, г <span className={styles.details_item_value}>{carbohydrates}</span></li>
                 </ul>
             </div>
         </Modal>
@@ -36,6 +36,6 @@ IngredientDetails.propTypes = {
         proteins: PropTypes.number.isRequired,
         fat: PropTypes.number.isRequired,
         carbohydrates: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired
+        image_large: PropTypes.string.isRequired
     })
 }
