@@ -1,7 +1,6 @@
-import React from 'react';
-import styles from './ingredient.module.css';
-
 import PropTypes from 'prop-types';
+
+import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const Ingredient = ({ image, price, name, _id }) => {
@@ -20,7 +19,7 @@ export const Ingredient = ({ image, price, name, _id }) => {
 }
 
 
-// Ingredient Props Typechecking With PropTypes
+// Проверка типов пропсов
 Ingredient.propTypes = {
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,

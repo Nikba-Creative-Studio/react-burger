@@ -1,15 +1,14 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './modal.module.css';
-
 import { ModalOverlay } from './modal-overlay/modal-overlay';
 
 export const Modal = ( { ...props } ) => {
 
-    const { isModalOpen, onClose, title, children } = props;
+    const { onClose, title, children } = props;
 
     const modalRef = useRef(null);
 
@@ -32,7 +31,6 @@ export const Modal = ( { ...props } ) => {
             onClose()
         }
 
-        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -52,7 +50,7 @@ export const Modal = ( { ...props } ) => {
     }, [])
 
     return createPortal(
-        <div className={`${styles.container} ${isModalOpen && styles.active}`}>
+        <>
             <ModalOverlay />
             <div className={styles.modal}>
                 <div className={styles.modal_content} ref={modalRef} >
@@ -67,14 +65,13 @@ export const Modal = ( { ...props } ) => {
                     </div>
                 </div>
             </div>
-        </div>,
+        </>,
         document.getElementById('react-modals')
     );
 }
 
 // Проверка типов пропсов
-Modal.prototype = {
-    isModalOpen: PropTypes.bool.isRequired,
+Modal.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     onClose: PropTypes.func.isRequired

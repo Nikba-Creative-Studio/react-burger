@@ -1,30 +1,23 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import styles from "./burger-ingredients.module.css";
-
-import PropTypes from 'prop-types'; 
-
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
-
-import { Modal } from '../modal/modal';
+import { IngredientDetails } from './ingredient-details/ingredient-details';
 
 export const BurgerIngredients = ({ ingredientsData }) => {
 
     const [current, setCurrent] = useState('bun')
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [modalData, setModalData] = useState({})
 
-    // Функция для открытия модального окна
-    const handleIngredientClick = () => {
-        //console.log('Клик по ингредиенту')
-        setIsModalOpen(true)
+    const toggleModal = (ingredientData) => {
+        setIsModalOpen(!isModalOpen)
+        setModalData(ingredientData)
     }
 
-    // Функция для закрытия модального окна
-    const onClose = () => {
-        setIsModalOpen(false)
-    }
 
-    
     return (
         <section className={styles.ingredients_container}>
             <h2 className={styles.title}>Соберите бургер</h2>
@@ -45,48 +38,42 @@ export const BurgerIngredients = ({ ingredientsData }) => {
                 <li className={styles.ingredients_collection}>
                     <h2 className={styles.ingredients_title}>Булки</h2>
                     <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'bun' && 
-                            <li key={item._id} onClick={ handleIngredientClick } className={styles.ingredient}>
+                        {ingredientsData.map((item) => item.type === 'bun' &&
+                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
                                 <Ingredient {...item} />
                             </li>)}
                     </ul>
                 </li>
 
                 <li className={styles.ingredients_collection}>
-                <h2 className={styles.ingredients_title}>Соусы</h2>
+                    <h2 className={styles.ingredients_title}>Соусы</h2>
                     <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'sauce' && 
-                        <li key={item._id} onClick={ handleIngredientClick } className={styles.ingredient}>
-                            <Ingredient {...item} />
-                        </li>)}
+                        {ingredientsData.map((item) => item.type === 'sauce' &&
+                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
+                                <Ingredient {...item} />
+                            </li>)}
                     </ul>
                 </li>
 
                 <li className={styles.ingredients_collection}>
-                <h2 className={styles.ingredients_title}>Начинки</h2>
+                    <h2 className={styles.ingredients_title}>Начинки</h2>
                     <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'main' && 
-                            <li key={item._id} onClick={ handleIngredientClick } className={styles.ingredient}>
-                            <Ingredient {...item} />
-                        </li>)}
+                        {ingredientsData.map((item) => item.type === 'main' &&
+                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
+                                <Ingredient {...item} />
+                            </li>)}
                     </ul>
                 </li>
-                
-            </ul> 
 
-            <Modal
-                isModalOpen={isModalOpen}
-                onClose={onClose}
-                title="Детали ингредиента"
-            >
-                Тест модального окна для ингредиента
-            </Modal>
+            </ul>
+
+            {isModalOpen && <IngredientDetails onClose={toggleModal} data={modalData} />}
 
         </section >
     )
 }
 
-// BurgerIngredients Props Typechecking With PropTypes
+// Проверка типов пропсов
 BurgerIngredients.propTypes = {
     ingredientsData: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,

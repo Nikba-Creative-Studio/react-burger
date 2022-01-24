@@ -1,0 +1,3 @@
+.ingredient_details {
+    composes: pt-4 from global;
+}

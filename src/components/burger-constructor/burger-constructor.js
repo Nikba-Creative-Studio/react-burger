@@ -1,23 +1,18 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import { Modal } from '../modal/modal';
-
-import PropTypes from 'prop-types';
+import { OrderDetails } from './order-details/order-details';
 
 export const BurgerConstructor = ({ constructData }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    // Функция для открытия модального окна
-    const handleOrderClick = () => {
-        //console.log('Клик по кнопке оформить заказ')
-        setIsModalOpen(true)
-    }
-
-    // Функция для закрытия модального окна
-    const onClose = () => {
-        setIsModalOpen(false)
+    // Функция открытия / закрытия модального окна
+    const toggleModal = () => {
+        //console.log(isModalOpen);
+        setIsModalOpen(!isModalOpen)
     }
 
     // Total Price
@@ -63,25 +58,19 @@ export const BurgerConstructor = ({ constructData }) => {
                 <Button 
                     type="primary" 
                     size="medium"
-                    onClick={handleOrderClick}
+                    onClick={toggleModal}
                 >
                     Оформить заказ
                 </Button>
             </div>
 
-            <Modal
-                isModalOpen={isModalOpen}
-                onClose={onClose}
-                title=""
-            >
-                Тест модального окна для заказа бургера
-            </Modal>
-
+            {isModalOpen && <OrderDetails onClose={toggleModal} />}
+            
         </section>
     )
 }
 
-// BurgerConstructor Props Typechecking With PropTypes
+// Проверка типов пропсов
 BurgerConstructor.propTypes = {
     constructData: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,
