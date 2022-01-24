@@ -1,10 +1,24 @@
-import React from 'react';
+import { useState } from 'react';
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
+import { Modal } from '../modal/modal';
 
 import PropTypes from 'prop-types';
 
 export const BurgerConstructor = ({ constructData }) => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    // Функция для открытия модального окна
+    const handleOrderClick = () => {
+        //console.log('Клик по кнопке оформить заказ')
+        setIsModalOpen(true)
+    }
+
+    // Функция для закрытия модального окна
+    const onClose = () => {
+        setIsModalOpen(false)
+    }
 
     // Total Price
     const total = constructData.reduce((acc, cur) => acc + cur.price, 0)
@@ -46,10 +60,22 @@ export const BurgerConstructor = ({ constructData }) => {
                     <span className={styles.total}>{total}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="medium">
+                <Button 
+                    type="primary" 
+                    size="medium"
+                    onClick={handleOrderClick}
+                >
                     Оформить заказ
                 </Button>
             </div>
+
+            <Modal
+                isModalOpen={isModalOpen}
+                onClose={onClose}
+                title=""
+            >
+                Тест модального окна для заказа бургера
+            </Modal>
 
         </section>
     )
