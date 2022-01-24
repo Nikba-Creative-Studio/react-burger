@@ -1,13 +1,12 @@
-import React from 'react';
-import styles from './ingredient.module.css';
-
 import PropTypes from 'prop-types';
+
+import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 export const Ingredient = ({ image, price, name, _id }) => {
 
     return (
-        <li data-id={_id} className={styles.ingredient}>
+        <div data-id={_id}>
             <img alt={name} src={image} />
             <div className={styles.price_wrapper}>
                 <span className={styles.price}>{price}</span>
@@ -15,12 +14,12 @@ export const Ingredient = ({ image, price, name, _id }) => {
             </div>
             <h3 className={styles.name}>{name}</h3>
             <Counter count={1} size="default" />
-        </li>
+        </div>
     )
 }
 
 
-// Ingredient Props Typechecking With PropTypes
+// Проверка типов пропсов
 Ingredient.propTypes = {
     image: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,

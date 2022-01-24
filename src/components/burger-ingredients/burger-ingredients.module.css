@@ -49,6 +49,15 @@
     align-items: center;
 }
 
+.ingredient {
+    composes: pb-3 pl-4 pr-4 from global;
+    list-style: none;
+    text-align: center;
+    position: relative;
+    width: 50%;
+    cursor: pointer;
+}
+
 .ingredients::-webkit-scrollbar {
     width: 8px;
     background-color: var(--background-element);

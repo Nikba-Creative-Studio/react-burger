@@ -1,10 +1,20 @@
-import React from 'react';
-import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-constructor.module.css';
-
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './burger-constructor.module.css';
+import { Modal } from '../modal/modal';
+import { OrderDetails } from './order-details/order-details';
+
 export const BurgerConstructor = ({ constructData }) => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    // Функция открытия / закрытия модального окна
+    const toggleModal = () => {
+        //console.log(isModalOpen);
+        setIsModalOpen(!isModalOpen)
+    }
 
     // Total Price
     const total = constructData.reduce((acc, cur) => acc + cur.price, 0)
@@ -46,16 +56,26 @@ export const BurgerConstructor = ({ constructData }) => {
                     <span className={styles.total}>{total}</span>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button type="primary" size="medium">
+                <Button 
+                    type="primary" 
+                    size="medium"
+                    onClick={toggleModal}
+                >
                     Оформить заказ
                 </Button>
             </div>
 
+            {isModalOpen && 
+             <Modal onClose={toggleModal} title="" >
+                <OrderDetails />
+            </Modal>
+            }
+            
         </section>
     )
 }
 
-// BurgerConstructor Props Typechecking With PropTypes
+// Проверка типов пропсов
 BurgerConstructor.propTypes = {
     constructData: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,
