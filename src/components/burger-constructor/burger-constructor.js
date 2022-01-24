@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
+import { Modal } from '../modal/modal';
 import { OrderDetails } from './order-details/order-details';
 
 export const BurgerConstructor = ({ constructData }) => {
@@ -64,7 +65,11 @@ export const BurgerConstructor = ({ constructData }) => {
                 </Button>
             </div>
 
-            {isModalOpen && <OrderDetails onClose={toggleModal} />}
+            {isModalOpen && 
+             <Modal onClose={toggleModal} title="" >
+                <OrderDetails />
+            </Modal>
+            }
             
         </section>
     )
