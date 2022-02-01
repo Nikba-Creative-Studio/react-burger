@@ -13,7 +13,7 @@ import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import { OrderDetails } from '../burger-constructor/order-details/order-details';
 
 //API Url
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
+const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
 
 export const App = () => {
 

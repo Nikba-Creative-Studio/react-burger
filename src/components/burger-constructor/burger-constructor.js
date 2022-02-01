@@ -6,6 +6,9 @@ import styles from './burger-constructor.module.css';
 
 import { ConstructorContext } from '../../services/constructorContext';
 
+//Post API Url
+const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
+
 export const BurgerConstructor = () => {
 
     // Читаем данные из контекста
@@ -34,9 +37,40 @@ export const BurgerConstructor = () => {
         )
     }
 
-
     // Обшая стоимость бургера, пока берем из масива ингредиентов
     const total = constructor.reduce((acc, cur) => acc + cur.price, 0)
+
+    // Функция отправки заказа на сервер
+    const sendOrder = () => {
+        // Создаем объект заказа
+        fetch(API_ORDER_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ingredients: constructor.map(e => e._id),
+            })
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then(data => {
+            console.log(data);
+
+            // Показываем модальное окно с сообщением об успешной отправке заказа
+            toggleModalOrder(true);
+
+            // Очищаем конструктор
+            setConstructor([]);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
 
     return (
         <section className={styles.constructor_container}>
@@ -60,7 +94,7 @@ export const BurgerConstructor = () => {
                 <Button 
                     type="primary" 
                     size="medium"
-                    onClick={toggleModalOrder}
+                    onClick={sendOrder}
                 >
                     Оформить заказ
                 </Button>
