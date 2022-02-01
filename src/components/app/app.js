@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styles from './app.module.css';
 
+import { ConstructorContext } from '../../services/constructorContext'
+
 import { Modal } from '../modal/modal';
 import { AppHeader } from "../app-header/app-header";
 
@@ -16,6 +18,7 @@ const API_URL = 'https://norma.nomoreparties.space/api/ingredients';
 export const App = () => {
 
     const [ingredients, setIngredients] = useState([]);
+    const [constructor, setConstructor] = useState([]);
     const [modalData, setModalData] = useState({})
 
     const [isModalOpen, setIsModalOpen] = useState({
@@ -56,7 +59,8 @@ export const App = () => {
             .then(({ data }) => {
                 //console.log(data);
                 // Передаем данные в стейт
-                setIngredients(data);
+                setIngredients(data)
+                setConstructor(data)
             })
             .catch((error) => console.log( error ));
     }, []);
@@ -69,7 +73,10 @@ export const App = () => {
             {ingredients.length > 0 && 
             <main className={styles.main}>    
                 <BurgerIngredients ingredientsData={ingredients} toggleModal={toggleModalIngredients} />
-                <BurgerConstructor constructData={ingredients} toggleModal={toggleModalOrder} />
+                
+                <ConstructorContext.Provider value={{ constructor, setConstructor, toggleModalOrder }}>
+                    <BurgerConstructor />
+                </ConstructorContext.Provider>
             </main>
             }
 
