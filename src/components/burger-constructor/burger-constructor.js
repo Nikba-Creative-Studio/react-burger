@@ -1,20 +1,9 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import { Modal } from '../modal/modal';
-import { OrderDetails } from './order-details/order-details';
 
-export const BurgerConstructor = ({ constructData }) => {
-
-    const [isModalOpen, setIsModalOpen] = useState(false)
-
-    // Функция открытия / закрытия модального окна
-    const toggleModal = () => {
-        //console.log(isModalOpen);
-        setIsModalOpen(!isModalOpen)
-    }
+export const BurgerConstructor = ({ constructData, toggleModal }) => {
 
     // Total Price
     const total = constructData.reduce((acc, cur) => acc + cur.price, 0)
@@ -64,12 +53,6 @@ export const BurgerConstructor = ({ constructData }) => {
                     Оформить заказ
                 </Button>
             </div>
-
-            {isModalOpen && 
-             <Modal onClose={toggleModal} title="" >
-                <OrderDetails />
-            </Modal>
-            }
             
         </section>
     )

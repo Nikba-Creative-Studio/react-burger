@@ -4,19 +4,10 @@ import PropTypes from 'prop-types';
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
-import { Modal } from '../modal/modal';
-import { IngredientDetails } from './ingredient-details/ingredient-details';
 
-export const BurgerIngredients = ({ ingredientsData }) => {
+export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
 
     const [current, setCurrent] = useState('bun')
-    const [isModalOpen, setIsModalOpen] = useState(false)
-    const [modalData, setModalData] = useState({})
-
-    const toggleModal = (ingredientData) => {
-        setIsModalOpen(!isModalOpen)
-        setModalData(ingredientData)
-    }
 
 
     return (
@@ -67,15 +58,6 @@ export const BurgerIngredients = ({ ingredientsData }) => {
                 </li>
 
             </ul>
-
-            {isModalOpen && (
-                <Modal
-                    onClose={toggleModal}
-                    title="Детали ингредиента"
-                >
-                    <IngredientDetails data={modalData} />
-                </Modal>
-            )}
 
         </section >
     )
