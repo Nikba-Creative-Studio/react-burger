@@ -20,6 +20,7 @@ export const App = () => {
     const [ingredients, setIngredients] = useState([]);
     const [constructor, setConstructor] = useState([]);
     const [modalData, setModalData] = useState({})
+    const [modalOrderData, setModalOrderData] = useState({})
 
     const [isModalOpen, setIsModalOpen] = useState({
         ingredientsModal: false,
@@ -27,7 +28,10 @@ export const App = () => {
     })
 
     // Функция открытия / закрытия модального окна заказа
-    const toggleModalOrder = () => {
+    const toggleModalOrder = (data) => {
+        //Отпровляем данные заказа в модальное окно
+        setModalOrderData(data);
+
         //Открываем/Закрываем модальное окно
         setIsModalOpen({
             ...isModalOpen,
@@ -91,7 +95,7 @@ export const App = () => {
 
             {isModalOpen.orderDetailsModal && 
              <Modal onClose={toggleModalOrder} title="" >
-                <OrderDetails />
+                <OrderDetails data={modalOrderData} />
             </Modal>
             }
 

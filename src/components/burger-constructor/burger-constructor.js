@@ -58,10 +58,10 @@ export const BurgerConstructor = () => {
             return Promise.reject(`Ошибка: ${res.status}`);
         })
         .then(data => {
-            console.log(data);
+            //console.log(data);
 
             // Показываем модальное окно с сообщением об успешной отправке заказа
-            toggleModalOrder(true);
+            toggleModalOrder(data);
 
             // Очищаем конструктор
             setConstructor([]);
