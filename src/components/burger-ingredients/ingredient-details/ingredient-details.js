@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import styles from './ingredient-details.module.css'
 
-export const IngredientDetails = ({ data=[] }) => { 
+export const IngredientDetails = ({ data={} }) => { 
 
     const { name, calories, proteins, fat, carbohydrates, image_large } = data;
 
