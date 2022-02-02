@@ -19,8 +19,8 @@ export const App = () => {
 
     const [ingredients, setIngredients] = useState([]);
     const [constructor, setConstructor] = useState([]);
-    const [modalData, setModalData] = useState({})
-    const [modalOrderData, setModalOrderData] = useState({})
+    const [modalData, setModalData] = useState(null)
+    const [modalOrderData, setModalOrderData] = useState(null)
 
     const [isModalOpen, setIsModalOpen] = useState({
         ingredientsModal: false,

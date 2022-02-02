@@ -1,5 +1,8 @@
 import { useContext } from 'react';
 
+//Времменое решение
+import uuid from 'react-uuid'
+
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 
@@ -20,10 +23,11 @@ export const BurgerConstructor = () => {
     }
 
     //Рисуем ингредиент конструктора
+    // uuid - Времменое решение
     const constructorItem = (item, type, isLocked) => {
         return (
             item &&
-                <li key={item._id} className={styles.ingredients_item}>
+                <li key={uuid()} className={styles.ingredients_item}>
                     {!isLocked && <DragIcon />}
                     <ConstructorElement
                         type={type}
@@ -60,7 +64,7 @@ export const BurgerConstructor = () => {
             //console.log(data);
 
             // Показываем модальное окно с сообщением об успешной отправке заказа
-            toggleModalOrder(data);
+            toggleModalOrder(data.order.number);
 
             // Очищаем конструктор
             setConstructor([]);
@@ -83,7 +87,7 @@ export const BurgerConstructor = () => {
                 }
             </ul>
 
-            {constructorItem(constructor.filter((item) => item.type === 'bun')[1], 'bottom', true)}
+            {constructorItem(constructor.filter((item) => item.type === 'bun')[0], 'bottom', true)}
 
             <div className={styles.constructor_footer}>
                 <div className={styles.total_wrapper}>

@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 
 import styles from './ingredient-details.module.css'
 
-export const IngredientDetails = ({ ...props }) => {
+export const IngredientDetails = ({ data=[] }) => { 
 
-    const { name, calories, proteins, fat, carbohydrates, image_large } = props.data;
+    const { name, calories, proteins, fat, carbohydrates, image_large } = data;
 
     return (
         <div className={styles.ingredient_details}>
