@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
@@ -102,9 +101,4 @@ export const BurgerConstructor = () => {
             
         </section>
     )
-}
-
-// Проверка типов пропсов
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.array
 }
