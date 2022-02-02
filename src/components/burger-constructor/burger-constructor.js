@@ -11,7 +11,7 @@ const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
 export const BurgerConstructor = () => {
 
-    // Читаем данные из контекста
+    // Читаем данные из контекста 
     const { constructor, setConstructor, toggleModalOrder } = useContext(ConstructorContext);
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)

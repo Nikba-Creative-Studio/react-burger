@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import styles from "./burger-ingredients.module.css";
@@ -7,56 +7,77 @@ import { Ingredient } from './ingredient/ingredient';
 
 export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
 
-    const [current, setCurrent] = useState('bun')
+    //Рефы для переключения вкладок
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
+    const [current, setCurrent] = useState({
+        type: 'bun',
+        scrollTo: bunRef
+    })
+
+    // Типы ингредиентов
+    const types = {
+        bun: 'Булочка',
+        sauce: 'Соус',
+        main: 'Начинки'
+    }
+
+    // Переключение вкладок
+    const handleClick = (value) => {
+        //console.log(value)
+        setCurrent(value)
+        value.scrollTo.current.scrollIntoView({ behavior: 'smooth' })
+    }
+
+    // Групируем ингредиенты по вкладкам
+    const ingredients = (type) => {
+        const currentType = ingredientsData.filter(item => item.type === type)
+
+        return (
+            <li 
+                className={styles.ingredients_collection}
+                key={type} 
+                ref={type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef}
+            >
+                <h2 className={styles.ingredients_title}>{types[type]}</h2>
+                <ul className={styles.ingredients_list}>
+                    {currentType.map(item => (
+                        <li 
+                            key={item._id} 
+                            onClick={() => toggleModal(item)} 
+                            className={styles.ingredient}
+                        >
+                            <Ingredient {...item} />
+                        </li>
+                    ))}
+                </ul>
+            </li>
+        )
+    }
 
     return (
         <section className={styles.ingredients_container}>
             <h2 className={styles.title}>Соберите бургер</h2>
 
             <div className={styles.tabs}>
-                <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
-                    Булки
-                </Tab>
-                <Tab value="sause" active={current === 'sause'} onClick={setCurrent}>
-                    Соусы
-                </Tab>
-                <Tab value="main" active={current === 'main'} onClick={setCurrent}>
-                    Начинки
-                </Tab>
+                {Object.keys(types).map(type => (
+                    <Tab
+                        value={{ type, scrollTo: type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef }}
+                        key={type}
+                        onClick={handleClick}
+                        active={current.type === type}
+                    >
+                        {types[type]}
+                    </Tab>
+                ))}
             </div>
 
             <ul className={styles.ingredients}>
-                <li className={styles.ingredients_collection}>
-                    <h2 className={styles.ingredients_title}>Булки</h2>
-                    <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'bun' &&
-                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
-                                <Ingredient {...item} />
-                            </li>)}
-                    </ul>
-                </li>
-
-                <li className={styles.ingredients_collection}>
-                    <h2 className={styles.ingredients_title}>Соусы</h2>
-                    <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'sauce' &&
-                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
-                                <Ingredient {...item} />
-                            </li>)}
-                    </ul>
-                </li>
-
-                <li className={styles.ingredients_collection}>
-                    <h2 className={styles.ingredients_title}>Начинки</h2>
-                    <ul className={styles.ingredients_list}>
-                        {ingredientsData.map((item) => item.type === 'main' &&
-                            <li key={item._id} onClick={() => toggleModal(item)} className={styles.ingredient}>
-                                <Ingredient {...item} />
-                            </li>)}
-                    </ul>
-                </li>
-
+                {Object.keys(types).map(type => (
+                    ingredients(type)
+                ))}
             </ul>
 
         </section >

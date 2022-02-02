@@ -76,9 +76,8 @@ export const App = () => {
             <AppHeader />
             {ingredients.length > 0 && 
             <main className={styles.main}>    
-                <BurgerIngredients ingredientsData={ingredients} toggleModal={toggleModalIngredients} />
-                
                 <ConstructorContext.Provider value={{ constructor, setConstructor, toggleModalOrder }}>
+                    <BurgerIngredients ingredientsData={ingredients} toggleModal={toggleModalIngredients} />
                     <BurgerConstructor />
                 </ConstructorContext.Provider>
             </main>

@@ -1,10 +1,16 @@
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
+import { ConstructorContext } from '../../../services/constructorContext';
+
 export const Ingredient = ({ image, price, name, _id }) => {
 
+    // Читаем данные из контекста
+    const { constructor } = useContext(ConstructorContext);
+    
     return (
         <div data-id={_id}>
             <img alt={name} src={image} />
@@ -13,11 +19,12 @@ export const Ingredient = ({ image, price, name, _id }) => {
                 <CurrencyIcon type="primary" />
             </div>
             <h3 className={styles.name}>{name}</h3>
-            <Counter count={1} size="default" />
+            <Counter 
+                count={constructor.filter(e => e._id === _id).length}
+                size="default" />
         </div>
     )
 }
-
 
 // Проверка типов пропсов
 Ingredient.propTypes = {
