@@ -1,55 +1,93 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
+
+//Времменое решение
+import uuid from 'react-uuid'
 
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import { Modal } from '../modal/modal';
-import { OrderDetails } from './order-details/order-details';
 
-export const BurgerConstructor = ({ constructData }) => {
+import { ConstructorContext } from '../../services/constructorContext';
 
-    const [isModalOpen, setIsModalOpen] = useState(false)
+//Post API Url
+const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
-    // Функция открытия / закрытия модального окна
-    const toggleModal = () => {
-        //console.log(isModalOpen);
-        setIsModalOpen(!isModalOpen)
+export const BurgerConstructor = () => {
+
+    // Читаем данные из контекста 
+    const { constructor, setConstructor, toggleModalOrder } = useContext(ConstructorContext);
+
+    //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
+    const removeItem = (id) => {
+        // Создаем новый массив ингредиентов
+        setConstructor(constructor.filter((e) => e._id !== id));
     }
 
-    // Total Price
-    const total = constructData.reduce((acc, cur) => acc + cur.price, 0)
+    //Рисуем ингредиент конструктора
+    // uuid - Времменое решение
+    const constructorItem = (item, type, isLocked) => {
+        return (
+            item &&
+                <li key={uuid()} className={styles.ingredients_item}>
+                    {!isLocked && <DragIcon />}
+                    <ConstructorElement
+                        type={type}
+                        text={item.name + (type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')}
+                        price={item.price}
+                        thumbnail={item.image}
+                        handleClose={() => removeItem(item._id)}
+                    />
+                </li>
+        )
+    }
+
+    // Обшая стоимость бургера, пока берем из масива ингредиентов
+    const total = constructor.reduce((acc, cur) => acc + cur.price, 0)
+
+    // Функция отправки заказа на сервер
+    const sendOrder = () => {
+        // Создаем объект заказа
+        fetch(API_ORDER_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ingredients: constructor.map(e => e._id),
+            })
+        }).then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then(data => {
+            //console.log(data);
+
+            // Показываем модальное окно с сообщением об успешной отправке заказа
+            toggleModalOrder(data.order.number);
+
+            // Очищаем конструктор
+            setConstructor([]);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+    }
+
 
     return (
         <section className={styles.constructor_container}>
-            <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={`${constructData[0].name} (верх)`}
-                price={constructData[0].price}
-                thumbnail={constructData[0].image}
-            />
+
+            {constructorItem(constructor.filter((item) => item.type === 'bun')[0], 'top', true)}
 
             <ul className={styles.ingredients}>
-                {constructData.map((ingredient, index) => index > 0 && index < constructData.length - 1 && (
-                    <li key={index} className={styles.ingredients_item}>
-                        <DragIcon />
-                        <ConstructorElement
-                            text={ingredient.name}
-                            price={ingredient.price}
-                            thumbnail={ingredient.image}
-                        />
-                    </li>
-                )
-                )}
+                {constructor
+                        .filter((item) => item.type !== 'bun')
+                        .map((item) => (constructorItem(item, '', false)))
+                }
             </ul>
 
-            <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={`${constructData[constructData.length - 1].name} (низ)`}
-                price={constructData[constructData.length - 1].price}
-                thumbnail={constructData[constructData.length - 1].image}
-            />
+            {constructorItem(constructor.filter((item) => item.type === 'bun')[0], 'bottom', true)}
 
             <div className={styles.constructor_footer}>
                 <div className={styles.total_wrapper}>
@@ -59,36 +97,12 @@ export const BurgerConstructor = ({ constructData }) => {
                 <Button 
                     type="primary" 
                     size="medium"
-                    onClick={toggleModal}
+                    onClick={sendOrder}
                 >
                     Оформить заказ
                 </Button>
             </div>
-
-            {isModalOpen && 
-             <Modal onClose={toggleModal} title="" >
-                <OrderDetails />
-            </Modal>
-            }
             
         </section>
     )
 }
-
-// Проверка типов пропсов
-BurgerConstructor.propTypes = {
-    constructData: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        __v: PropTypes.number,
-    })).isRequired,
-};

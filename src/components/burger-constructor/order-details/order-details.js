@@ -1,11 +1,15 @@
+import PropTypes from 'prop-types';
+
 import image from '../../../images/done.png'
 import  styles from './order-details.module.css'
 
-export const OrderDetails = () => {
+export const OrderDetails = ({ data=null }) => {
+    //console.log(data)
+    
 
     return (
         <div className={styles.order_details}>
-            <h2 className={styles.number}>123456</h2>
+            <h2 className={styles.number}>{data}</h2>
             <p className={styles.title}>идентификатор заказа</p>
             <img src={image} alt="✓" className={styles.image} />
             <p className={styles.status}>Ваш заказ начали готовить</p>
@@ -13,3 +17,11 @@ export const OrderDetails = () => {
         </div>
     )
 }
+
+
+// Проверка типов пропсов
+OrderDetails.propTypes = {
+    data: PropTypes.number
+}
+
+
