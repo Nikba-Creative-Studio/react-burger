@@ -30,6 +30,7 @@ export const BurgerConstructor = () => {
                 <li key={uuid()} className={styles.ingredients_item}>
                     {!isLocked && <DragIcon />}
                     <ConstructorElement
+                        isLocked={isLocked}
                         type={type}
                         text={item.name + (type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')}
                         price={item.price}
