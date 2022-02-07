@@ -1,0 +1,17 @@
+
+const orderInitialState = {
+    // TODO: add ingredients initital state
+}
+
+export const orderReducer = (state = orderInitialState, action) => {
+    
+    // TODO: add actions
+    switch(action.type) {
+
+        // TODO: add case statements for actions
+
+        default: {
+            return state;
+        }
+    }
+}
