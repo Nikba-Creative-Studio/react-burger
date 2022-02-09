@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
@@ -12,9 +12,10 @@ export const BurgerIngredients = () => {
     
     const dispatch = useDispatch();
 
+    // Загружаем ингредиенты из хранилища
     const ingredientsData = useSelector(state => state.ingredients.ingredients);
 
-
+    // Открываем модальное окно описание ингредиента
     const toggleModal = (item) => {
         dispatch(selectIngredient(item));
     }
@@ -23,7 +24,8 @@ export const BurgerIngredients = () => {
     const bunRef = useRef(null);
     const sauceRef = useRef(null);
     const mainRef = useRef(null);
-
+    
+    // Состояние вкладок
     const [current, setCurrent] = useState({
         type: 'bun',
         scrollTo: bunRef
@@ -42,6 +44,36 @@ export const BurgerIngredients = () => {
         setCurrent(value)
         value.scrollTo.current.scrollIntoView({ behavior: 'smooth' })
     }
+
+    // Активируем таб при скролле
+    // Для Код Ревювера - По мне это колхоз, буду признателен за помощь и предложения по улучшению кода. Спасибо!
+    const handleScroll = (e) => {
+        const scrollTop = e.target.scrollTop;
+
+        const bunHeight = bunRef.current.clientHeight;
+        const sauceHeight = sauceRef.current.clientHeight;
+        const mainHeight = mainRef.current.clientHeight;
+
+        if (scrollTop < bunHeight ) {
+            setCurrent({
+                type: 'bun',
+                scrollTo: bunRef
+            })
+        }
+        else if (scrollTop < bunHeight + sauceHeight ) {
+            setCurrent({
+                type: 'sauce',
+                scrollTo: sauceRef
+            })
+        }
+        else if (scrollTop < bunHeight + sauceHeight + mainHeight ) {
+            setCurrent({
+                type: 'main',
+                scrollTo: mainRef
+            })
+        }
+    }
+    
 
     // Групируем ингредиенты по вкладкам
     const ingredients = (type) => {
@@ -86,7 +118,7 @@ export const BurgerIngredients = () => {
                 ))}
             </div>
 
-            <ul className={styles.ingredients}>
+            <ul className={styles.ingredients} onScroll={handleScroll}>
                 {Object.keys(types).map(type => (
                     ingredients(type)
                 ))}
