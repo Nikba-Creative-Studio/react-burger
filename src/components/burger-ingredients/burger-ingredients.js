@@ -1,11 +1,23 @@
 import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { Ingredient } from './ingredient/ingredient';
 
-export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
+import { selectIngredient } from '../../services/actions/burger-ingredients';
+
+export const BurgerIngredients = () => {
+    
+    const dispatch = useDispatch();
+
+    const ingredientsData = useSelector(state => state.ingredients.ingredients);
+
+
+    const toggleModal = (item) => {
+        dispatch(selectIngredient(item));
+    }
 
     //Рефы для переключения вкладок
     const bunRef = useRef(null);
@@ -83,21 +95,3 @@ export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
         </section >
     )
 }
-
-// Проверка типов пропсов
-BurgerIngredients.propTypes = {
-    ingredientsData: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        __v: PropTypes.number,
-    })).isRequired,
-};
