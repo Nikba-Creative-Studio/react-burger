@@ -1,24 +1,16 @@
 import { useState, useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { Ingredient } from './ingredient/ingredient';
 
-import { selectIngredient } from '../../services/actions/burger-ingredients';
-
 export const BurgerIngredients = () => {
-    
-    const dispatch = useDispatch();
+
 
     // Загружаем ингредиенты из хранилища
     const ingredientsData = useSelector(state => state.ingredients.ingredients);
-
-    // Открываем модальное окно описание ингредиента
-    const toggleModal = (item) => {
-        dispatch(selectIngredient(item));
-    }
 
     //Рефы для переключения вкладок
     const bunRef = useRef(null);
@@ -90,10 +82,9 @@ export const BurgerIngredients = () => {
                     {currentType.map(item => (
                         <li 
                             key={item._id} 
-                            onClick={() => toggleModal(item)} 
                             className={styles.ingredient}
                         >
-                            <Ingredient {...item} />
+                            <Ingredient item={item} />
                         </li>
                     ))}
                 </ul>
@@ -124,6 +115,6 @@ export const BurgerIngredients = () => {
                 ))}
             </ul>
 
-        </section >
+        </section>
     )
 }

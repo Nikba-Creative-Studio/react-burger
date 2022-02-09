@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import styles from './app.module.css';
 
@@ -35,8 +37,10 @@ export const App = () => {
     return (
         <>
             <AppHeader />
-            <main className={styles.main}>    
-                <BurgerIngredients />
+            <main className={styles.main}>   
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients />
+                </DndProvider> 
             </main>
 
             {ingredientsModal && (

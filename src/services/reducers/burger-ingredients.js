@@ -1,8 +1,9 @@
 
 const ingredientsInitialState = {
     // Первоначальное состояние ингредиентов бургера
-    ingredients: [],
-    ingredient: null,
+    ingredients: [], // Список ингредиентов
+    ingredient: null, // Выбранный ингредиент
+    constructorIngredients: [], // Список ингредиентов в конструкторе
 }
 
 export const ingredientsReducer = (state = ingredientsInitialState, action) => {
