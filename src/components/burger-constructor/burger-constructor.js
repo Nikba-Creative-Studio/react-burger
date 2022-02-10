@@ -1,22 +1,17 @@
-//import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
 //Уникальный идентификатор для ингредиента
 import uuid from 'react-uuid'
 
-import { 
-    setIngredients, 
-    setBuns,
-    removeIngredient,
-} from '../../services/actions/burger-constructor';
+import { setIngredients, setBuns } from '../../services/actions/burger-constructor';
 
-import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { postOrder } from '../../services/actions/order-details';
+
+import { Ingredient } from './ingredient/ingredient';
+ 
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-
-
-//Post API Url
-const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
 export const BurgerConstructor = () => {
 
@@ -25,67 +20,18 @@ export const BurgerConstructor = () => {
     // Читаем данные из стора
     const constructorData = useSelector(state => state.constructorIngredients.ingredients);
     const constructorBunsData = useSelector(state => state.constructorIngredients.buns);
-    
-
-    const toggleModalOrder = () => {
-        // Отправляем заказ на сервер
-    }
-
-    //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
-    const removeItem = (id) => {
-        dispatch(removeIngredient(id))
-    }
-
-    //Рисуем ингредиент конструктора
-    const constructorItem = (item, type, isLocked) => {
-        return (
-            item &&
-                <li key={uuid()} className={styles.ingredients_item}>
-                    {!isLocked && <DragIcon />}
-                    <ConstructorElement
-                        isLocked={isLocked}
-                        type={type}
-                        text={item.name + (type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')}
-                        price={item.price}
-                        thumbnail={item.image}
-                        handleClose={() => removeItem(item.uid)}
-                    />
-                </li>
-        )
-    }
 
     // Обшая стоимость бургера, пока берем из масива ингредиентов
-    const total = constructorData.reduce((acc, cur) => acc + cur.price, 0)
+    const total_ingredients = constructorData.reduce((acc, cur) => acc + cur.price, 0)
+    const total_buns = (constructorBunsData) ? constructorBunsData.price : 0
+    const total = total_ingredients + total_buns
 
     // Функция отправки заказа на сервер
     const sendOrder = () => {
         // Создаем объект заказа
-        fetch(API_ORDER_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ingredients: constructorData.map(e => e._id),
-            })
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        })
-        .then(data => {
-            //console.log(data);
-
-            // Показываем модальное окно с сообщением об успешной отправке заказа
-            toggleModalOrder(data.order.number);
-
-            // Очищаем конструктор
-            //setConstructor([]);
-        })
-        .catch(err => {
-            console.log(err);
-        })
+        const order_ids = constructorData.map(item => item._id)
+        if(constructorBunsData) order_ids.push(constructorBunsData._id)
+        dispatch(postOrder(order_ids))
     }
 
     // Перемешение ингредиентов в конструкторе
@@ -109,13 +55,14 @@ export const BurgerConstructor = () => {
     return (
         <section className={styles.constructor_container}>
             <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
-                <ul className={styles.ingredients}>
-                    {constructorItem(constructorBunsData, 'top', true)}
-
-                    {constructorData.map((item) => (constructorItem(item, '', false)))}
-
-                    {constructorItem(constructorBunsData, 'bottom', true)}
-                </ul>
+                
+                <Ingredient item={constructorBunsData} type='top' isLocked={true} />
+                
+                <div className={styles.ingredients}>
+                    {constructorData.map((item) => ( <Ingredient  key={uuid()}  item={item} isLocked={false} /> ))}
+                </div>
+                
+                <Ingredient item={constructorBunsData} type='bottom' isLocked={true} />
             </div>
 
             <div className={styles.constructor_footer}>
@@ -126,6 +73,7 @@ export const BurgerConstructor = () => {
                 <Button 
                     type="primary" 
                     size="medium"
+                    disabled={(constructorData.length === 0 || !constructorBunsData) ? true : false}
                     onClick={sendOrder}
                 >
                     Оформить заказ

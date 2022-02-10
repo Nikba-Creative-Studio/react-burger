@@ -1,15 +1,14 @@
-import PropTypes from 'prop-types';
-
+import { useSelector } from 'react-redux';
 import image from '../../../images/done.png'
 import  styles from './order-details.module.css'
 
-export const OrderDetails = ({ data=null }) => {
-    //console.log(data)
+export const OrderDetails = () => {
     
-
+    const data = useSelector(state => state.orderDetails.order);
+    
     return (
         <div className={styles.order_details}>
-            <h2 className={styles.number}>{data}</h2>
+            <h2 className={styles.number}>{data.order.number}</h2>
             <p className={styles.title}>идентификатор заказа</p>
             <img src={image} alt="✓" className={styles.image} />
             <p className={styles.status}>Ваш заказ начали готовить</p>
@@ -17,11 +16,4 @@ export const OrderDetails = ({ data=null }) => {
         </div>
     )
 }
-
-
-// Проверка типов пропсов
-OrderDetails.propTypes = {
-    data: PropTypes.number
-}
-
 
