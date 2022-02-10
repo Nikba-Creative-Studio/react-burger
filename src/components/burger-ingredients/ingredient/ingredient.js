@@ -28,7 +28,6 @@ export const Ingredient = ({ item }) => {
     const [{ isDrag }, drag] = useDrag({
         type: "ingredients",
         item: item,
-
         collect: monitor => ({
             isDrag: monitor.isDragging()
         })

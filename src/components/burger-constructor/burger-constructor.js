@@ -1,29 +1,42 @@
-import { useContext } from 'react';
+//import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from 'react-dnd';
 
-//Времменое решение
+//Уникальный идентификатор для ингредиента
 import uuid from 'react-uuid'
+
+import { 
+    setIngredients, 
+    setBuns,
+    removeIngredient,
+} from '../../services/actions/burger-constructor';
 
 import { DragIcon, ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 
-import { ConstructorContext } from '../../services/constructorContext';
 
 //Post API Url
 const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
 
 export const BurgerConstructor = () => {
 
-    // Читаем данные из контекста 
-    const { constructor, setConstructor, toggleModalOrder } = useContext(ConstructorContext);
+    const dispatch = useDispatch();
+
+    // Читаем данные из стора
+    const constructorData = useSelector(state => state.constructorIngredients.ingredients);
+    const constructorBunsData = useSelector(state => state.constructorIngredients.buns);
+    
+
+    const toggleModalOrder = () => {
+        // Отправляем заказ на сервер
+    }
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
     const removeItem = (id) => {
-        // Создаем новый массив ингредиентов
-        setConstructor(constructor.filter((e) => e._id !== id));
+        dispatch(removeIngredient(id))
     }
 
     //Рисуем ингредиент конструктора
-    // uuid - Времменое решение
     const constructorItem = (item, type, isLocked) => {
         return (
             item &&
@@ -35,14 +48,14 @@ export const BurgerConstructor = () => {
                         text={item.name + (type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')}
                         price={item.price}
                         thumbnail={item.image}
-                        handleClose={() => removeItem(item._id)}
+                        handleClose={() => removeItem(item.uid)}
                     />
                 </li>
         )
     }
 
     // Обшая стоимость бургера, пока берем из масива ингредиентов
-    const total = constructor.reduce((acc, cur) => acc + cur.price, 0)
+    const total = constructorData.reduce((acc, cur) => acc + cur.price, 0)
 
     // Функция отправки заказа на сервер
     const sendOrder = () => {
@@ -53,7 +66,7 @@ export const BurgerConstructor = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                ingredients: constructor.map(e => e._id),
+                ingredients: constructorData.map(e => e._id),
             })
         }).then(res => {
             if (res.ok) {
@@ -68,27 +81,42 @@ export const BurgerConstructor = () => {
             toggleModalOrder(data.order.number);
 
             // Очищаем конструктор
-            setConstructor([]);
+            //setConstructor([]);
         })
         .catch(err => {
             console.log(err);
         })
     }
 
+    // Перемешение ингредиентов в конструкторе
+    const [{isOver}, drop] = useDrop({
+        accept: 'ingredients',
+        drop: (item) => {
+            // Передаем ингредиент в конструктор
+            //console.log(item);
+            onDrop(item);
+        },
+        collect: monitor => ({
+            isOver: monitor.isOver()
+        })
+    });
+
+    const onDrop = (item) => {
+        // Передаем ингредиент в конструктор
+        (item.type === 'bun') ? dispatch(setBuns(item, uuid())) : dispatch(setIngredients(item, uuid()));
+    }
 
     return (
         <section className={styles.constructor_container}>
+            <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
+                <ul className={styles.ingredients}>
+                    {constructorItem(constructorBunsData, 'top', true)}
 
-            {constructorItem(constructor.filter((item) => item.type === 'bun')[0], 'top', true)}
+                    {constructorData.map((item) => (constructorItem(item, '', false)))}
 
-            <ul className={styles.ingredients}>
-                {constructor
-                        .filter((item) => item.type !== 'bun')
-                        .map((item) => (constructorItem(item, '', false)))
-                }
-            </ul>
-
-            {constructorItem(constructor.filter((item) => item.type === 'bun')[0], 'bottom', true)}
+                    {constructorItem(constructorBunsData, 'bottom', true)}
+                </ul>
+            </div>
 
             <div className={styles.constructor_footer}>
                 <div className={styles.total_wrapper}>

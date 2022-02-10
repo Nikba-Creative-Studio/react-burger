@@ -7,7 +7,7 @@ import styles from './app.module.css';
 
 import { AppHeader } from "../app-header/app-header";
 import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
-//import { BurgerConstructor } from "../burger-constructor/burger-constructor";
+import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 
 import { Modal } from '../modal/modal';
@@ -31,15 +31,13 @@ export const App = () => {
         dispatch(fetchIngredients());
     }, [dispatch])
 
-    //
-    //<BurgerConstructor />
-
     return (
         <>
             <AppHeader />
             <main className={styles.main}>   
                 <DndProvider backend={HTML5Backend}>
                     <BurgerIngredients />
+                    <BurgerConstructor />
                 </DndProvider> 
             </main>
 

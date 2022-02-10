@@ -8,6 +8,18 @@
     gap: 16px;
 }
 
+.constructor_space {
+    composes: p-5 from global;
+    border: 1px solid #2f2f37;
+    border-radius: 20px;
+    width: 100%;
+    min-height: calc(100vh - 290px);
+}
+
+.active {
+    border: 1px solid #4c4cff;
+}
+
 .ingredients {
     margin: 0;
     list-style: none;

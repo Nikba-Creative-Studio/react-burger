@@ -1,4 +1,3 @@
-
 const ingredientsInitialState = {
     // Первоначальное состояние ингредиентов бургера
     ingredients: [], // Список ингредиентов
@@ -12,7 +11,7 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
     switch(action.type) {
 
         // Загрузка ингредиентов бургера
-        case 'BURGER/FETCH_INGREDIENTS_SUCCESS':
+        case 'BURGER/FETCH_INGREDIENTS_SUCCESS': 
             return {
                 ...state,
                 ingredients: action.payload.ingredients
@@ -32,8 +31,8 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
                     ingredient: null
                 }
         
-        default: {
+        default: 
             return state;
-        }
+        
     }
 }
