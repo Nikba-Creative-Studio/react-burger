@@ -1,4 +1,5 @@
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { 
     removeIngredient,
@@ -30,4 +31,11 @@ export const Ingredient = ({ item, type, isLocked }) => {
                 />
             </div>
     )
+}
+
+// Проверка типов пропсов
+Ingredient.propTypes = {
+    item: PropTypes.object,
+    type: PropTypes.string,
+    isLocked: PropTypes.bool,
 }

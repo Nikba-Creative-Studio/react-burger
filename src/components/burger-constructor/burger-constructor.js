@@ -39,7 +39,6 @@ export const BurgerConstructor = () => {
         accept: 'ingredients',
         drop: (item) => {
             // Передаем ингредиент в конструктор
-            //console.log(item);
             onDrop(item);
         },
         collect: monitor => ({

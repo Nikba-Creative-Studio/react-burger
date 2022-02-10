@@ -4,6 +4,7 @@ import  styles from './order-details.module.css'
 
 export const OrderDetails = () => {
     
+    // Загружаем данные из хранилища
     const data = useSelector(state => state.orderDetails.order);
     
     return (

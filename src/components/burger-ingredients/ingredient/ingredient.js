@@ -13,18 +13,23 @@ export const Ingredient = ({ item }) => {
     
     const { image, price, name } = item;
     
-    const constructorIngredients = useSelector(state => state.ingredients.constructorIngredients);
+    // Загружаем данные из хранилища
+    const constructorData = useSelector(state => state.constructorIngredients.ingredients);
+    const constructorBunsData = useSelector(state => state.constructorIngredients.buns);
 
     // Количество ингредиента в конструкторе
-    const count = constructorIngredients.filter(ingredient => ingredient.id === item.id).length;
-
+    const count = (item.type === 'bun') 
+            ? (constructorBunsData && constructorBunsData._id === item._id)
+            ? 2
+            : 0
+            : constructorData.filter(ingredient => ingredient._id === item._id).length
+    
     // Открываем модальное окно описание ингредиента
     const toggleModal = (item) => {
         dispatch(selectIngredient(item));
     }
 
     // Перемещаем ингредиент в конструктор
-    // TODO: переделать на перемещение в конструктор
     const [{ isDrag }, drag] = useDrag({
         type: "ingredients",
         item: item,
