@@ -1,3 +1,5 @@
+import update from 'immutability-helper';
+
 const constructorInitialState = {
     // Первоначальное состояние конструктора бургера
     ingredients: [], // Список ингредиентов
@@ -23,6 +25,24 @@ export const constructorReducer = (state = constructorInitialState, action) => {
                 ...state,
                 ingredients: [...state.ingredients].filter(item => item.uid !== action.uid)
             }
+        
+        case 'CONSTRUCTOR/MOVE_INGREDIENT': {
+            
+            if(action.dragIndex === undefined) return state;
+
+            const ingredient = state.ingredients[action.dragIndex];
+
+            return {
+                ...state,
+                ingredients: update(state.ingredients, {
+                    $splice: [
+                        [action.dragIndex, 1],
+                        [action.hoverIndex, 0, ingredient],
+                    ],
+                }),
+            }
+        }
+
 
 
         default: 

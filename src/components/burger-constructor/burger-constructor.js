@@ -1,13 +1,13 @@
+import  { useCallback } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
 //Уникальный идентификатор для ингредиента
 import uuid from 'react-uuid'
 
-import { setIngredients, setBuns } from '../../services/actions/burger-constructor';
+import { setIngredients, setBuns, moveIngredients } from '../../services/actions/burger-constructor';
 
 import { postOrder } from '../../services/actions/order-details';
-
 import { Ingredient } from './ingredient/ingredient';
  
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -51,6 +51,10 @@ export const BurgerConstructor = () => {
         (item.type === 'bun') ? dispatch(setBuns(item, uuid())) : dispatch(setIngredients(item, uuid()));
     }
 
+    const moveIngredient = useCallback((dragIndex, hoverIndex) => {
+        dispatch(moveIngredients(dragIndex, hoverIndex))
+    }, [dispatch]);
+
     return (
         <section className={styles.constructor_container}>
             <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
@@ -58,7 +62,7 @@ export const BurgerConstructor = () => {
                 <Ingredient item={constructorBunsData} type='top' isLocked={true} />
                 
                 <div className={styles.ingredients}>
-                    {constructorData.map((item) => ( <Ingredient  key={uuid()}  item={item} isLocked={false} /> ))}
+                    {constructorData.map((item, index) => ( <Ingredient  key={uuid()}  item={item} isLocked={false} id={item._id} index={index} moveIngredient={moveIngredient} /> ))}
                 </div>
                 
                 <Ingredient item={constructorBunsData} type='bottom' isLocked={true} />

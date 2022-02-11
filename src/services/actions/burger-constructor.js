@@ -1,6 +1,7 @@
 export const SET_INGREDIENTS = 'CONSTRUCTOR/SET_INGREDIENTS';
 export const SET_BUN_TYPE = 'CONSTRUCTOR/SET_BUN_TYPE';
 export const REMOVE_INGREDIENT = 'CONSTRUCTOR/REMOVE_INGREDIENT';
+export const MOVE_INGREDIENT = 'CONSTRUCTOR/MOVE_INGREDIENT';
 
 export function setIngredients(item, uid) {
     return function(dispatch) {
@@ -25,6 +26,16 @@ export function removeIngredient(uid) {
         dispatch({
             type: REMOVE_INGREDIENT,
             uid: uid
+        })
+    }
+}
+
+export function moveIngredients(dragIndex, hoverIndex) {
+    return function(dispatch) {
+        dispatch({
+            type: MOVE_INGREDIENT,
+            dragIndex: dragIndex,
+            hoverIndex: hoverIndex
         })
     }
 }
