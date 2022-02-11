@@ -29,9 +29,9 @@ export const BurgerConstructor = () => {
     // Функция отправки заказа на сервер
     const sendOrder = () => {
         // Создаем объект заказа
-        const order_ids = constructorData.map(item => item._id)
-        if(constructorBunsData) order_ids.push(constructorBunsData._id)
-        dispatch(postOrder(order_ids))
+        const orderIds = constructorData.map(item => item._id)
+        if(constructorBunsData) orderIds.push(constructorBunsData._id)
+        dispatch(postOrder(orderIds))
     }
 
     // Перемешение ингредиентов в конструкторе
