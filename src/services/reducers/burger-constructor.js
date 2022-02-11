@@ -43,7 +43,12 @@ export const constructorReducer = (state = constructorInitialState, action) => {
             }
         }
 
-
+        case 'CONSTRUCTOR/CLEAN_CONSTRUCTOR':
+            return {
+                ...state,
+                ingredients: [],
+                buns: null,
+            }
 
         default: 
             return state;

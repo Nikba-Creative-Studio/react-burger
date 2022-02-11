@@ -1,3 +1,5 @@
+import { cleanConstructor } from './burger-constructor';
+
 export const POST_ORDER_REQUEST = 'ORDER/POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'ORDER/POST_ORDER_SUCCESS';
 export const POST_ORDER_FAILURE = 'ORDER/POST_ORDER_FAILURE';
@@ -47,6 +49,7 @@ export function postOrder(ingredients){
             return Promise.reject(`Ошибка: ${res.status}`);
         }).then(data => {
             dispatch(postOrderSuccess(data));
+            dispatch(cleanConstructor());
         })
         .catch(error => {
             dispatch(postOrderFailure(error));
