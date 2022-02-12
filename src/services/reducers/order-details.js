@@ -22,7 +22,7 @@ export const orderDetailsReducer = (state = orderDetailsInitialState, action) =>
         case POST_ORDER_FAILURE:
             return {
                 ...state,
-                order: action.payload.error
+                order: {}
             }
         case HIDE_MODAL:
             return {

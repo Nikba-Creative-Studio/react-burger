@@ -1,7 +1,6 @@
 import {
-    //FETCH_INGREDIENTS_REQUEST,
     FETCH_INGREDIENTS_SUCCESS,
-    //FETCH_INGREDIENTS_FAILURE,
+    FETCH_INGREDIENTS_FAILURE,
     SELECT_INGREDIENT,
     DESELECT_INGREDIENT
 }
@@ -25,6 +24,13 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
                 ...state,
                 ingredients: action.payload.ingredients
             }
+        
+        case FETCH_INGREDIENTS_FAILURE:
+            return {
+                ...state,
+                ingredients: []
+            }
+
         
         // Выбор ингредиента
         case SELECT_INGREDIENT:
