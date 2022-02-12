@@ -1,12 +1,12 @@
+import { baseUrl } from '../../utils/config';
+import { checkResponse } from "../../utils/helpers";
+
 export const FETCH_INGREDIENTS_REQUEST = 'BURGER/FETCH_INGREDIENTS_REQUEST';
 export const FETCH_INGREDIENTS_SUCCESS = 'BURGER/FETCH_INGREDIENTS_SUCCESS';
 export const FETCH_INGREDIENTS_FAILURE = 'BURGER/FETCH_INGREDIENTS_FAILURE';
 
 export const SELECT_INGREDIENT = 'BURGER/SELECT_INGREDIENT';
 export const DESELECT_INGREDIENT = 'BURGER/DESELECT_INGREDIENT';
-
-//API Url
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
 
 export function fetchIngredientsSuccess(ingredients) {
     return {
@@ -32,22 +32,14 @@ export function fetchIngredients() {
             type: FETCH_INGREDIENTS_REQUEST
         });
 
-        fetch(API_URL)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(response.statusText);
-                }
-                return response;
-            })
-            .then(response => response.json())
-            .then(ingredients => {
-                dispatch(fetchIngredientsSuccess(ingredients.data));
-            })
-            .catch(error => {
-                dispatch(fetchIngredientsFailure(error));
-            });
+        fetch(`${baseUrl}ingredients`)
+            .then(checkResponse)
+            .then(res => res.json())
+            .then(ingredients => dispatch(fetchIngredientsSuccess(ingredients.data)))
+            .catch(error => dispatch(fetchIngredientsFailure(error)))
     }
 }
+
 
 export function selectIngredient(ingredient) {
     return {

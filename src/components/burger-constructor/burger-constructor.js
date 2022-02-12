@@ -62,7 +62,7 @@ export const BurgerConstructor = () => {
                 <Ingredient item={constructorBunsData} type='top' isLocked={true} />
                 
                 <div className={styles.ingredients}>
-                    {constructorData.map((item, index) => ( <Ingredient  key={uuid()}  item={item} isLocked={false} id={item._id} index={index} moveIngredient={moveIngredient} /> ))}
+                    {constructorData.map((item, index) => ( <Ingredient  key={item.uid}  item={item} isLocked={false} id={item._id} index={index} moveIngredient={moveIngredient} /> ))}
                 </div>
                 
                 <Ingredient item={constructorBunsData} type='bottom' isLocked={true} />

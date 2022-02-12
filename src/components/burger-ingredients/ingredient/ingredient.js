@@ -20,7 +20,7 @@ export const Ingredient = ({ item }) => {
     // Количество ингредиента в конструкторе
     const count = (item.type === 'bun') 
             ? (constructorBunsData && constructorBunsData._id === item._id)
-            ? 2
+            ? 1
             : 0
             : constructorData.filter(ingredient => ingredient._id === item._id).length
     

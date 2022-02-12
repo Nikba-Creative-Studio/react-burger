@@ -1,3 +1,11 @@
+import {
+    //POST_ORDER_REQUEST,
+    POST_ORDER_SUCCESS,
+    POST_ORDER_FAILURE,
+    HIDE_MODAL,
+}
+from '../actions/order-details';
+
 const orderDetailsInitialState = {
     order: {},
     orderDetailsModal: false
@@ -5,18 +13,18 @@ const orderDetailsInitialState = {
 
 export const orderDetailsReducer = (state = orderDetailsInitialState, action) => {
     switch (action.type) {
-        case 'ORDER/POST_ORDER_SUCCESS':
+        case POST_ORDER_SUCCESS:
             return {
                 ...state,
                 order: action.payload.data,
                 orderDetailsModal: true
             }
-        case 'ORDER/POST_ORDER_FAILURE':
+        case POST_ORDER_FAILURE:
             return {
                 ...state,
                 order: action.payload.error
             }
-        case 'ORDER/HIDE_MODAL':
+        case HIDE_MODAL:
             return {
                 ...state,
                 orderDetailsModal: false

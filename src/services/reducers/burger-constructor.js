@@ -1,4 +1,11 @@
-import update from 'immutability-helper';
+import {
+    SET_INGREDIENTS,
+    SET_BUN_TYPE,
+    REMOVE_INGREDIENT,
+    MOVE_INGREDIENT,
+    CLEAN_CONSTRUCTOR,
+}
+from '../actions/burger-constructor';
 
 const constructorInitialState = {
     // Первоначальное состояние конструктора бургера
@@ -9,41 +16,35 @@ const constructorInitialState = {
 export const constructorReducer = (state = constructorInitialState, action) => {
     // Редюсеры для конструыктора бургера
     switch (action.type) {
-        case 'CONSTRUCTOR/SET_INGREDIENTS': 
+        case SET_INGREDIENTS: 
             return {
                 ...state,
                 ingredients: [...state.ingredients, action.item],
             }
-        case 'CONSTRUCTOR/SET_BUN_TYPE':
+        case SET_BUN_TYPE:
             return {
                 ...state,
                 buns: action.item,
             }
 
-        case 'CONSTRUCTOR/REMOVE_INGREDIENT':
+        case REMOVE_INGREDIENT:
             return {
                 ...state,
                 ingredients: [...state.ingredients].filter(item => item.uid !== action.uid)
             }
         
-        case 'CONSTRUCTOR/MOVE_INGREDIENT': {
+        case MOVE_INGREDIENT: {
             
-            if(action.dragIndex === undefined) return state;
-
-            const ingredient = state.ingredients[action.dragIndex];
+            const ingredientsNew = [...state.ingredients]
+            ingredientsNew.splice(action.dragIndex, 0, ingredientsNew.splice(action.hoverIndex, 1)[0])
 
             return {
                 ...state,
-                ingredients: update(state.ingredients, {
-                    $splice: [
-                        [action.dragIndex, 1],
-                        [action.hoverIndex, 0, ingredient],
-                    ],
-                }),
+                ingredients: ingredientsNew
             }
         }
 
-        case 'CONSTRUCTOR/CLEAN_CONSTRUCTOR':
+        case CLEAN_CONSTRUCTOR:
             return {
                 ...state,
                 ingredients: [],

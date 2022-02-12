@@ -1,3 +1,12 @@
+import {
+    //FETCH_INGREDIENTS_REQUEST,
+    FETCH_INGREDIENTS_SUCCESS,
+    //FETCH_INGREDIENTS_FAILURE,
+    SELECT_INGREDIENT,
+    DESELECT_INGREDIENT
+}
+from '../actions/burger-ingredients';
+
 const ingredientsInitialState = {
     // Первоначальное состояние ингредиентов бургера
     ingredients: [], // Список ингредиентов
@@ -11,21 +20,21 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
     switch(action.type) {
 
         // Загрузка ингредиентов бургера
-        case 'BURGER/FETCH_INGREDIENTS_SUCCESS': 
+        case FETCH_INGREDIENTS_SUCCESS: 
             return {
                 ...state,
                 ingredients: action.payload.ingredients
             }
         
         // Выбор ингредиента
-        case 'BURGER/SELECT_INGREDIENT':
+        case SELECT_INGREDIENT:
             return {
                 ...state,
                 ingredient: action.payload.ingredient
             }
             
             // Отмена выбора ингредиента
-            case 'BURGER/DESELECT_INGREDIENT':
+            case DESELECT_INGREDIENT:
                 return {
                     ...state,
                     ingredient: null

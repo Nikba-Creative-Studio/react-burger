@@ -1,14 +1,12 @@
+import { baseUrl } from '../../utils/config';
 import { cleanConstructor } from './burger-constructor';
+import { checkResponse } from '../../utils/helpers';
 
 export const POST_ORDER_REQUEST = 'ORDER/POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'ORDER/POST_ORDER_SUCCESS';
 export const POST_ORDER_FAILURE = 'ORDER/POST_ORDER_FAILURE';
 
 export const HIDE_MODAL = 'ORDER/HIDE_MODAL';
-
-//Post API Url
-const API_ORDER_URL = 'https://norma.nomoreparties.space/api/orders'
-
 
 export function postOrderSuccess(data) {
     return {
@@ -28,13 +26,13 @@ export function postOrderFailure(error) {
     }
 }
 
-export function postOrder(ingredients){
-    return function(dispatch) {
+export function postOrder(ingredients) {
+    return function (dispatch) {
         dispatch({
             type: POST_ORDER_REQUEST
-        });
+        })
 
-        fetch(API_ORDER_URL, {
+        fetch(`${baseUrl}orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -42,18 +40,14 @@ export function postOrder(ingredients){
             body: JSON.stringify({
                 "ingredients": ingredients
             })
-        }).then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            return Promise.reject(`Ошибка: ${res.status}`);
-        }).then(data => {
-            dispatch(postOrderSuccess(data));
-            dispatch(cleanConstructor());
         })
-        .catch(error => {
-            dispatch(postOrderFailure(error));
-        })
+            .then(checkResponse)
+            .then(res => res.json())
+            .then(data => {
+                dispatch(postOrderSuccess(data))
+                dispatch(cleanConstructor())
+            })
+            .catch(error => dispatch(postOrderFailure(error)))
     }
 }
 
