@@ -1,17 +1,23 @@
-import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useRef} from 'react';
+import { useSelector } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { Ingredient } from './ingredient/ingredient';
 
-export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
+export const BurgerIngredients = () => {
+
+
+    // Загружаем ингредиенты из хранилища
+    const ingredientsData = useSelector(state => state.ingredients.ingredients);
 
     //Рефы для переключения вкладок
     const bunRef = useRef(null);
     const sauceRef = useRef(null);
     const mainRef = useRef(null);
-
+    
+    // Состояние вкладок
     const [current, setCurrent] = useState({
         type: 'bun',
         scrollTo: bunRef
@@ -31,6 +37,36 @@ export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
         value.scrollTo.current.scrollIntoView({ behavior: 'smooth' })
     }
 
+    // Активируем таб при скролле
+    // Для Код Ревювера - По мне это колхоз, буду признателен за помощь и предложения по улучшению кода. Спасибо!
+    const handleScroll = (e) => {
+        const scrollTop = e.target.scrollTop;
+
+        const bunHeight = bunRef.current.clientHeight;
+        const sauceHeight = sauceRef.current.clientHeight;
+        const mainHeight = mainRef.current.clientHeight;
+
+        if (scrollTop < bunHeight ) {
+            setCurrent({
+                type: 'bun',
+                scrollTo: bunRef
+            })
+        }
+        else if (scrollTop < bunHeight + sauceHeight ) {
+            setCurrent({
+                type: 'sauce',
+                scrollTo: sauceRef
+            })
+        }
+        else if (scrollTop < bunHeight + sauceHeight + mainHeight ) {
+            setCurrent({
+                type: 'main',
+                scrollTo: mainRef
+            })
+        }
+    }
+    
+
     // Групируем ингредиенты по вкладкам
     const ingredients = (type) => {
         const currentType = ingredientsData.filter(item => item.type === type)
@@ -46,10 +82,9 @@ export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
                     {currentType.map(item => (
                         <li 
                             key={item._id} 
-                            onClick={() => toggleModal(item)} 
                             className={styles.ingredient}
                         >
-                            <Ingredient {...item} />
+                            <Ingredient item={item} />
                         </li>
                     ))}
                 </ul>
@@ -74,30 +109,12 @@ export const BurgerIngredients = ({ ingredientsData, toggleModal }) => {
                 ))}
             </div>
 
-            <ul className={styles.ingredients}>
+            <ul className={styles.ingredients} onScroll={handleScroll}>
                 {Object.keys(types).map(type => (
                     ingredients(type)
                 ))}
             </ul>
 
-        </section >
+        </section>
     )
 }
-
-// Проверка типов пропсов
-BurgerIngredients.propTypes = {
-    ingredientsData: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-        proteins: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        calories: PropTypes.number.isRequired,
-        price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        __v: PropTypes.number,
-    })).isRequired,
-};

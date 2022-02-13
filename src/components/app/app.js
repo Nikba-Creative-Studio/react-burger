@@ -1,103 +1,71 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import styles from './app.module.css';
 
-import { ConstructorContext } from '../../services/constructorContext'
-
-import { Modal } from '../modal/modal';
 import { AppHeader } from "../app-header/app-header";
-
 import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
-import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
-
 import { BurgerConstructor } from "../burger-constructor/burger-constructor";
+import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { OrderDetails } from '../burger-constructor/order-details/order-details';
 
-//API Url
-const API_URL = 'https://norma.nomoreparties.space/api/ingredients'
+import { Modal } from '../modal/modal';
+
+import { deselectIngredient, fetchIngredients } from "../../services/actions/burger-ingredients";
+import { hideOrderModal } from "../../services/actions/order-details";
 
 export const App = () => {
 
-    const [ingredients, setIngredients] = useState([]);
-    const [constructor, setConstructor] = useState([]);
-    const [modalData, setModalData] = useState(null)
-    const [modalOrderData, setModalOrderData] = useState(null)
+    const dispatch = useDispatch();
 
-    const [isModalOpen, setIsModalOpen] = useState({
-        ingredientsModal: false,
-        orderDetailsModal: false
-    })
+    // Загружаем выбраный ингредиент
+    const ingredientsModal = useSelector(state => state.ingredients.ingredient);
 
-    // Функция открытия / закрытия модального окна заказа
-    const toggleModalOrder = (data) => {
-        //Отпровляем данные заказа в модальное окно
-        setModalOrderData(data);
-
-        //Открываем/Закрываем модальное окно
-        setIsModalOpen({
-            ...isModalOpen,
-            orderDetailsModal: !isModalOpen.orderDetailsModal
-        })
+    // Статус модального окна заказа
+    const orderDetailsModal = useSelector(state => state.orderDetails.orderDetailsModal);
+    
+    // Функция закрытия модального окна ингредиентов
+    const toggleModalIngredients = () => {
+        dispatch(deselectIngredient())
     }
 
-    // Функция открытия / закрытия модального окна ингредиентов
-    const toggleModalIngredients = (item) => {
-        //Отпровляем данные в модальное окно
-        setModalData(item);
-
-        //Открываем/Закрываем модальное окно
-        setIsModalOpen({
-            ...isModalOpen,
-            ingredientsModal: !isModalOpen.ingredientsModal
-        })
+    // Фунция закрытия модального окна заказа
+    const toggleModalOrder = () => {
+        dispatch(hideOrderModal())
     }
 
     useEffect(() => {
-        // Запрос на сервер
-        fetch(API_URL)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Ошибка получения данных с сервера');
-            })
-            .then(({ data }) => {
-                //console.log(data);
-                // Передаем данные в стейт
-                setIngredients(data)
-                setConstructor(data)
-            })
-            .catch((error) => console.log( error ));
-    }, []);
-
-
+        // Загружаем ингредиенты
+        dispatch(fetchIngredients());
+    }, [dispatch])
 
     return (
         <>
             <AppHeader />
-            {ingredients.length > 0 && 
-            <main className={styles.main}>    
-                <ConstructorContext.Provider value={{ constructor, setConstructor, toggleModalOrder }}>
-                    <BurgerIngredients ingredientsData={ingredients} toggleModal={toggleModalIngredients} />
+            <main className={styles.main}>   
+                <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients />
                     <BurgerConstructor />
-                </ConstructorContext.Provider>
+                </DndProvider> 
             </main>
-            }
 
-            {isModalOpen.ingredientsModal && (
+            {orderDetailsModal && (
+                <Modal onClose={toggleModalOrder} title="" >
+                    <OrderDetails />
+                </Modal>
+
+            )}
+
+            {ingredientsModal && (
                 <Modal
                     onClose={toggleModalIngredients}
                     title="Детали ингредиента"
                 >
-                    <IngredientDetails data={modalData} />
+                    <IngredientDetails />
                 </Modal>
             )}
-
-            {isModalOpen.orderDetailsModal && 
-             <Modal onClose={toggleModalOrder} title="" >
-                <OrderDetails data={modalOrderData} />
-            </Modal>
-            }
-
         </>
     )
 }
