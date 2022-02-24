@@ -1,10 +1,15 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
 
+import { registerUser } from '../../services/actions/auth';
+
 export const Register = () => {
+
+    const dispatch = useDispatch();
 
     const [nameValue, setNameValue] = useState('')
     const [nameEmail, setEmailValue] = useState('')
@@ -17,9 +22,26 @@ export const Register = () => {
         setTimeout(() => inputRef.current.focus(), 0)
     }
 
+    const body = {
+        name: nameValue,
+        email: nameEmail,
+        password: passwordValue
+    }
+
+    const submit = (body) => {
+        console.log(body)
+        dispatch(registerUser(body))
+    }
+
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form}>
+            <form 
+                className={styles.form}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    submit(body)
+                }}
+            >
                 <h3 className={styles.title}>Регистрация</h3>
                 
                 <div className={styles.input}>
