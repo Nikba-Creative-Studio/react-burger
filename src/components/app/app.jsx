@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 
+import { HomePage, Login, ForgotPassword, ResetPassword, Register } from '../../pages/';
+
 import { AppHeader } from "../app-header/app-header";
-import { BurgerIngredients } from "../burger-ingredients/burger-ingredients";
-import { BurgerConstructor } from "../burger-constructor/burger-constructor";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { OrderDetails } from '../burger-constructor/order-details/order-details';
 
@@ -45,10 +44,28 @@ export const App = () => {
         <>
             <AppHeader />
             <main className={styles.main}>   
-                <DndProvider backend={HTML5Backend}>
-                    <BurgerIngredients />
-                    <BurgerConstructor />
-                </DndProvider> 
+                <Router>
+                    <Route path='/' exact>
+                        <HomePage />
+                    </Route>
+
+                    <Route path='/login' exact>
+                        <Login />
+                    </Route>
+
+                    <Route path='/forgot-password' exact>
+                        <ForgotPassword />
+                    </Route>
+
+                    <Route path='/reset-password' exact>
+                        <ResetPassword />
+                    </Route>
+
+                    <Route path='/register' exact>
+                        <Register />
+                    </Route>
+
+                </Router>
             </main>
 
             {orderDetailsModal && (
