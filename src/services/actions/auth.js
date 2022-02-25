@@ -9,6 +9,11 @@ export const LOGIN_USER_REQUEST = 'LOGIN_USER';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 
+export const USER_INFO_REQUEST = 'USER_INFO';
+export const USER_INFO_SUCCESS = 'USER_INFO_SUCCESS';
+export const USER_INFO_FAILURE = 'USER_INFO_FAILURE';
+
+// Регистрация пользователя
 export function registerUserSuccess(user) {
     return {
         type: REGISTER_USER_SUCCESS,
@@ -42,11 +47,18 @@ export function registerUser(body) {
         })
             .then(checkResponse)
             .then(res => res.json())
-            .then(user => dispatch(registerUserSuccess(user)))
+            .then((user) => {
+                // Сохраняем данные пользователя в сторе
+                localStorage.setItem('accessToken', user.accessToken);
+                localStorage.setItem('refreshToken', user.refreshToken);
+                
+                dispatch(registerUserSuccess(user))
+            })
             .catch(error => dispatch(registerUserFailure(error)))
     }
 }
 
+// Авторизация пользователя
 export function loginUserSuccess(user) {
     return {
         type: LOGIN_USER_SUCCESS,
@@ -80,7 +92,14 @@ export function loginUser(body) {
         })
             .then(checkResponse)
             .then(res => res.json())
-            .then(user => dispatch(loginUserSuccess(user)))
+            .then((user) => {
+                
+                // Сохраняем данные пользователя в сторе
+                localStorage.setItem('accessToken', user.accessToken);
+                localStorage.setItem('refreshToken', user.refreshToken);
+                
+                dispatch(loginUserSuccess(user))
+            })
             .catch(error => dispatch(loginUserFailure(error)))
     }
 }

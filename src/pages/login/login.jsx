@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './login.module.css';
@@ -13,6 +13,8 @@ export const Login = () => {
 
     const [nameEmail, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
+
+    const loginError = useSelector(state => state.auth.loginError)
     
     const inputRef = useRef(null)
     
@@ -26,7 +28,7 @@ export const Login = () => {
     }
 
     const onSubmit = (body) => {
-        console.log(body)
+        //console.log(body)
         dispatch(loginUser(body))
     }
 
@@ -72,6 +74,8 @@ export const Login = () => {
                         Войти
                     </Button>
                 </div>
+
+                {loginError && <div className={styles.error}>Неверный email или пароль</div>}
 
                 <div className={styles.text}>
                     <p className={styles.label}>Вы — новый пользователь?</p>

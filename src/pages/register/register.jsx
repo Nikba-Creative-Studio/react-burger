@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
@@ -14,6 +14,7 @@ export const Register = () => {
     const [nameValue, setNameValue] = useState('')
     const [nameEmail, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
+    const registerError = useSelector(state => state.auth.registerError);
     
     const inputRef = useRef(null)
     const inputEmailRef = useRef(null)
@@ -90,6 +91,8 @@ export const Register = () => {
                         Зарегистрироваться
                     </Button>
                 </div>
+
+                {registerError && <div className={styles.error}>Ошибка регистрации.</div>}
 
                 <div className={styles.text}>
                     <p className={styles.label}>Уже зарегистрированы?</p>

@@ -9,7 +9,10 @@ import {
 
 const authInitialState = {
     // Первоначальное состояние авторизации
-    registerData: null
+    registerData: null,
+    registerError: false,
+    loginData: null,
+    loginError: false,
 }
 
 export const authReducer = (state = authInitialState, action) => {
@@ -27,7 +30,7 @@ export const authReducer = (state = authInitialState, action) => {
         case REGISTER_USER_FAILURE:
             return {
                 ...state,
-                registerData: action.payload
+                registerError: true
             }
         case LOGIN_USER_REQUEST:
             return {
@@ -37,14 +40,15 @@ export const authReducer = (state = authInitialState, action) => {
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
-                loginData: action.payload
+                loginData: action.payload,
+                loginError: false
             }
         case LOGIN_USER_FAILURE:
             return {
                 ...state,
-                loginData: action.payload
+                loginError: true
             }
-            
+
         default:
             return state;
     }
