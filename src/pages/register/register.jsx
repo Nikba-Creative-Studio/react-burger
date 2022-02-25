@@ -28,8 +28,8 @@ export const Register = () => {
         password: passwordValue
     }
 
-    const submit = (body) => {
-        console.log(body)
+    const onSubmit = (body) => {
+        //console.log(body)
         dispatch(registerUser(body))
     }
 
@@ -39,7 +39,7 @@ export const Register = () => {
                 className={styles.form}
                 onSubmit={(e) => {
                     e.preventDefault()
-                    submit(body)
+                    onSubmit(body)
                 }}
             >
                 <h3 className={styles.title}>Регистрация</h3>

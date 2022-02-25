@@ -1,10 +1,15 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './login.module.css';
 
+import { loginUser } from '../../services/actions/auth';
+
 export const Login = () => {
+
+    const dispatch = useDispatch()
 
     const [nameEmail, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
@@ -15,9 +20,25 @@ export const Login = () => {
         setTimeout(() => inputRef.current.focus(), 0)
     }
 
+    const body = {
+        email: nameEmail,
+        password: passwordValue
+    }
+
+    const onSubmit = (body) => {
+        console.log(body)
+        dispatch(loginUser(body))
+    }
+
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form}>
+            <form 
+                className={styles.form}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    onSubmit(body)
+                }}
+            >
                 <h3 className={styles.title}>Вход</h3>
                 
                 <div className={styles.input}>
