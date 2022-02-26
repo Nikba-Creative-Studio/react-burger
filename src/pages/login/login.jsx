@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -10,13 +10,18 @@ import { loginUser } from '../../services/actions/auth';
 export const Login = () => {
 
     const dispatch = useDispatch()
+    const location = useLocation()
+    const inputRef = useRef(null)
 
     const [nameEmail, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
 
     const loginError = useSelector(state => state.auth.loginError)
+    const isLogin = useSelector(state => state.auth.isLogin);
     
-    const inputRef = useRef(null)
+    if(isLogin) {
+        return <Redirect to={ location?.state?.from || '/' } />
+    }
     
     const onIconClick = () => {
         setTimeout(() => inputRef.current.focus(), 0)
@@ -28,7 +33,6 @@ export const Login = () => {
     }
 
     const onSubmit = (body) => {
-        //console.log(body)
         dispatch(loginUser(body))
     }
 

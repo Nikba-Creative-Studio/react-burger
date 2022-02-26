@@ -12,6 +12,7 @@ const authInitialState = {
     registerData: null,
     registerError: false,
     loginData: null,
+    isLogin: false,
     loginError: false,
 }
 
@@ -41,12 +42,14 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 loginData: action.payload,
-                loginError: false
+                loginError: false,
+                isLogin: true
             }
         case LOGIN_USER_FAILURE:
             return {
                 ...state,
-                loginError: true
+                loginError: true,
+                isLogin: false
             }
 
         default:

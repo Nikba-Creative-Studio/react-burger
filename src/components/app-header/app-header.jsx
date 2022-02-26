@@ -1,4 +1,5 @@
 import styles from "./app-header.module.css";
+import { NavLink } from 'react-router-dom';
 
 import {
     Logo,
@@ -14,17 +15,27 @@ export const AppHeader = () => {
                 <nav className={styles.nav}>
                     <ul className={styles.nav_list}>
                         <li className={styles.nav_item}>
-                            <a className={styles['nav_link--active']} href="/">
+                            <NavLink
+                                to="/"
+                                className={styles.nav_link}
+                                activeClassName={styles['nav_link--active']}
+                                exact={true}
+                            >
                                 <BurgerIcon type="primary" />
-                                <span className="ml-2">Конструктор</span>
-                            </a>
+                                Конструктор
+                            </NavLink>
                         </li>
                         
                         <li className={styles.nav_item}>
-                            <a className={styles.nav_link} href="/">
-                                <ListIcon type="secondary" />
-                                <span className="ml-2">Лента заказов</span>
-                            </a>
+                            <NavLink
+                                to="/orders"
+                                className={styles.nav_link}
+                                activeClassName={styles['nav_link--active']}
+                                exact={true}
+                            >
+                                <ListIcon type="primary" />
+                                Лента заказов
+                            </NavLink>
                         </li>
                     </ul>
                 </nav>
@@ -36,10 +47,15 @@ export const AppHeader = () => {
                 </div>
 
                 <div className={styles.profile_wrapper}>
-                    <a className={styles.nav_link} href="/">
-                        <ProfileIcon type="secondary" />
-                        <span className="ml-2">Личный кабинет</span>
-                    </a>
+                    <NavLink
+                        to="/profile"
+                        className={styles.nav_link}
+                        activeClassName={styles['nav_link--active']}
+                        exact={true}
+                    >
+                        <ProfileIcon type="primary" />
+                        Личный кабинет
+                    </NavLink>
                 </div>
             </div>
 

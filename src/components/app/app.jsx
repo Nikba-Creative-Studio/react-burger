@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 
-import { HomePage, Login, ForgotPassword, ResetPassword, Register } from '../../pages/';
+import { HomePage, Login, ForgotPassword, ResetPassword, Register, NotFound404 } from '../../pages/';
 
 import { AppHeader } from "../app-header/app-header";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
@@ -24,7 +24,7 @@ export const App = () => {
 
     // Статус модального окна заказа
     const orderDetailsModal = useSelector(state => state.orderDetails.orderDetailsModal);
-    
+
     // Функция закрытия модального окна ингредиентов
     const toggleModalIngredients = () => {
         dispatch(deselectIngredient())
@@ -41,31 +41,34 @@ export const App = () => {
     }, [dispatch])
 
     return (
-        <>
+        <Router>
             <AppHeader />
-            <main className={styles.main}>   
-                <Router>
-                    <Route path='/' exact>
+            <main className={styles.main}>
+                <Switch>
+                    <Route path='/' exact={true}>
                         <HomePage />
                     </Route>
 
-                    <Route path='/login' exact>
+                    <Route path='/login' exact={true}>
                         <Login />
                     </Route>
 
-                    <Route path='/forgot-password' exact>
+                    <Route path='/forgot-password' exact={true}>
                         <ForgotPassword />
                     </Route>
 
-                    <Route path='/reset-password' exact>
+                    <Route path='/reset-password' exact={true}>
                         <ResetPassword />
                     </Route>
 
-                    <Route path='/register' exact>
+                    <Route path='/register' exact={true}>
                         <Register />
                     </Route>
 
-                </Router>
+                    <Route>
+                        <NotFound404 />
+                    </Route>
+                </Switch>
             </main>
 
             {orderDetailsModal && (
@@ -83,6 +86,6 @@ export const App = () => {
                     <IngredientDetails />
                 </Modal>
             )}
-        </>
+        </Router>
     )
 }
