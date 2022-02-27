@@ -13,49 +13,53 @@ export const Login = () => {
     const location = useLocation()
     const inputRef = useRef(null)
 
-    const [nameEmail, setEmailValue] = useState('')
-    const [passwordValue, setPasswordValue] = useState('')
+    const [input, setInput] = useState({
+        email: '',
+        password: ''
+    })
 
     const loginError = useSelector(state => state.auth.loginError)
     const isLogin = useSelector(state => state.auth.isLogin);
     
+    // Перенаправление на страницу после авторизации
     if(isLogin) {
         return <Redirect to={ location?.state?.from || '/' } />
     }
     
+    // 
     const onIconClick = () => {
         setTimeout(() => inputRef.current.focus(), 0)
     }
 
-    const body = {
-        email: nameEmail,
-        password: passwordValue
+    // Ставим значение форм в стате
+    const onChange = (e) => {
+        setInput({...input, [e.target.name]: e.target.value})
     }
 
-    const onSubmit = (body) => {
-        dispatch(loginUser(body))
+    // Отправка формы
+    const onSubmit = (e) => {
+        e.preventDefault()
+        dispatch(loginUser(input))
     }
 
     return (
         <div className={styles.wrapper}>
             <form 
                 className={styles.form}
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    onSubmit(body)
-                }}
+                onSubmit={onSubmit}
             >
                 <h3 className={styles.title}>Вход</h3>
                 
                 <div className={styles.input}>
                     <Input
                             type={'email'}
-                            placeholder={'Email'}
-                            onChange={e => setEmailValue(e.target.value)}
-                            value={nameEmail}
-                            name={'name'}
+                            placeholder={'E-mail'}
+                            onChange={onChange}
+                            value={input.email}
+                            name={'email'}
                             error={false}
                             ref={inputRef}
+                            icon={'ProfileIcon'}
                             onIconClick={onIconClick}
                             errorText={'Ошибка'}
                             size={'default'}
@@ -64,8 +68,8 @@ export const Login = () => {
 
                 <div className={styles.input}>
                     <PasswordInput
-                        onChange={e => setPasswordValue(e.target.value)}
-                        value={passwordValue} 
+                        onChange={onChange}
+                        value={input.password} 
                         name={'password'}
                     />
                 </div>

@@ -4,7 +4,16 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 
-import { HomePage, Login, ForgotPassword, ResetPassword, Register, NotFound404 } from '../../pages/';
+import { 
+    HomePage, 
+    Login, 
+    ForgotPassword, 
+    ResetPassword, 
+    Register, 
+    NotFound404,
+    ProfilePage,
+    LogoutPage
+} from '../../pages/';
 
 import { AppHeader } from "../app-header/app-header";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
@@ -14,6 +23,8 @@ import { Modal } from '../modal/modal';
 
 import { deselectIngredient, fetchIngredients } from "../../services/actions/burger-ingredients";
 import { hideOrderModal } from "../../services/actions/order-details";
+
+import { ProtectedRoute } from '../protected-route/protected-route';
 
 export const App = () => {
 
@@ -53,6 +64,10 @@ export const App = () => {
                         <Login />
                     </Route>
 
+                    <Route path='/logout' exact={true}>
+                        <LogoutPage />
+                    </Route>
+
                     <Route path='/forgot-password' exact={true}>
                         <ForgotPassword />
                     </Route>
@@ -64,6 +79,10 @@ export const App = () => {
                     <Route path='/register' exact={true}>
                         <Register />
                     </Route>
+
+                    <ProtectedRoute path='/profile' exact={true}>
+                        <ProfilePage />
+                    </ProtectedRoute>
 
                     <Route>
                         <NotFound404 />
