@@ -1,34 +1,59 @@
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
 
-export const ForgotPassword = () => {
+import { forgotPassword } from '../../services/actions/auth';
 
-    const [valueEmail, setValueEmail] = useState('')
-    
-    const inputRef = useRef(null)
-    
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
+export const ForgotPassword = () => {
+    const dispatch = useDispatch()
+
+    const [input, setInput] = useState({
+        email: '',
+    })
+
+    const { isLogin, forgotPasswordSuccess, forgotPasswordError } = useSelector(state => state.auth)
+
+    // Ставим значение форм в стате
+    const onChange = (e) => {
+        setInput({...input, [e.target.name]: e.target.value})
     }
+
+    // Отправка формы
+    const onSubmit = (e) => {
+        e.preventDefault()
+        dispatch(forgotPassword(input.email))
+    }
+
+    if(isLogin) {
+        return <Redirect to={'/'} />
+    }
+
+    if(forgotPasswordSuccess) {
+        return (
+            <Redirect to='/reset-password' />
+        )
+    }
+        
 
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form}>
+            <form 
+                className={styles.form}
+                onSubmit={onSubmit}
+            >
                 <h3 className={styles.title}>Восстановление пароля</h3>
                 
                 <div className={styles.input}>
                     <Input
                             type={'email'}
                             placeholder={'Укажите e-mail'}
-                            onChange={e => setValueEmail(e.target.value)}
-                            value={valueEmail}
-                            name={'name'}
+                            onChange={onChange}
+                            value={input.email}
+                            name={'email'}
                             error={false}
-                            ref={inputRef}
-                            onIconClick={onIconClick}
                             errorText={'Ошибка'}
                             size={'default'}
                         />
@@ -43,6 +68,8 @@ export const ForgotPassword = () => {
                     </Button>
                 </div>
 
+                {forgotPasswordError && <p className={styles.error}>Ошибка восстановления пароля</p>}
+
                 <div className={styles.text}>
                     <p className={styles.label}>Вспомнили пароль?</p>
                     <Link 
@@ -52,6 +79,8 @@ export const ForgotPassword = () => {
                         Войти
                     </Link>
                 </div>
+
+                
 
             </form>
         </div>

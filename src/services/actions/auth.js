@@ -1,5 +1,10 @@
 import { baseUrl } from '../../utils/config';
-import { checkResponse } from "../../utils/helpers";
+import {
+    checkResponse,
+    setCookie,
+    getCookie,
+    deleteCookie
+} from "../../utils/helpers";
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -21,29 +26,17 @@ export const USER_LOGOUT_REQUEST = 'USER_LOGOUT';
 export const USER_LOGOUT_SUCCESS = 'USER_LOGOUT_SUCCESS';
 export const USER_LOGOUT_FAILURE = 'USER_LOGOUT_FAILURE';
 
-export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
+export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD';
+export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILURE = 'FORGOT_PASSWORD_FAILURE';
 
-// Запись токена в localStorage
-export const setAuthToken = () => {
-    fetch(`${baseUrl}/auth/token`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            token: localStorage.getItem('refreshToken')
-        })
-    })
-        .then(checkResponse)
-        .then(response => response.json())
-        .then(response => {
-            localStorage.setItem('accessToken', response.accessToken);
-            localStorage.setItem('refreshToken', response.refreshToken);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-};
+export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD';
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAILURE = 'RESET_PASSWORD_FAILURE';
+
+export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN';
+export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
+export const UPDATE_TOKEN_FAILURE = 'UPDATE_TOKEN_FAILURE';
 
 
 // Регистрация пользователя
@@ -66,7 +59,7 @@ export function registerUserFailure(error) {
 }
 
 export function registerUser(body) {
-    return function(dispatch) {
+    return function (dispatch) {
         dispatch({
             type: REGISTER_USER_REQUEST
         });
@@ -82,9 +75,10 @@ export function registerUser(body) {
             .then(res => res.json())
             .then((user) => {
                 // Сохраняем данные пользователя в сторе
-                localStorage.setItem('accessToken', user.accessToken);
+                //localStorage.setItem('accessToken', user.accessToken);
+                setCookie('accessToken', user.accessToken)
                 localStorage.setItem('refreshToken', user.refreshToken);
-                
+
                 dispatch(registerUserSuccess(user))
             })
             .catch(error => dispatch(registerUserFailure(error)))
@@ -111,7 +105,7 @@ export function loginUserFailure(error) {
 }
 
 export function loginUser(body) {
-    return function(dispatch) {
+    return function (dispatch) {
         dispatch({
             type: LOGIN_USER_REQUEST
         });
@@ -126,11 +120,11 @@ export function loginUser(body) {
             .then(checkResponse)
             .then(res => res.json())
             .then((user) => {
-                
-                // Сохраняем данные пользователя в сторе
-                localStorage.setItem('accessToken', user.accessToken);
+
+                // Сохраняем данные пользователя в сторе и куки
+                setCookie('accessToken', user.accessToken)
                 localStorage.setItem('refreshToken', user.refreshToken);
-                
+
                 dispatch(loginUserSuccess(user))
             })
             .catch(error => dispatch(loginUserFailure(error)))
@@ -157,7 +151,7 @@ export function editUserFailure(error) {
 }
 
 export function editUser(body) {
-    return function(dispatch) {
+    return function (dispatch) {
         dispatch({
             type: EDIT_USER_REQUEST
         });
@@ -166,7 +160,7 @@ export function editUser(body) {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('accessToken')
+                'Authorization': getCookie('accessToken')
             },
             body: JSON.stringify(body)
         })
@@ -196,8 +190,8 @@ export function userLogoutFailure(error) {
 }
 
 export function userLogout() {
-    return function(dispatch) {
-        
+    return function (dispatch) {
+
         const refreshToken = localStorage.getItem('refreshToken');
 
         dispatch({
@@ -208,7 +202,7 @@ export function userLogout() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('accessToken')
+                'Authorization': getCookie('accessToken')
             },
             body: JSON.stringify({
                 token: refreshToken
@@ -217,10 +211,138 @@ export function userLogout() {
             .then(checkResponse)
             .then(res => res.json())
             .then(() => {
-                localStorage.removeItem('accessToken');
+                deleteCookie('accessToken');
                 localStorage.removeItem('refreshToken');
                 dispatch(userLogoutSuccess());
             })
             .catch(error => dispatch(userLogoutFailure(error)))
+    }
+}
+
+// Восстановление пароля
+export function forgotPasswordSuccess(status) {
+    return {
+        type: FORGOT_PASSWORD_SUCCESS,
+        payload: {
+            status
+        }
+    }
+}
+
+export function forgotPasswordFailure(error) {
+    return {
+        type: FORGOT_PASSWORD_FAILURE,
+        payload: {
+            error
+        }
+    }
+}
+
+export function forgotPassword(body) {
+    return function (dispatch) {
+        dispatch({
+            type: FORGOT_PASSWORD_REQUEST
+        });
+
+        fetch(`${baseUrl}password-reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ body })
+        })
+            .then(checkResponse)
+            .then(res => res.json())
+            .then((message) => {
+                dispatch(forgotPasswordSuccess(message));
+            })
+            .catch(error => dispatch(forgotPasswordFailure(error)))
+    }
+}
+
+// Сброс пароля
+export function resetPasswordSuccess(status) {
+    return {
+        type: RESET_PASSWORD_SUCCESS,
+        payload: {
+            status
+        }
+    }
+}
+
+export function resetPasswordFailure(error) {
+    return {
+        type: RESET_PASSWORD_FAILURE,
+        payload: {
+            error
+        }
+    }
+}
+
+export function resetPassword(body) {
+    return function (dispatch) {
+        dispatch({
+            type: RESET_PASSWORD_REQUEST
+        });
+
+        fetch(`${baseUrl}password-reset/reset`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ body })
+        })
+            .then(checkResponse)
+            .then(res => res.json())
+            .then((message) => {
+                dispatch(resetPasswordSuccess(message));
+            })
+            .catch(error => dispatch(resetPasswordFailure(error)))
+    }
+}
+
+// Получение данных пользователя
+export function getUserSuccess(user) {
+    return {
+        type: USER_INFO_SUCCESS,
+        payload: {
+            user
+        }
+    }
+}
+
+export function getUserFailure(error) {
+    return {
+        type: USER_INFO_FAILURE,
+        payload: {
+            error
+        }
+    }
+}
+
+export function getUser() {
+    return function (dispatch) {
+
+        const accessToken = getCookie('accessToken')
+
+        dispatch({
+            type: USER_INFO_REQUEST
+        });
+
+        if (accessToken) {
+            fetch(`${baseUrl}auth/user`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': getCookie('accessToken')
+                }
+            })
+                .then(checkResponse)
+                .then(res => res.json())
+                .then((user) => {
+                    dispatch(getUserSuccess(user))
+                })
+                .catch(error => dispatch(getUserFailure(error)))
+        }
     }
 }

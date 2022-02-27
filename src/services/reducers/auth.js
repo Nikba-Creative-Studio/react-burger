@@ -11,6 +11,15 @@ import {
     USER_LOGOUT_REQUEST,
     USER_LOGOUT_SUCCESS,
     USER_LOGOUT_FAILURE,
+    FORGOT_PASSWORD_REQUEST,
+    FORGOT_PASSWORD_SUCCESS,
+    FORGOT_PASSWORD_FAILURE,
+    RESET_PASSWORD_REQUEST,
+    RESET_PASSWORD_SUCCESS,
+    RESET_PASSWORD_FAILURE,
+    USER_INFO_REQUEST,
+    USER_INFO_SUCCESS,
+    USER_INFO_FAILURE
 } from '../actions/auth';
 
 const authInitialState = {
@@ -22,6 +31,12 @@ const authInitialState = {
     loginError: false,
     editData: null,
     editError: false,
+    forgotPasswordSuccess: false,
+    forgotPasswordError: false,
+    resetPasswordSuccess: false,
+    resetPasswordError: false,
+    userInfo: null,
+    userInfoError: false
 }
 
 export const authReducer = (state = authInitialState, action) => {
@@ -92,6 +107,58 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 isLogin: true
+            }
+        case FORGOT_PASSWORD_REQUEST:
+            return {
+                ...state,
+                forgotPasswordSuccess: false,
+            }
+        case FORGOT_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                forgotPasswordSuccess: true,
+                forgotPasswordError: false
+            }
+        case FORGOT_PASSWORD_FAILURE:
+            return {
+                ...state,
+                forgotPasswordSuccess: false,
+                forgotPasswordError: true
+            }
+        case RESET_PASSWORD_REQUEST:
+            return {
+                ...state,
+                resetPasswordSuccess: false,
+            }
+        case RESET_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                resetPasswordSuccess: true,
+                resetPasswordError: false
+            }
+        case RESET_PASSWORD_FAILURE:
+            return {
+                ...state,
+                resetPasswordSuccess: false,
+                resetPasswordError: true
+            }
+        case USER_INFO_REQUEST:
+            return {
+                ...state,
+                userInfo: action.payload
+            }
+        case USER_INFO_SUCCESS:
+            return {
+                ...state,
+                userInfo: action.payload,
+                userInfoError: false,
+                isLogin: true
+            }
+        case USER_INFO_FAILURE:
+            return {
+                ...state,
+                userInfoError: true,
+                isLogin: false
             }
 
         default:

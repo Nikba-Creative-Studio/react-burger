@@ -6,7 +6,7 @@ import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components"
 
 import styles from './profile.module.css';
 
-import { editUser } from '../../services/actions/auth';
+import { editUser, userLogout } from '../../services/actions/auth';
 
 export const ProfilePage = () => {
 
@@ -16,16 +16,15 @@ export const ProfilePage = () => {
     const inputEmailRef = useRef(null)
     const inputPasswordRef = useRef(null)
 
+    const { editError, editData, userInfo } = useSelector(state => state.auth)
+
     const [input, setInput] = useState({
-        name: '',
-        email: '',
+        name: userInfo.user.user.name,
+        email: userInfo.user.user.email,
         password: ''
     })
 
     const [inputEdit, setInputEdit] = useState(false)
-
-    const editError = useSelector(state => state.auth.editError)
-    const editData = useSelector(state => state.auth.editData)
 
     // Ставим значение форм в стате
     const onChange = (e) => {
@@ -41,6 +40,11 @@ export const ProfilePage = () => {
     const onSubmit = (e) => {
         e.preventDefault()
         dispatch(editUser(input))
+    }
+
+    // Выход из профиля
+    const onLogout = () => {
+        dispatch(userLogout())
     }
 
     return (
@@ -62,13 +66,13 @@ export const ProfilePage = () => {
                 >
                     История заказов
                 </NavLink>
-                <NavLink 
-                    to="/logout" 
-                    className={styles.link}
-                    activeClassName={styles.active}
+                <Button
+                    onClick={onLogout}
+                    type="primary" 
+                    size="small"
                 >
                     Выход
-                </NavLink>
+                </Button>
             </aside>
             <main>
                 <form onSubmit={onSubmit}>
@@ -90,7 +94,7 @@ export const ProfilePage = () => {
                             ref={inputEmailRef}
                             name={'email'}
                             type={'email'}
-                            placeholder={'Логин'}
+                            placeholder={'E-mail'}
                             size={'default'}
                             value={input.email}
                             icon={'EditIcon'}

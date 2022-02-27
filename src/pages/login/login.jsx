@@ -18,8 +18,7 @@ export const Login = () => {
         password: ''
     })
 
-    const loginError = useSelector(state => state.auth.loginError)
-    const isLogin = useSelector(state => state.auth.isLogin);
+    const { isLogin, loginError, resetPasswordSuccess } = useSelector(state => state.auth)
     
     // Перенаправление на страницу после авторизации
     if(isLogin) {
@@ -84,6 +83,7 @@ export const Login = () => {
                 </div>
 
                 {loginError && <div className={styles.error}>Неверный email или пароль</div>}
+                {resetPasswordSuccess && <div className={styles.success}>Пароль успешно обновлен, теперь вы можете войти</div>}
 
                 <div className={styles.text}>
                     <p className={styles.label}>Вы — новый пользователь?</p>

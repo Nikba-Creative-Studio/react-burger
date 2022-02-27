@@ -12,7 +12,6 @@ import {
     Register, 
     NotFound404,
     ProfilePage,
-    LogoutPage
 } from '../../pages/';
 
 import { AppHeader } from "../app-header/app-header";
@@ -25,6 +24,8 @@ import { deselectIngredient, fetchIngredients } from "../../services/actions/bur
 import { hideOrderModal } from "../../services/actions/order-details";
 
 import { ProtectedRoute } from '../protected-route/protected-route';
+
+import { getUser } from '../../services/actions/auth';
 
 export const App = () => {
 
@@ -47,6 +48,9 @@ export const App = () => {
     }
 
     useEffect(() => {
+        // Данные пользователя
+        dispatch(getUser()) 
+
         // Загружаем ингредиенты
         dispatch(fetchIngredients());
     }, [dispatch])
@@ -62,10 +66,6 @@ export const App = () => {
 
                     <Route path='/login' exact={true}>
                         <Login />
-                    </Route>
-
-                    <Route path='/logout' exact={true}>
-                        <LogoutPage />
                     </Route>
 
                     <Route path='/forgot-password' exact={true}>

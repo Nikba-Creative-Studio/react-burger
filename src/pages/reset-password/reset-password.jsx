@@ -1,46 +1,63 @@
-import { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
+import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
+
+import { resetPassword } from '../../services/actions/auth';
 
 export const ResetPassword = () => {
 
-    const [valuePass, setValuePass] = useState('')
-    const [valueCode, setValueCode] = useState('')
-    const [switchIcon, setSwitchIcon] = useState(true)
+    const dispatch = useDispatch()
 
-    const inputRef = useRef(null)
-    const inputRefCode = useRef(null)
+    const [input, setInput] = useState({
+        password: '',
+        token: '',
+    })
 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-        inputRef.current.type = switchIcon ? 'text' : 'password'
-        setSwitchIcon(!switchIcon)
+    const { isLogin, forgotPasswordSuccess, resetPasswordSuccess, resetPasswordError } = useSelector(state => state.auth)
+
+    // Ставим значение форм в стате
+    const onChange = (e) => {
+        setInput({...input, [e.target.name]: e.target.value})
     }
 
-    const onIconClickCode = () => {
-        setTimeout(() => inputRefCode.current.focus(), 0)
+    // Отправка формы
+    const onSubmit = (e) => {
+        e.preventDefault()
+        dispatch(resetPassword(input))
+    }
+
+    if(isLogin) {
+        return <Redirect to={'/'} />
+    }
+
+    if(resetPasswordSuccess) {
+        return (
+            <Redirect to='/login' />
+        )
+    }
+
+    if(!forgotPasswordSuccess) {
+        return (
+            <Redirect to='/forgot-password' />
+        )
     }
 
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form}>
+            <form 
+                className={styles.form}
+                onSubmit={onSubmit}
+            >
                 <h3 className={styles.title}>Восстановление пароля</h3>
 
                 <div className={styles.input}>
-                    <Input
-                        type={'password'}
-                        placeholder={'Введите новый пароль'}
-                        onChange={e => setValuePass(e.target.value)}
-                        value={valuePass}
-                        icon={switchIcon ? 'ShowIcon' : 'HideIcon'}
-                        name={'name'}
-                        error={false}
-                        ref={inputRef}
-                        onIconClick={onIconClick}
-                        errorText={'Ошибка'}
-                        size={'default'}
+                    <PasswordInput
+                        onChange={onChange}
+                        value={input.password} 
+                        name={'password'}
                     />
                 </div>
 
@@ -48,12 +65,10 @@ export const ResetPassword = () => {
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        onChange={e => setValueCode(e.target.value)}
-                        value={valueCode}
-                        name={'name'}
+                        onChange={onChange}
+                        value={input.token}
+                        name={'token'}
                         error={false}
-                        ref={inputRefCode}
-                        onIconClick={onIconClickCode}
                         errorText={'Ошибка'}
                         size={'default'}
                     />
@@ -67,6 +82,8 @@ export const ResetPassword = () => {
                         Сохранить
                     </Button>
                 </div>
+
+                {resetPasswordError && <p className={styles.error}>Предоставлены неверные учетные данные</p>}
 
                 <div className={styles.text}>
                     <p className={styles.label}>Вспомнили пароль?</p>

@@ -18,8 +18,7 @@ export const Register = () => {
         password: ''
     })
 
-    const registerError = useSelector(state => state.auth.registerError);
-    const isLogin = useSelector(state => state.auth.isLogin);
+    const {isLogin, registerError } = useSelector(state => state.auth);
 
     // Перенаправление на страницу после авторизации
     if(isLogin) {
