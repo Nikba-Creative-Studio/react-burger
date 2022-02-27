@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -19,12 +19,22 @@ export const ProfilePage = () => {
     const { editError, editData, userInfo } = useSelector(state => state.auth)
 
     const [input, setInput] = useState({
-        name: userInfo.user.user.name,
-        email: userInfo.user.user.email,
+        name: '',
+        email: '',
         password: ''
     })
 
     const [inputEdit, setInputEdit] = useState(false)
+
+    useEffect(() => {
+        if(userInfo) {
+            setInput({
+                name: userInfo.user.user.name,
+                email:userInfo.user.user.email,
+                password: ''
+            })
+        }
+    }, [userInfo])
 
     // Ставим значение форм в стате
     const onChange = (e) => {

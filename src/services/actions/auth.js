@@ -34,9 +34,9 @@ export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILURE = 'RESET_PASSWORD_FAILURE';
 
-export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN';
-export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
-export const UPDATE_TOKEN_FAILURE = 'UPDATE_TOKEN_FAILURE';
+export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
+export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
+export const REFRESH_TOKEN_FAILURE = 'REFRESH_TOKEN_FAILURE';
 
 
 // Регистрация пользователя
@@ -74,11 +74,8 @@ export function registerUser(body) {
             .then(checkResponse)
             .then(res => res.json())
             .then((user) => {
-                // Сохраняем данные пользователя в сторе
-                //localStorage.setItem('accessToken', user.accessToken);
                 setCookie('accessToken', user.accessToken)
                 localStorage.setItem('refreshToken', user.refreshToken);
-
                 dispatch(registerUserSuccess(user))
             })
             .catch(error => dispatch(registerUserFailure(error)))
@@ -337,12 +334,70 @@ export function getUser() {
                     'Authorization': getCookie('accessToken')
                 }
             })
+                .then(res => {
+                    if (res.status === 403) {
+                        dispatch(refreshToken())
+                    }
+                    return res;
+                })
                 .then(checkResponse)
                 .then(res => res.json())
                 .then((user) => {
                     dispatch(getUserSuccess(user))
                 })
-                .catch(error => dispatch(getUserFailure(error)))
+                .catch(error => {
+                    dispatch(getUserFailure(error))
+                })
+        }
+    }
+}
+
+export function refreshTokenSuccess(token) {
+    return {
+        type: REFRESH_TOKEN_SUCCESS,
+        payload: {
+            token
+        }
+    }
+}
+
+export function refreshTokenFailure(error) {
+    return {
+        type: REFRESH_TOKEN_FAILURE,
+        payload: {
+            error
+        }
+    }
+}
+
+export function refreshToken() {
+    return function (dispatch) {
+        
+        const refreshToken = localStorage.getItem('refreshToken')
+    
+        dispatch({
+            type: REFRESH_TOKEN_REQUEST
+        });
+
+        if(refreshToken) {
+            console.log('refreshToken')
+            fetch(`${baseUrl}auth/token`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token: refreshToken
+                })
+            })
+                .then(checkResponse)
+                .then(res => res.json())
+                .then((token) => {
+                    setCookie('accessToken', token.accessToken)
+                    localStorage.setItem('refreshToken', token.refreshToken)
+                    dispatch(refreshTokenSuccess(token))
+                })
+                .catch(error => dispatch(refreshTokenFailure(error)))
         }
     }
 }

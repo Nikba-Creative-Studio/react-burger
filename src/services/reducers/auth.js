@@ -19,7 +19,10 @@ import {
     RESET_PASSWORD_FAILURE,
     USER_INFO_REQUEST,
     USER_INFO_SUCCESS,
-    USER_INFO_FAILURE
+    USER_INFO_FAILURE,
+    REFRESH_TOKEN_REQUEST,
+    REFRESH_TOKEN_SUCCESS,
+    REFRESH_TOKEN_FAILURE
 } from '../actions/auth';
 
 const authInitialState = {
@@ -36,7 +39,9 @@ const authInitialState = {
     resetPasswordSuccess: false,
     resetPasswordError: false,
     userInfo: null,
-    userInfoError: false
+    userInfoError: false,
+    refreshTokenSuccess: false,
+    refreshTokenError: false
 }
 
 export const authReducer = (state = authInitialState, action) => {
@@ -159,6 +164,21 @@ export const authReducer = (state = authInitialState, action) => {
                 ...state,
                 userInfoError: true,
                 isLogin: false
+            }
+        case REFRESH_TOKEN_REQUEST:
+            return {
+                ...state,
+                refreshTokenSuccess: false,
+            }
+        case REFRESH_TOKEN_SUCCESS:
+            return {
+                ...state,
+                refreshTokenSuccess: true,
+            }
+        case REFRESH_TOKEN_FAILURE:
+            return {
+                ...state,
+                refreshTokenSuccess: false,
             }
 
         default:
