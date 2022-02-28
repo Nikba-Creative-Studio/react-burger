@@ -1,16 +1,11 @@
 import { useSelector } from 'react-redux';
 import image from '../../../images/done.png'
 import  styles from './order-details.module.css'
-import { Loader } from '../../loader/loader';
 
 export const OrderDetails = () => {
     
     // Загружаем данные из хранилища
-    const { order, isLoading } = useSelector(state => state.orderDetails);
-
-    if(isLoading) {
-        return <Loader />
-    }
+    const { order } = useSelector(state => state.orderDetails);
     
     return (
         <div className={styles.order_details}>
