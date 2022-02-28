@@ -20,17 +20,16 @@ import {
     USER_INFO_REQUEST,
     USER_INFO_SUCCESS,
     USER_INFO_FAILURE,
-    REFRESH_TOKEN_REQUEST,
-    REFRESH_TOKEN_SUCCESS,
-    REFRESH_TOKEN_FAILURE
 } from '../actions/auth';
 
 const authInitialState = {
     // Первоначальное состояние авторизации
     registerData: null,
     registerError: false,
+    registerLoading: false,
     loginData: null,
     isLogin: false,
+    loginLoading: false,
     loginError: false,
     editData: null,
     editError: false,
@@ -39,9 +38,8 @@ const authInitialState = {
     resetPasswordSuccess: false,
     resetPasswordError: false,
     userInfo: null,
+    userInfoLoading: false,
     userInfoError: false,
-    refreshTokenSuccess: false,
-    refreshTokenError: false
 }
 
 export const authReducer = (state = authInitialState, action) => {
@@ -49,30 +47,38 @@ export const authReducer = (state = authInitialState, action) => {
         case REGISTER_USER_REQUEST:
             return {
                 ...state,
-                registerData: action.payload
+                registerData: action.payload,
+                registerLoading: true,
+                registerError: false
             }
         case REGISTER_USER_SUCCESS:
             return {
                 ...state,
+                userInfo: action.payload,
                 registerData: action.payload,
                 registerError: false,
+                registerLoading: false,
                 isLogin: true
             }
         case REGISTER_USER_FAILURE:
             return {
                 ...state,
                 registerError: true,
+                registerLoading: false,
                 isLogin: false
             }
         case LOGIN_USER_REQUEST:
             return {
                 ...state,
-                loginData: action.payload
+                loginData: action.payload,
+                loginLoading: true,
             }
         case LOGIN_USER_SUCCESS:
             return {
                 ...state,
+                userInfo: action.payload,
                 loginData: action.payload,
+                loginLoading: false,
                 loginError: false,
                 isLogin: true
             }
@@ -80,6 +86,7 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 loginError: true,
+                loginLoading: false,
                 isLogin: false
             }
         case EDIT_USER_REQUEST:
@@ -150,12 +157,14 @@ export const authReducer = (state = authInitialState, action) => {
         case USER_INFO_REQUEST:
             return {
                 ...state,
-                userInfo: action.payload
+                userInfo: action.payload,
+                userInfoLoading: true,
             }
         case USER_INFO_SUCCESS:
             return {
                 ...state,
                 userInfo: action.payload,
+                userInfoLoading: false,
                 userInfoError: false,
                 isLogin: true
             }
@@ -163,22 +172,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfoError: true,
+                userInfoLoading: false,
                 isLogin: false
-            }
-        case REFRESH_TOKEN_REQUEST:
-            return {
-                ...state,
-                refreshTokenSuccess: false,
-            }
-        case REFRESH_TOKEN_SUCCESS:
-            return {
-                ...state,
-                refreshTokenSuccess: true,
-            }
-        case REFRESH_TOKEN_FAILURE:
-            return {
-                ...state,
-                refreshTokenSuccess: false,
             }
 
         default:

@@ -1,26 +1,24 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {useParams} from "react-router-dom";
-import { fetchIngredients } from "../../../services/actions/burger-ingredients"; 
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
+import { Loader } from '../../loader/loader';
+
 import styles from './ingredient-details.module.css'
 
 export const IngredientDetails = () => { 
     
     const { id } = useParams();
-    const dispatch = useDispatch();
 
-    const ingredients = useSelector(state => state.ingredients.ingredients);
-    useEffect(() => {
-        if(ingredients.length === 0) {
-            dispatch(fetchIngredients());
-        }
-    }, [ingredients, dispatch])
+    const { ingredients, isLoading } = useSelector(state => state.ingredients);
     
     const ingredient = useMemo(() => {
         return ingredients.find(ingredient => ingredient._id === id)
     }, [ingredients, id])
-    
 
+    if(isLoading) {
+        return <Loader />
+    }
+    
     if (!ingredient) return ( false )
     
 

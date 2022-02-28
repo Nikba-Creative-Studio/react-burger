@@ -2,9 +2,11 @@ import { baseUrl } from '../../utils/config';
 import {
     checkResponse,
     setCookie,
-    getCookie,
+    getCookie, 
     deleteCookie
 } from "../../utils/helpers";
+
+import { updateToken } from '../api';
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -33,10 +35,6 @@ export const FORGOT_PASSWORD_FAILURE = 'FORGOT_PASSWORD_FAILURE';
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILURE = 'RESET_PASSWORD_FAILURE';
-
-export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
-export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
-export const REFRESH_TOKEN_FAILURE = 'REFRESH_TOKEN_FAILURE';
 
 
 // Регистрация пользователя
@@ -166,7 +164,15 @@ export function editUser(body) {
             .then((user) => {
                 dispatch(editUserSuccess(user))
             })
-            .catch(error => dispatch(editUserFailure(error)))
+            .catch(error => {
+                if(error.message === 'jwt expired') {
+                    console.log('jwt expired');
+                }
+                if(error.status === 403) {
+                    updateToken()
+                }
+                dispatch(getUserFailure(error))
+            })
     }
 }
 
@@ -334,70 +340,17 @@ export function getUser() {
                     'Authorization': getCookie('accessToken')
                 }
             })
-                .then(res => {
-                    if (res.status === 403) {
-                        dispatch(refreshToken())
-                    }
-                    return res;
-                })
                 .then(checkResponse)
                 .then(res => res.json())
                 .then((user) => {
                     dispatch(getUserSuccess(user))
                 })
                 .catch(error => {
+                    if(error.status === 403) {
+                        updateToken()
+                    }
                     dispatch(getUserFailure(error))
                 })
-        }
-    }
-}
-
-export function refreshTokenSuccess(token) {
-    return {
-        type: REFRESH_TOKEN_SUCCESS,
-        payload: {
-            token
-        }
-    }
-}
-
-export function refreshTokenFailure(error) {
-    return {
-        type: REFRESH_TOKEN_FAILURE,
-        payload: {
-            error
-        }
-    }
-}
-
-export function refreshToken() {
-    return function (dispatch) {
-        
-        const refreshToken = localStorage.getItem('refreshToken')
-    
-        dispatch({
-            type: REFRESH_TOKEN_REQUEST
-        });
-
-        if(refreshToken) {
-            console.log('refreshToken')
-            fetch(`${baseUrl}auth/token`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    token: refreshToken
-                })
-            })
-                .then(checkResponse)
-                .then(res => res.json())
-                .then((token) => {
-                    setCookie('accessToken', token.accessToken)
-                    localStorage.setItem('refreshToken', token.refreshToken)
-                    dispatch(refreshTokenSuccess(token))
-                })
-                .catch(error => dispatch(refreshTokenFailure(error)))
         }
     }
 }

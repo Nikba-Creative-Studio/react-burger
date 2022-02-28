@@ -12,11 +12,11 @@ export const ProfilePage = () => {
 
     const dispatch = useDispatch();
 
+    const { editError, editData, userInfo } = useSelector(state => state.auth)
+
     const inputNameRef = useRef(null)
     const inputEmailRef = useRef(null)
     const inputPasswordRef = useRef(null)
-
-    const { editError, editData, userInfo } = useSelector(state => state.auth)
 
     const [input, setInput] = useState({
         name: '',

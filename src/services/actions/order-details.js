@@ -1,6 +1,7 @@
 import { baseUrl } from '../../utils/config';
 import { cleanConstructor } from './burger-constructor';
-import { checkResponse } from '../../utils/helpers';
+import { checkResponse, getCookie } from '../../utils/helpers'; 
+import { updateToken } from '../api'
 
 export const POST_ORDER_REQUEST = 'ORDER/POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'ORDER/POST_ORDER_SUCCESS';
@@ -35,7 +36,8 @@ export function postOrder(ingredients) {
         fetch(`${baseUrl}orders`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': getCookie('accessToken')
             },
             body: JSON.stringify({
                 "ingredients": ingredients
@@ -47,7 +49,12 @@ export function postOrder(ingredients) {
                 dispatch(postOrderSuccess(data))
                 dispatch(cleanConstructor())
             })
-            .catch(error => dispatch(postOrderFailure(error)))
+            .catch(error => {
+                if(error.status === 403) {
+                    updateToken()
+                }
+                dispatch(postOrderFailure(error))
+            })
     }
 }
 
