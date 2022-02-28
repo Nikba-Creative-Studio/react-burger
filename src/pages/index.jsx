@@ -5,6 +5,7 @@ import { ResetPassword } from './reset-password/reset-password';
 import { Register } from './register/register';
 import { NotFound404 } from './errors/not-found-404/not-found-404';
 import { ProfilePage } from './profile/profile';
+import { IngredientsPage } from './ingredients/ingredients';
 
 export { 
     HomePage, 
@@ -14,4 +15,5 @@ export {
     Register, 
     NotFound404, 
     ProfilePage,
+    IngredientsPage
 };

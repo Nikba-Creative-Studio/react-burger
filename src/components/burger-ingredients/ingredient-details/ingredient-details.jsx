@@ -1,10 +1,31 @@
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {useParams, Redirect} from "react-router-dom";
+import { fetchIngredients } from "../../../services/actions/burger-ingredients"; 
 import styles from './ingredient-details.module.css'
 
 export const IngredientDetails = () => { 
+    
+    const { id } = useParams();
+    const dispatch = useDispatch();
 
-    const { name, calories, proteins, fat, carbohydrates, image_large } = useSelector(state => state.ingredients.ingredient);
+    const ingredients = useSelector(state => state.ingredients.ingredients);
+    useEffect(() => {
+        if(ingredients.length === 0) {
+            dispatch(fetchIngredients());
+        }
+    }, [ingredients, dispatch])
+    
+    const ingredient = useMemo(() => {
+        return ingredients.find(ingredient => ingredient._id === id)
+    }, [ingredients, id])
+    
 
+    if (!ingredient) return ( false )
+    
+
+    const { name, calories, proteins, fat, carbohydrates, image_large } = ingredient
+    
     return (
         <div className={styles.ingredient_details}>
             <img className={styles.image} src={image_large} alt={name} />
