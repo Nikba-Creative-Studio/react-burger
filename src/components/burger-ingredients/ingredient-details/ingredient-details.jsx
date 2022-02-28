@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useParams, Redirect} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import { fetchIngredients } from "../../../services/actions/burger-ingredients"; 
 import styles from './ingredient-details.module.css'
 

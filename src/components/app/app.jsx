@@ -64,10 +64,16 @@ export const App = () => {
                 <AppHeader />
                 <main className={styles.main}>
                     <Switch location={ingredientModal || location}>
-                        
+                        <Route path='/' exact={true}>
+                            <HomePage />
+                        </Route>
 
-                        <Route path='/ingredients/:id' exact>
+                        <Route path='/ingredients/:id' exact={true}>
                             <IngredientsPage />
+                        </Route>
+
+                        <Route path='/register' exact={true}>
+                            <Register />
                         </Route>
 
                         <Route path='/login' exact={true}>
@@ -82,17 +88,9 @@ export const App = () => {
                             <ResetPassword />
                         </Route>
 
-                        <Route path='/register' exact={true}>
-                            <Register />
-                        </Route>
-
                         <ProtectedRoute path='/profile' exact={true}>
                             <ProfilePage />
                         </ProtectedRoute>
-
-                        <Route path='/' exact={true}>
-                            <HomePage />
-                        </Route>
 
                         <Route>
                             <NotFound404 />
@@ -107,16 +105,13 @@ export const App = () => {
                         </Route>
                     }
 
-
                 </main>
 
                 {orderDetailsModal && (
                     <Modal onClose={toggleModalOrder} title="" >
                         <OrderDetails />
                     </Modal>
-
                 )}
-
             </>
         )
     }
