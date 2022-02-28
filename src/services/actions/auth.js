@@ -166,12 +166,12 @@ export function editUser(body) {
             })
             .catch(error => {
                 if(error.message === 'jwt expired') {
-                    console.log('jwt expired');
-                }
-                if(error.status === 403) {
                     updateToken()
+                    dispatch(editUser(body))
                 }
-                dispatch(getUserFailure(error))
+                else {
+                    dispatch(editUserFailure(error))
+                }
             })
     }
 }
@@ -346,10 +346,13 @@ export function getUser() {
                     dispatch(getUserSuccess(user))
                 })
                 .catch(error => {
-                    if(error.status === 403) {
+                    if(error.message === 'jwt expired') {
                         updateToken()
+                        dispatch(getUser())
                     }
-                    dispatch(getUserFailure(error))
+                    else {
+                        dispatch(getUserFailure(error))
+                    }
                 })
         }
     }

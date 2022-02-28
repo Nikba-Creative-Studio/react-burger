@@ -1,8 +1,16 @@
+/*
 export const checkResponse = (res) => {
     if (res && res.ok) {
         return res;
     }
     throw Error(`${res.status} ${res.statusText}`);
+}
+*/
+
+export const checkResponse = (res) => {
+    return res.ok
+        ? res
+        : res.json().then((err) => Promise.reject(err));
 }
 
 export function setCookie(name, value, props) {

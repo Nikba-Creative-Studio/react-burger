@@ -50,10 +50,12 @@ export function postOrder(ingredients) {
                 dispatch(cleanConstructor())
             })
             .catch(error => {
-                if(error.status === 403) {
+                if(error.message === 'jwt expired') {
                     updateToken()
                 }
-                dispatch(postOrderFailure(error))
+                else {
+                    dispatch(postOrderFailure(error))
+                }    
             })
     }
 }

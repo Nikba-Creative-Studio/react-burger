@@ -1,3 +1,5 @@
+import { baseUrl } from '../utils/config';
+
 import {
     checkResponse,
     setCookie,
@@ -8,7 +10,7 @@ export const updateToken = () => {
     const refreshToken = localStorage.getItem('refreshToken');
 
     if(refreshToken) {
-        return fetch(`${process.env.REACT_APP_API_URL}/auth/refresh`, {
+        return fetch(`${baseUrl}auth/token`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,10 +23,10 @@ export const updateToken = () => {
             .then(res => res.json())
             .then(data => {
                 deleteCookie('accessToken');
-                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
 
                 setCookie('accessToken', data.accessToken);
-                localStorage.setItem('accessToken', data.accessToken);
+                localStorage.setItem('refreshToken', data.refreshToken);
             })
             .catch(error => {
                 console.log(error);
