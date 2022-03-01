@@ -41,6 +41,11 @@
     font-weight: 400;
 }
 
+.nav_link svg {
+    margin-right: 10px;
+    fill: var(--text-inactive-color);
+}
+
 .nav_link:hover {
     color: var(--text-primary-color);
     transition: var(--common-transition);

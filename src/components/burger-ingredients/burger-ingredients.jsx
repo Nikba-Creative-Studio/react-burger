@@ -5,12 +5,14 @@ import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { Ingredient } from './ingredient/ingredient';
+import { Loader } from '../loader/loader';
 
 export const BurgerIngredients = () => {
 
 
     // Загружаем ингредиенты из хранилища
     const ingredientsData = useSelector(state => state.ingredients.ingredients);
+    const isLoading = useSelector(state => state.ingredients.isLoading);
 
     //Рефы для переключения вкладок
     const bunRef = useRef(null);
@@ -28,6 +30,10 @@ export const BurgerIngredients = () => {
         bun: 'Булочка',
         sauce: 'Соус',
         main: 'Начинки'
+    }
+
+    if(isLoading) {
+        return <Loader />
     }
 
     // Переключение вкладок

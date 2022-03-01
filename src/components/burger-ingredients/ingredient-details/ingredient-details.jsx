@@ -1,10 +1,29 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
+import { Loader } from '../../loader/loader';
+
 import styles from './ingredient-details.module.css'
 
 export const IngredientDetails = () => { 
+    
+    const { id } = useParams();
 
-    const { name, calories, proteins, fat, carbohydrates, image_large } = useSelector(state => state.ingredients.ingredient);
+    const { ingredients, isLoading } = useSelector(state => state.ingredients);
+    
+    const ingredient = useMemo(() => {
+        return ingredients.find(ingredient => ingredient._id === id)
+    }, [ingredients, id])
 
+    if(isLoading) {
+        return <Loader />
+    }
+    
+    if (!ingredient) return ( false )
+    
+
+    const { name, calories, proteins, fat, carbohydrates, image_large } = ingredient
+    
     return (
         <div className={styles.ingredient_details}>
             <img className={styles.image} src={image_large} alt={name} />

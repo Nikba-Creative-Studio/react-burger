@@ -1,4 +1,5 @@
-import  { useCallback } from "react";
+import { useCallback } from "react";
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 
@@ -13,14 +14,20 @@ import { Ingredient } from './ingredient/ingredient';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 
+import { Loader } from '../loader/loader';
+
 export const BurgerConstructor = () => {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     // Читаем данные из стора
     const constructorData = useSelector(state => state.constructorIngredients.ingredients);
     const constructorBunsData = useSelector(state => state.constructorIngredients.buns);
+    const isLogin = useSelector(state => state.auth.isLogin)
+    const isLoading = useSelector(state => state.orderDetails.isLoading);
 
+    
     // Обшая стоимость бургера, пока берем из масива ингредиентов
     const total_ingredients = constructorData.reduce((acc, cur) => acc + cur.price, 0)
     const total_buns = (constructorBunsData) ? constructorBunsData.price : 0
@@ -28,6 +35,11 @@ export const BurgerConstructor = () => {
 
     // Функция отправки заказа на сервер
     const sendOrder = () => {
+        //Проверка авторизации
+        if(!isLogin) {
+            history.replace({ pathname: '/login' });
+            return;
+        }
         // Создаем объект заказа
         const orderIds = constructorData.map(item => item._id)
         if(constructorBunsData) orderIds.push(constructorBunsData._id)
@@ -54,6 +66,11 @@ export const BurgerConstructor = () => {
     const moveIngredient = useCallback((dragIndex, hoverIndex) => {
         dispatch(moveIngredients(dragIndex, hoverIndex))
     }, [dispatch]);
+
+    if(isLoading) {
+        console.log('Загрузка...');
+        return <Loader />
+    }
 
     return (
         <section className={styles.constructor_container}>
