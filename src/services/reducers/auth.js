@@ -104,6 +104,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 editData: action.payload,
+                name: action.payload.user.user.name,
+                email: action.payload.user.user.email,
                 editError: false
             }
         case EDIT_USER_FAILURE:

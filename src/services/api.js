@@ -3,33 +3,53 @@ import { baseUrl } from '../utils/config';
 import {
     checkResponse,
     setCookie,
-    deleteCookie
+    getCookie
 } from "../utils/helpers";
 
-export const updateToken = () => {
+export const updateToken = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
 
-    if(refreshToken) {
-        return fetch(`${baseUrl}auth/token`, {
-            method: 'POST',
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: refreshToken }),
+    };
+
+    if (refreshToken) {
+
+        try {
+            const response = await fetch(`${baseUrl}auth/token`, requestOptions);
+            const data = await checkResponse(response);
+
+            if (data.success) {
+                setCookie('accessToken', data.accessToken.split('Bearer ')[1]);
+                localStorage.setItem('refreshToken', data.refreshToken);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const fetchUpdateToken = async (url, options) => {
+    try {
+        const response = await fetch(url, options);
+        return await checkResponse(response);
+    }
+    catch (error) {
+
+        console.log('Refreshing token');
+
+        await updateToken();
+
+        const response = await fetch(url, {
+            method: options.method,
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: refreshToken
-            })
-        })
-            .then(checkResponse)
-            .then(res => res.json())
-            .then(data => {
-                deleteCookie('accessToken');
-                localStorage.removeItem('refreshToken');
-
-                setCookie('accessToken', data.accessToken);
-                localStorage.setItem('refreshToken', data.refreshToken);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+                Authorization: 'Bearer ' + getCookie('accessToken')
+            }
+        });
+        return await checkResponse(response);
     }
 }
