@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,22 +7,21 @@ import styles from '../login/login.module.css';
 
 import { forgotPassword } from '../../services/actions/auth';
 
-export const ForgotPassword = () => {
+import { TProfile, TAuth } from '../../types';
+
+export const ForgotPassword: FC = () => {
     const dispatch = useDispatch()
 
-    const [input, setInput] = useState({
+    type TEmail = Pick<TProfile, 'email'>
+
+    const [input, setInput] = useState<TEmail>({
         email: '',
     })
 
-    const { isLogin, forgotPasswordSuccess, forgotPasswordError } = useSelector(state => state.auth)
-
-    // Ставим значение форм в стате
-    const onChange = (e) => {
-        setInput({...input, [e.target.name]: e.target.value})
-    }
+    const { isLogin, forgotPasswordSuccess, forgotPasswordError }: TAuth = useSelector((state: any) => state.auth)
 
     // Отправка формы
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(forgotPassword(input.email))
     }
@@ -50,12 +49,12 @@ export const ForgotPassword = () => {
                     <Input
                             type={'email'}
                             placeholder={'Укажите e-mail'}
-                            onChange={onChange}
                             value={input.email}
                             name={'email'}
                             error={false}
                             errorText={'Ошибка'}
                             size={'default'}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         />
                 </div>
 

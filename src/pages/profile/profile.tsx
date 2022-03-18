@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, FC } from 'react';
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,38 +8,37 @@ import styles from './profile.module.css';
 
 import { editUser, userLogout } from '../../services/actions/auth';
 
-export const ProfilePage = () => {
+import { TProfile } from '../../types';
+
+export const ProfilePage: FC = () => {
 
     const dispatch = useDispatch();
 
-    const { editError, editData, userInfo } = useSelector(state => state.auth)
+    const { editError, editData, name, email }: TProfile = useSelector((state: any) => state.auth)
 
-    const inputNameRef = useRef(null)
-    const inputEmailRef = useRef(null)
-    const inputPasswordRef = useRef(null)
+    const inputNameRef = useRef<HTMLInputElement>(null);
+    const inputEmailRef = useRef<HTMLInputElement>(null);
+    const inputPasswordRef = useRef<HTMLInputElement>(null);
 
-    const [input, setInput] = useState({
+    type TInfo = Pick<TProfile, 'name' | 'email' | 'password'>
+
+    const [input, setInput] = useState<TInfo>({
         name: '',
         email: '',
         password: ''
     })
 
-    const [inputEdit, setInputEdit] = useState(false)
+    const [inputEdit, setInputEdit] = useState<boolean>(false)
 
     useEffect(() => {
-        if(userInfo) {
+        if(name && email) {
             setInput({
-                name: userInfo.user.user.name,
-                email:userInfo.user.user.email,
+                name: name,
+                email: email,
                 password: ''
             })
         }
-    }, [userInfo])
-
-    // Ставим значение форм в стате
-    const onChange = (e) => {
-        setInput({...input, [e.target.name]: e.target.value})
-    }
+    }, [name, email])
 
     // Отмена редактирования
     const onCancel = () => {
@@ -47,7 +46,7 @@ export const ProfilePage = () => {
     }
 
     // Отправка формы
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(editUser(input))
     }
@@ -94,7 +93,7 @@ export const ProfilePage = () => {
                             size={'default'}
                             value={input.name}
                             icon={'EditIcon'}
-                            onChange={onChange}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                             onFocus={e => setInputEdit(true)}
                         />
                     </div>
@@ -108,7 +107,7 @@ export const ProfilePage = () => {
                             size={'default'}
                             value={input.email}
                             icon={'EditIcon'}
-                            onChange={onChange}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                             onFocus={e => setInputEdit(true)}
 
                         />
@@ -122,7 +121,7 @@ export const ProfilePage = () => {
                             size={'default'}
                             value={input.password}
                             icon={'EditIcon'}
-                            onChange={onChange}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                             onFocus={e => setInputEdit(true)}
 
                         />

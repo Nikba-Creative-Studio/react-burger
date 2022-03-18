@@ -1,4 +1,4 @@
-import { useState, useRef} from 'react';
+import { useState, useRef, FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
@@ -7,17 +7,17 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
 import { Loader } from '../loader/loader';
 
-export const BurgerIngredients = () => {
+export const BurgerIngredients: FC = () => {
 
 
     // Загружаем ингредиенты из хранилища
-    const ingredientsData = useSelector(state => state.ingredients.ingredients);
-    const isLoading = useSelector(state => state.ingredients.isLoading);
+    const ingredientsData = useSelector((state: any) => state.ingredients.ingredients);
+    const isLoading = useSelector((state: any) => state.ingredients.isLoading);
 
     //Рефы для переключения вкладок
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const bunRef = useRef<HTMLLIElement>(null);
+    const sauceRef = useRef<HTMLLIElement>(null);
+    const mainRef = useRef<HTMLLIElement>(null);
     
     // Состояние вкладок
     const [current, setCurrent] = useState({
@@ -46,11 +46,11 @@ export const BurgerIngredients = () => {
     // Активируем таб при скролле
     // Для Код Ревювера - По мне это колхоз, буду признателен за помощь и предложения по улучшению кода. Спасибо!
     const handleScroll = (e) => {
-        const scrollTop = e.target.scrollTop;
+        const scrollTop = e?.target?.scrollTop;
 
-        const bunHeight = bunRef.current.clientHeight;
-        const sauceHeight = sauceRef.current.clientHeight;
-        const mainHeight = mainRef.current.clientHeight;
+        const bunHeight: any = bunRef?.current?.clientHeight;
+        const sauceHeight = sauceRef?.current?.clientHeight;
+        const mainHeight = mainRef?.current?.clientHeight;
 
         if (scrollTop < bunHeight ) {
             setCurrent({
@@ -74,7 +74,7 @@ export const BurgerIngredients = () => {
     
 
     // Групируем ингредиенты по вкладкам
-    const ingredients = (type) => {
+    const ingredients = (type: string) => {
         const currentType = ingredientsData.filter(item => item.type === type)
 
         return (
@@ -105,7 +105,8 @@ export const BurgerIngredients = () => {
             <div className={styles.tabs}>
                 {Object.keys(types).map(type => (
                     <Tab
-                        value={{ type, scrollTo: type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef }}
+                        //value={{ type, scrollTo: type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef }}
+                        value={type}
                         key={type}
                         onClick={handleClick}
                         active={current.type === type}

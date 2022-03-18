@@ -1,19 +1,10 @@
-/*
-export const checkResponse = (res) => {
-    if (res && res.ok) {
-        return res;
-    }
-    throw Error(`${res.status} ${res.statusText}`);
-}
-*/
-
-export const checkResponse = (res) => {
-    return res.ok
-        ? res
-        : res.json().then((err) => Promise.reject(err));
+export const checkResponse = (response: Response): Response | PromiseLike<Response> => {
+    return response.ok
+        ? response
+        : response.json().then((err) => Promise.reject(err));
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string, props: any) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -36,13 +27,13 @@ export function setCookie(name, value, props) {
     document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(
         new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)') //eslint-disable-line
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function deleteCookie(name) {
-    setCookie(name, null, { expires: -1 });
+export function deleteCookie(name: string) {
+    setCookie(name, '', { expires: -1 });
 }

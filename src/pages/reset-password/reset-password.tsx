@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,21 +7,20 @@ import styles from '../login/login.module.css';
 
 import { resetPassword } from '../../services/actions/auth';
 
-export const ResetPassword = () => {
+import { TAuth, TProfile } from '../../types';
+
+export const ResetPassword: FC = () => {
 
     const dispatch = useDispatch()
 
-    const [input, setInput] = useState({
+    type TLogin = Pick<TProfile, 'token' | 'password'>
+
+    const [input, setInput] = useState<TLogin>({
         password: '',
         token: '',
     })
 
-    const { isLogin, forgotPasswordSuccess, resetPasswordSuccess, resetPasswordError } = useSelector(state => state.auth)
-
-    // Ставим значение форм в стате
-    const onChange = (e) => {
-        setInput({...input, [e.target.name]: e.target.value})
-    }
+    const { isLogin, resetPasswordSuccess, resetPasswordError, forgotPasswordSuccess }: TAuth = useSelector((state: any) => state.auth)
 
     // Отправка формы
     const onSubmit = (e) => {
@@ -55,7 +54,7 @@ export const ResetPassword = () => {
 
                 <div className={styles.input}>
                     <PasswordInput
-                        onChange={onChange}
+                        onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         value={input.password} 
                         name={'password'}
                     />
@@ -65,7 +64,7 @@ export const ResetPassword = () => {
                     <Input
                         type={'text'}
                         placeholder={'Введите код из письма'}
-                        onChange={onChange}
+                        onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         value={input.token}
                         name={'token'}
                         error={false}
