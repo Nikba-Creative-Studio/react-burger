@@ -1,4 +1,4 @@
-import { useState, useRef, FC } from 'react';
+import { useState, useRef, useCallback, useEffect, FC } from 'react';
 import { useSelector } from 'react-redux';
 
 import styles from "./burger-ingredients.module.css";
@@ -7,8 +7,9 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
 import { Loader } from '../loader/loader';
 
-export const BurgerIngredients: FC = () => {
+import { TIngrefientsTab } from '../../types/';
 
+export const BurgerIngredients: FC = () => {
 
     // Загружаем ингредиенты из хранилища
     const ingredientsData = useSelector((state: any) => state.ingredients.ingredients);
@@ -18,12 +19,54 @@ export const BurgerIngredients: FC = () => {
     const bunRef = useRef<HTMLLIElement>(null);
     const sauceRef = useRef<HTMLLIElement>(null);
     const mainRef = useRef<HTMLLIElement>(null);
-    
+
     // Состояние вкладок
-    const [current, setCurrent] = useState({
+    const [current, setCurrent] = useState<TIngrefientsTab>({
         type: 'bun',
         scrollTo: bunRef
     })
+
+    // Активируем таб при скрулле
+    const handleScroll = useCallback((e: Event) => {
+        const bun = bunRef?.current?.getBoundingClientRect();
+        const sauce = sauceRef?.current?.getBoundingClientRect();
+        const main = mainRef?.current?.getBoundingClientRect();
+        const obj: { [key: string]: number } = {
+            bun: bun?.y || 0,
+            sauce: sauce?.y || 0,
+            main: main?.y || 0
+        };
+        const key = Object.keys(obj).reduce((key: string, v: string) => Math.abs(obj[v]) <= Math.abs(obj[key]) ? v : key);
+        
+        setCurrent({
+            type: key,
+            scrollTo: key === 'bun' ? bunRef : key === 'sauce' ? sauceRef : mainRef
+        })
+    }, []);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll, true);
+        return () => {
+            window.removeEventListener("scroll", handleScroll, true);
+        };
+    }, [handleScroll]);
+
+    // Переключение вкладок
+    const handleClick = (e: string) => {
+    
+        setCurrent({
+            type: e,
+            scrollTo: e === 'bun' ? bunRef : e === 'sauce' ? sauceRef : mainRef
+        })
+
+        if (e === "bun") { bunRef?.current?.scrollIntoView({ behavior: 'smooth'}) };
+        if (e === "sauce") { sauceRef?.current?.scrollIntoView({ behavior: 'smooth' }) };
+        if (e === "main") { mainRef?.current?.scrollIntoView({ behavior: 'smooth'}) };
+    };
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     // Типы ингредиентов
     const types = {
@@ -32,62 +75,21 @@ export const BurgerIngredients: FC = () => {
         main: 'Начинки'
     }
 
-    if(isLoading) {
-        return <Loader />
-    }
-
-    // Переключение вкладок
-    const handleClick = (value) => {
-        //console.log(value)
-        setCurrent(value)
-        value.scrollTo.current.scrollIntoView({ behavior: 'smooth' })
-    }
-
-    // Активируем таб при скролле
-    // Для Код Ревювера - По мне это колхоз, буду признателен за помощь и предложения по улучшению кода. Спасибо!
-    const handleScroll = (e) => {
-        const scrollTop = e?.target?.scrollTop;
-
-        const bunHeight: any = bunRef?.current?.clientHeight;
-        const sauceHeight = sauceRef?.current?.clientHeight;
-        const mainHeight = mainRef?.current?.clientHeight;
-
-        if (scrollTop < bunHeight ) {
-            setCurrent({
-                type: 'bun',
-                scrollTo: bunRef
-            })
-        }
-        else if (scrollTop < bunHeight + sauceHeight ) {
-            setCurrent({
-                type: 'sauce',
-                scrollTo: sauceRef
-            })
-        }
-        else if (scrollTop < bunHeight + sauceHeight + mainHeight ) {
-            setCurrent({
-                type: 'main',
-                scrollTo: mainRef
-            })
-        }
-    }
-    
-
     // Групируем ингредиенты по вкладкам
     const ingredients = (type: string) => {
-        const currentType = ingredientsData.filter(item => item.type === type)
+        const currentType = ingredientsData.filter((item: { type: string; }) => item.type === type)
 
         return (
-            <li 
+            <li
                 className={styles.ingredients_collection}
-                key={type} 
+                key={type}
                 ref={type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef}
             >
                 <h2 className={styles.ingredients_title}>{types[type]}</h2>
                 <ul className={styles.ingredients_list}>
                     {currentType.map(item => (
-                        <li 
-                            key={item._id} 
+                        <li
+                            key={item._id}
                             className={styles.ingredient}
                         >
                             <Ingredient item={item} />
@@ -105,7 +107,6 @@ export const BurgerIngredients: FC = () => {
             <div className={styles.tabs}>
                 {Object.keys(types).map(type => (
                     <Tab
-                        //value={{ type, scrollTo: type === 'bun' ? bunRef : type === 'sauce' ? sauceRef : mainRef }}
                         value={type}
                         key={type}
                         onClick={handleClick}
@@ -116,7 +117,7 @@ export const BurgerIngredients: FC = () => {
                 ))}
             </div>
 
-            <ul className={styles.ingredients} onScroll={handleScroll}>
+            <ul className={styles.ingredients}>
                 {Object.keys(types).map(type => (
                     ingredients(type)
                 ))}

@@ -98,3 +98,8 @@ export type TAuth = {
     loginError: boolean;
     registerError: boolean;
 }
+
+export type TIngrefientsTab = {
+    type: string;
+    scrollTo: any;
+}
