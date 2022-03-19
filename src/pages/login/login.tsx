@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, FC } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,36 +7,30 @@ import styles from './login.module.css';
 
 import { loginUser } from '../../services/actions/auth';
 
-export const Login = () => {
+import { TLocationState, TProfile, TAuth } from '../../types';
+
+export const Login: FC = () => {
 
     const dispatch = useDispatch()
-    const location = useLocation()
+    const location = useLocation<TLocationState>()
     const inputRef = useRef(null)
 
-    const [input, setInput] = useState({
+    type TLogin = Pick<TProfile, 'email' | 'password'>
+
+    const [input, setInput] = useState<TLogin>({
         email: '',
         password: ''
     })
 
-    const { isLogin, loginError, resetPasswordSuccess } = useSelector(state => state.auth)
+    const { isLogin, loginError, resetPasswordSuccess }: TAuth = useSelector((state: any) => state.auth)
     
     // Перенаправление на страницу после авторизации
     if(isLogin) {
         return <Redirect to={ location?.state?.from || '/' } />
     }
-    
-    // 
-    const onIconClick = () => {
-        setTimeout(() => inputRef.current.focus(), 0)
-    }
-
-    // Ставим значение форм в стате
-    const onChange = (e) => {
-        setInput({...input, [e.target.name]: e.target.value})
-    }
 
     // Отправка формы
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(loginUser(input))
     }
@@ -53,13 +47,12 @@ export const Login = () => {
                     <Input
                             type={'email'}
                             placeholder={'E-mail'}
-                            onChange={onChange}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                             value={input.email}
                             name={'email'}
                             error={false}
                             ref={inputRef}
                             icon={'ProfileIcon'}
-                            onIconClick={onIconClick}
                             errorText={'Ошибка'}
                             size={'default'}
                     />
@@ -67,7 +60,7 @@ export const Login = () => {
 
                 <div className={styles.input}>
                     <PasswordInput
-                        onChange={onChange}
+                        onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         value={input.password} 
                         name={'password'}
                     />

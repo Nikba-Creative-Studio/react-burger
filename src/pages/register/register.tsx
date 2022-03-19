@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FC } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,31 +7,30 @@ import styles from '../login/login.module.css';
 
 import { registerUser } from '../../services/actions/auth';
 
-export const Register = () => {
+import { TLocationState, TAuth, TProfile } from '../../types';
+
+export const Register: FC = () => {
 
     const dispatch = useDispatch();
-    const location = useLocation()
+    const location = useLocation<TLocationState>()
 
-    const [input, setInput] = useState({
+    type TInfo = Pick<TProfile, 'name' | 'email' | 'password'>
+
+    const [input, setInput] = useState<TInfo>({
         name: '',
         email: '',
         password: ''
     })
 
-    const {isLogin, registerError } = useSelector(state => state.auth);
+    const { isLogin, registerError }: TAuth = useSelector((state: any) => state.auth)
 
     // Перенаправление на страницу после авторизации
     if(isLogin) {
         return <Redirect to={ location?.state?.from || '/' } />
     }
-    
-    // Ставим значение форм в стате
-    const onChange = (e) => {
-        setInput({...input, [e.target.name]: e.target.value})
-    }
 
     // Отправка формы
-    const onSubmit = (e) => {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch(registerUser(input))
     }
@@ -48,7 +47,7 @@ export const Register = () => {
                     <Input
                         type={'text'}
                         placeholder={'Имя'}
-                        onChange={onChange}
+                        onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         value={input.name}
                         name={'name'}
                         error={false}
@@ -61,7 +60,7 @@ export const Register = () => {
                     <Input
                             type={'email'}
                             placeholder={'Email'}
-                            onChange={onChange}
+                            onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                             value={input.email}
                             name={'email'}
                             error={false}
@@ -72,7 +71,7 @@ export const Register = () => {
 
                 <div className={styles.input}>
                     <PasswordInput
-                        onChange={onChange}
+                        onChange={e => setInput({...input, [e.target.name]: e.target.value})}
                         value={input.password}
                         name={'password'}
                     />

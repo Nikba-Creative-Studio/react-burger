@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
+import { useDrag, useDrop, DragObjectFactory, DropTargetMonitor} from 'react-dnd';
 
 import { 
     removeIngredient,
@@ -9,25 +8,27 @@ import {
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient.module.css';
+import { TIngredientData, TConstructorIngredientProps } from "../../../types";
 
-export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) => {
+export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }: TConstructorIngredientProps ) => {
 
     const dispatch = useDispatch();
-    const ref = useRef(null);
+    const ref = useRef<HTMLDivElement>(null);
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
-    const removeItem = (id) => {
+    const removeItem = (id: any): void => {
         dispatch(removeIngredient(id))
     }
 
     // Перемещение ингредиентов в конструкторе
     // Скомуниздил отсюдо https://react-dnd.github.io/react-dnd/examples/sortable/simple
+    
     const [{ handlerId }, drop] = useDrop({
         accept: 'ingredient',
         collect: (monitor) => ({
             handlerId: monitor.getHandlerId()
         }),
-        hover: (item, monitor) => {
+        hover: (item: DragObjectFactory<TIngredientData> & {index: number}, monitor: DropTargetMonitor) => {
             if(!ref.current) return;
 
             const dragIndex = item.index;
@@ -35,8 +36,8 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) 
             if(dragIndex === hoverIndex) return;
 
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            const clientOffset = monitor.getClientOffset();
+            const hoverMiddleY: number = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            const clientOffset:any = monitor.getClientOffset();
             const hoverClientY = clientOffset.y - hoverBoundingRect.top;
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
                 return;
@@ -48,6 +49,7 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) 
             item.index = hoverIndex;
         }
     })
+    
 
     const [{ isDragging }, drag] = useDrag({
         type: 'ingredient',
@@ -58,6 +60,7 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) 
             isDragging: monitor.isDragging(),
         }),
     });
+    
 
     
     drag(drop(ref));
@@ -71,10 +74,10 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) 
                 data-id={id}
                 data-handler-id={handlerId}
             >
-                {!isLocked && <DragIcon />}
+                {!isLocked && <DragIcon type="primary" />}
                 <ConstructorElement
                     isLocked={isLocked}
-                    type={type}
+                    //type={type}
                     text={item.name + (type === 'top' ? ' (верх)' : type === 'bottom' ? ' (низ)' : '')}
                     price={item.price}
                     thumbnail={item.image}
@@ -83,14 +86,4 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }) 
             </div>
         
     )
-}
-
-// Проверка типов пропсов
-Ingredient.propTypes = {
-    item: PropTypes.object,
-    type: PropTypes.string,
-    isLocked: PropTypes.bool,
-    id: PropTypes.string,
-    index: PropTypes.number,
-    moveIngredient: PropTypes.func
 }

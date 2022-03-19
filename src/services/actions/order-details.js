@@ -44,7 +44,6 @@ export function postOrder(ingredients) {
             })
         })
             .then(checkResponse)
-            .then(res => res.json())
             .then(data => {
                 dispatch(postOrderSuccess(data))
                 dispatch(cleanConstructor())

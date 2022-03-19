@@ -1,15 +1,17 @@
-import { useMemo } from 'react';
+import { useMemo, FC } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
 import { Loader } from '../../loader/loader';
 
 import styles from './ingredient-details.module.css'
 
-export const IngredientDetails = () => { 
-    
-    const { id } = useParams();
+import { TIngredientId, TIngredients } from '../../../types';
 
-    const { ingredients, isLoading } = useSelector(state => state.ingredients);
+export const IngredientDetails: FC = () => { 
+    
+    const { id } = useParams<TIngredientId>();
+
+    const { ingredients, isLoading }: TIngredients = useSelector((state: any) => state.ingredients);
     
     const ingredient = useMemo(() => {
         return ingredients.find(ingredient => ingredient._id === id)
@@ -19,7 +21,7 @@ export const IngredientDetails = () => {
         return <Loader />
     }
     
-    if (!ingredient) return ( false )
+    if (!ingredient) return ( <></> )
     
 
     const { name, calories, proteins, fat, carbohydrates, image_large } = ingredient

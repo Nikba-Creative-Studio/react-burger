@@ -1,10 +1,11 @@
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import PropTypes from "prop-types";
 
-export const ProtectedRoute = ({ children, ...rest }) => {
+import {RouteProps} from "react-router";
 
-    const isLogin = useSelector(state => state.auth.isLogin);
+export const ProtectedRoute = ({ children, ...rest }: RouteProps) => {
+
+    const isLogin = useSelector((state: any) => state.auth.isLogin);
 
     return (
         <Route
@@ -19,7 +20,3 @@ export const ProtectedRoute = ({ children, ...rest }) => {
         />
     );
 }
-
-ProtectedRoute.propTypes = {
-    children: PropTypes.node.isRequired,
-};

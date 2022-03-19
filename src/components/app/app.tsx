@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
+
+// TS: Location State
+import { TLocationState} from '../../types';
 
 import {
     HomePage,
@@ -13,7 +16,7 @@ import {
     NotFound404,
     ProfilePage,
     IngredientsPage
-} from '../../pages/';
+} from '../../pages';
 
 import { AppHeader } from "../app-header/app-header";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
@@ -28,7 +31,7 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 
 import { getUser } from '../../services/actions/auth';
 
-export const App = () => {
+export const App: FC = () => {
 
     const dispatch = useDispatch();
 
@@ -42,12 +45,12 @@ export const App = () => {
 
     const ModalSwitch = () => {
 
-        const location = useLocation();
+        const location = useLocation<TLocationState>();
         const history = useHistory();
         const ingredientModal = location.state && location.state.ingredientModal;
 
         // Статус модального окна заказа
-        const orderDetailsModal = useSelector(state => state.orderDetails.orderDetailsModal);
+        const orderDetailsModal = useSelector((state: any) => state.orderDetails.orderDetailsModal);
 
         // Функция закрытия модального окна ингредиентов
         const toggleModalIngredients = () => {

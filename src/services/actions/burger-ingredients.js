@@ -31,7 +31,6 @@ export function fetchIngredients() {
 
         fetch(`${baseUrl}ingredients`)
             .then(checkResponse)
-            .then(res => res.json())
             .then(ingredients => dispatch(fetchIngredientsSuccess(ingredients.data)))
             .catch(error => dispatch(fetchIngredientsFailure(error)))
     }

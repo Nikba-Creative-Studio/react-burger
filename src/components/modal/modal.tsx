@@ -1,30 +1,33 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import PropTypes from 'prop-types';
 
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './modal.module.css';
 import { ModalOverlay } from './modal-overlay/modal-overlay';
 
-export const Modal = ( { ...props } ) => {
+import { TModalProps } from '../../types/';
+
+export const Modal = ( { ...props }:TModalProps ) => {
 
     const { onClose, title, children } = props;
 
-    const modalRef = useRef(null);
+    const modalRef = useRef<HTMLDivElement>(null);
 
     // Фунцция для закрытия модального окна при нажатии на кнопку Esc
-    const handleKeyDown = useCallback((e) => {
+    const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (e.key === "Escape") {
             //console.log('Нажата кнопка Esc')
-            onClose()
+            if (typeof onClose === 'function') {
+                onClose()
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Функция для закрытия модального окна при нажатии вне окна
-    const handleClick = useCallback((e) => {
+    const handleClick = useCallback((e: MouseEvent) => {
         //if (e.target !== modalRef.current) {
-        if (!modalRef.current.contains(e.target)) {
+        if (!modalRef?.current?.contains(e.target as Node)) {
             //console.log(modalRef.current)
             //console.log(e.target)
             //console.log('Нажата кнопка за пределами модального окна')
@@ -66,15 +69,6 @@ export const Modal = ( { ...props } ) => {
                 </div>
             </div>
         </>,
-        document.getElementById('react-modals')
+        document.getElementById('react-modals') as HTMLElement
     );
 }
-
-// Проверка типов пропсов
-Modal.propTypes = {
-    title: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    onClose: PropTypes.func.isRequired
-}
-
-

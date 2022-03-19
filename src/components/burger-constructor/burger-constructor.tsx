@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, FC } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
@@ -16,25 +16,27 @@ import styles from './burger-constructor.module.css';
 
 import { Loader } from '../loader/loader';
 
-export const BurgerConstructor = () => {
+import { TIngredientData } from '../../types';
+
+export const BurgerConstructor: FC = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
 
     // Читаем данные из стора
-    const constructorData = useSelector(state => state.constructorIngredients.ingredients);
-    const constructorBunsData = useSelector(state => state.constructorIngredients.buns);
-    const isLogin = useSelector(state => state.auth.isLogin)
-    const isLoading = useSelector(state => state.orderDetails.isLoading);
+    const constructorData: TIngredientData[] = useSelector((state: any) => state.constructorIngredients.ingredients);
+    const constructorBunsData: TIngredientData = useSelector((state: any) => state.constructorIngredients.buns);
+    const isLogin: boolean = useSelector((state: any) => state.auth.isLogin)
+    const isLoading: boolean = useSelector((state: any) => state.orderDetails.isLoading);
 
     
     // Обшая стоимость бургера, пока берем из масива ингредиентов
-    const total_ingredients = constructorData.reduce((acc, cur) => acc + cur.price, 0)
-    const total_buns = (constructorBunsData) ? constructorBunsData.price : 0
-    const total = total_ingredients + total_buns
+    const total_ingredients: number | null = constructorData.reduce((acc, cur) => acc + cur.price, 0)
+    const total_buns: number | null = (constructorBunsData) ? constructorBunsData.price : 0
+    const total: number | null = total_ingredients + total_buns
 
     // Функция отправки заказа на сервер
-    const sendOrder = () => {
+    const sendOrder = (): void => {
         //Проверка авторизации
         if(!isLogin) {
             history.replace({ pathname: '/login' });
@@ -49,7 +51,7 @@ export const BurgerConstructor = () => {
     // Перемешение ингредиентов в конструкторе
     const [{isOver}, drop] = useDrop({
         accept: 'ingredients',
-        drop: (item) => {
+        drop: (item: TIngredientData) => {
             // Передаем ингредиент в конструктор
             onDrop(item);
         },
@@ -58,7 +60,7 @@ export const BurgerConstructor = () => {
         })
     });
 
-    const onDrop = (item) => {
+    const onDrop = (item: TIngredientData): void => {
         // Передаем ингредиент в конструктор
         (item.type === 'bun') ? dispatch(setBuns(item, uuid())) : dispatch(setIngredients(item, uuid()));
     }

@@ -38,6 +38,8 @@ const authInitialState = {
     resetPasswordSuccess: false,
     resetPasswordError: false,
     userInfo: null,
+    name: null,
+    email: null,
     userInfoLoading: false,
     userInfoError: false,
 }
@@ -55,6 +57,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfo: action.payload,
+                name: action.payload.user.user.name,
+                email: action.payload.user.user.email,
                 registerData: action.payload,
                 registerError: false,
                 registerLoading: false,
@@ -77,6 +81,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfo: action.payload,
+                name: action.payload.user.user.name,
+                email: action.payload.user.user.email,
                 loginData: action.payload,
                 loginLoading: false,
                 loginError: false,
@@ -98,6 +104,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 editData: action.payload,
+                name: action.payload.user.user.name,
+                email: action.payload.user.user.email,
                 editError: false
             }
         case EDIT_USER_FAILURE:
@@ -164,6 +172,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfo: action.payload,
+                name: action.payload.user.user.name,
+                email: action.payload.user.user.email,
                 userInfoLoading: false,
                 userInfoError: false,
                 isLogin: true

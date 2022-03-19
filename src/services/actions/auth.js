@@ -2,11 +2,11 @@ import { baseUrl } from '../../utils/config';
 import {
     checkResponse,
     setCookie,
-    getCookie, 
+    getCookie,
     deleteCookie
 } from "../../utils/helpers";
 
-import { updateToken } from '../api';
+import { updateToken, fetchUpdateToken } from '../api';
 
 export const REGISTER_USER_REQUEST = 'REGISTER_USER';
 export const REGISTER_USER_SUCCESS = 'REGISTER_USER_SUCCESS';
@@ -57,28 +57,30 @@ export function registerUserFailure(error) {
 }
 
 export function registerUser(body) {
-    return function (dispatch) {
+    return async dispatch => {
         dispatch({
             type: REGISTER_USER_REQUEST
         });
 
-        fetch(`${baseUrl}auth/register`, {
+        const requestOptions = {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        };
+
+        await fetch(`${baseUrl}auth/register`, requestOptions)
             .then(checkResponse)
-            .then(res => res.json())
-            .then((user) => {
-                setCookie('accessToken', user.accessToken)
-                localStorage.setItem('refreshToken', user.refreshToken);
-                dispatch(registerUserSuccess(user))
+            .then(data => {
+                setCookie('accessToken', data.accessToken.split('Bearer ')[1]);
+                localStorage.setItem('refreshToken', data.refreshToken);
+                dispatch(registerUserSuccess(data.user));
             })
-            .catch(error => dispatch(registerUserFailure(error)))
+            .catch(error => {
+                dispatch(registerUserFailure(error));
+            });
     }
 }
+
 
 // Авторизация пользователя
 export function loginUserSuccess(user) {
@@ -100,27 +102,27 @@ export function loginUserFailure(error) {
 }
 
 export function loginUser(body) {
-    return function (dispatch) {
+    return async function (dispatch) {
         dispatch({
             type: LOGIN_USER_REQUEST
         });
 
-        fetch(`${baseUrl}auth/login`, {
+        const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
-        })
+        }
+
+        await fetch(`${baseUrl}auth/login`, requestOptions)
             .then(checkResponse)
-            .then(res => res.json())
-            .then((user) => {
-
+            .then((data) => {
                 // Сохраняем данные пользователя в сторе и куки
-                setCookie('accessToken', user.accessToken)
-                localStorage.setItem('refreshToken', user.refreshToken);
+                setCookie('accessToken', data.accessToken.split('Bearer ')[1]);
+                localStorage.setItem('refreshToken', data.refreshToken);
 
-                dispatch(loginUserSuccess(user))
+                dispatch(loginUserSuccess(data))
             })
             .catch(error => dispatch(loginUserFailure(error)))
     }
@@ -146,33 +148,25 @@ export function editUserFailure(error) {
 }
 
 export function editUser(body) {
-    return function (dispatch) {
+    return async function (dispatch) {
         dispatch({
             type: EDIT_USER_REQUEST
         });
 
-        fetch(`${baseUrl}auth/user`, {
+        const requestOptions = {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getCookie('accessToken')
+                Authorization: 'Bearer ' + getCookie('accessToken')
             },
             body: JSON.stringify(body)
-        })
-            .then(checkResponse)
-            .then(res => res.json())
+        }
+
+        await fetchUpdateToken(`${baseUrl}auth/user`, requestOptions)
             .then((user) => {
                 dispatch(editUserSuccess(user))
             })
-            .catch(error => {
-                if(error.message === 'jwt expired') {
-                    updateToken()
-                    dispatch(editUser(body))
-                }
-                else {
-                    dispatch(editUserFailure(error))
-                }
-            })
+            .catch(error => dispatch(editUserFailure(error)))
     }
 }
 
@@ -193,7 +187,7 @@ export function userLogoutFailure(error) {
 }
 
 export function userLogout() {
-    return function (dispatch) {
+    return async function (dispatch) {
 
         const refreshToken = localStorage.getItem('refreshToken');
 
@@ -201,24 +195,32 @@ export function userLogout() {
             type: USER_LOGOUT_REQUEST
         });
 
-        fetch(`${baseUrl}auth/logout`, {
+        const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': getCookie('accessToken')
             },
             body: JSON.stringify({
                 token: refreshToken
             })
-        })
+        }
+
+        await fetch(`${baseUrl}auth/logout`, requestOptions)
             .then(checkResponse)
-            .then(res => res.json())
             .then(() => {
                 deleteCookie('accessToken');
                 localStorage.removeItem('refreshToken');
-                dispatch(userLogoutSuccess());
+                dispatch(userLogoutSuccess())
             })
-            .catch(error => dispatch(userLogoutFailure(error)))
+            .catch(error => {
+                if (error.message === 'jwt expired') {
+                    updateToken()
+                    dispatch(userLogout())
+                }
+                else {
+                    dispatch(userLogoutFailure(error))
+                }
+            })
     }
 }
 
@@ -241,23 +243,24 @@ export function forgotPasswordFailure(error) {
     }
 }
 
-export function forgotPassword(body) {
-    return function (dispatch) {
+export function forgotPassword(email) {
+    return async function (dispatch) {
         dispatch({
             type: FORGOT_PASSWORD_REQUEST
         });
 
-        fetch(`${baseUrl}password-reset`, {
+        const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ body })
-        })
+            body: JSON.stringify({ email: email })
+        }
+
+        await fetch(`${baseUrl}password-reset`, requestOptions)
             .then(checkResponse)
-            .then(res => res.json())
-            .then((message) => {
-                dispatch(forgotPasswordSuccess(message));
+            .then((status) => {
+                dispatch(forgotPasswordSuccess(status))
             })
             .catch(error => dispatch(forgotPasswordFailure(error)))
     }
@@ -283,20 +286,21 @@ export function resetPasswordFailure(error) {
 }
 
 export function resetPassword(body) {
-    return function (dispatch) {
+    return async function (dispatch) {
         dispatch({
             type: RESET_PASSWORD_REQUEST
         });
 
-        fetch(`${baseUrl}password-reset/reset`, {
+        const requestOptions = {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ body })
-        })
+            body: JSON.stringify(body)
+        }
+
+        await fetch(`${baseUrl}password-reset/reset`, requestOptions)
             .then(checkResponse)
-            .then(res => res.json())
             .then((message) => {
                 dispatch(resetPasswordSuccess(message));
             })
@@ -324,7 +328,7 @@ export function getUserFailure(error) {
 }
 
 export function getUser() {
-    return function (dispatch) {
+    return async function (dispatch) {
 
         const accessToken = getCookie('accessToken')
 
@@ -333,26 +337,21 @@ export function getUser() {
         });
 
         if (accessToken) {
-            fetch(`${baseUrl}auth/user`, {
+            const requestOptions = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': getCookie('accessToken')
+                    Authorization: 'Bearer ' + accessToken
                 }
-            })
-                .then(checkResponse)
-                .then(res => res.json())
-                .then((user) => {
-                    dispatch(getUserSuccess(user))
-                })
+            }
+
+            await fetchUpdateToken(`${baseUrl}auth/user`, requestOptions)
+                .then((data) => {
+                    dispatch(getUserSuccess(data))
+                }
+                )
                 .catch(error => {
-                    if(error.message === 'jwt expired') {
-                        updateToken()
-                        dispatch(getUser())
-                    }
-                    else {
-                        dispatch(getUserFailure(error))
-                    }
+                    dispatch(getUserFailure(error))
                 })
         }
     }
