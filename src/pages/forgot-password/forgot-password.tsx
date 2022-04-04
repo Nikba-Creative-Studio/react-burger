@@ -7,7 +7,7 @@ import styles from '../login/login.module.css';
 
 import { forgotPassword } from '../../services/actions/auth';
 
-import { TProfile, TAuth } from '../../types';
+import { TProfile, TAuth } from '../../types/types';
 
 export const ForgotPassword: FC = () => {
     const dispatch = useDispatch()

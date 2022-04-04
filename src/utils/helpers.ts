@@ -1,8 +1,8 @@
 export const checkResponse = (response: Response): Response | PromiseLike<Response> => {
-    if (response.ok) {
-        return response.json();
+    if (response && response.ok) {
+        return response;
     }
-    return Promise.reject(`Error ${response.status}`);
+    throw Error(`${response.status} ${response.statusText}`);
 }
     /*    
     return response.ok
@@ -11,7 +11,7 @@ export const checkResponse = (response: Response): Response | PromiseLike<Respon
 }
 */
 
-export function setCookie(name: string, value: string, props: any) {
+export function setCookie(name: string, value: string, props: any = false) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {

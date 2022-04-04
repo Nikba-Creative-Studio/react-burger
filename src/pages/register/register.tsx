@@ -7,7 +7,7 @@ import styles from '../login/login.module.css';
 
 import { registerUser } from '../../services/actions/auth';
 
-import { TLocationState, TAuth, TProfile } from '../../types';
+import { TLocationState, TAuth, TProfile } from '../../types/types';
 
 export const Register: FC = () => {
 

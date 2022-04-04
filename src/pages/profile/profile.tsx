@@ -8,7 +8,7 @@ import styles from './profile.module.css';
 
 import { editUser, userLogout } from '../../services/actions/auth';
 
-import { TProfile } from '../../types';
+import { TProfile } from '../../types/types';
 
 export const ProfilePage: FC = () => {
 

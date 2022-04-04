@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import image from '../../../images/done.png'
 import  styles from './order-details.module.css'
 
-import { TOrderDetailsProps } from '../../../types'
+import { TOrderDetailsProps } from '../../../types/types'
 
 export const OrderDetails = () => {
     

@@ -8,7 +8,7 @@ import {
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient.module.css';
-import { TIngredientData, TConstructorIngredientProps } from "../../../types";
+import { TIngredientData, TConstructorIngredientProps } from "../../../types/types";
 
 export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }: TConstructorIngredientProps ) => {
 

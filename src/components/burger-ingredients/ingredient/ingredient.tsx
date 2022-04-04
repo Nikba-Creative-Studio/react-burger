@@ -5,7 +5,7 @@ import { useDrag } from 'react-dnd';
 import styles from './ingredient.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { TLocationState, TIngredientProps } from '../../../types';
+import { TLocationState, TIngredientProps } from '../../../types/types';
 
 export const Ingredient = ({ item }: TIngredientProps) => {
     

@@ -5,7 +5,7 @@ import { Loader } from '../../loader/loader';
 
 import styles from './ingredient-details.module.css'
 
-import { TIngredientId, TIngredients } from '../../../types';
+import { TIngredientId, TIngredients } from '../../../types/types';
 
 export const IngredientDetails: FC = () => { 
     

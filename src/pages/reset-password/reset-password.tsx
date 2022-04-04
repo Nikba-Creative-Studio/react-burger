@@ -7,7 +7,7 @@ import styles from '../login/login.module.css';
 
 import { resetPassword } from '../../services/actions/auth';
 
-import { TAuth, TProfile } from '../../types';
+import { TAuth, TProfile } from '../../types/types';
 
 export const ResetPassword: FC = () => {
 

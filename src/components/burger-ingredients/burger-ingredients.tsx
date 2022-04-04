@@ -7,7 +7,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
 import { Loader } from '../loader/loader';
 
-import { TIngrefientsTab } from '../../types/';
+import { TIngrefientsTab } from '../../types/types';
 
 export const BurgerIngredients: FC = () => {
 

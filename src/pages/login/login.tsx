@@ -7,7 +7,7 @@ import styles from './login.module.css';
 
 import { loginUser } from '../../services/actions/auth';
 
-import { TLocationState, TProfile, TAuth } from '../../types';
+import { TLocationState, TProfile, TAuth } from '../../types/types';
 
 export const Login: FC = () => {
 

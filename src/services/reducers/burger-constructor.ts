@@ -6,37 +6,38 @@ import {
     CLEAN_CONSTRUCTOR,
 }
 from '../actions/burger-constructor';
+import { TIngredientData } from '../../types/types';
+import { IConstructorInitialState, TBurgerConstructorActionTypes } from '../../types/burger-constructor';
 
 const constructorInitialState = {
-    // Первоначальное состояние конструктора бургера
-    ingredients: [], // Список ингредиентов
-    buns: null, // Список булочек
+    ingredients: [] as TIngredientData[],
+    buns: null,
 }
 
-export const constructorReducer = (state = constructorInitialState, action) => {
+export const constructorReducer = (state = constructorInitialState, action: TBurgerConstructorActionTypes): IConstructorInitialState => {
     // Редюсеры для конструыктора бургера
     switch (action.type) {
         case SET_INGREDIENTS: 
             return {
                 ...state,
-                ingredients: [...state.ingredients, action.item],
+                ingredients: [...state.ingredients, action.item]
             }
         case SET_BUN_TYPE:
             return {
                 ...state,
-                buns: action.item,
+                buns: action.item.item,
             }
 
         case REMOVE_INGREDIENT:
             return {
                 ...state,
-                ingredients: [...state.ingredients].filter(item => item.uid !== action.uid)
+                ingredients: [...state.ingredients].filter((item: TIngredientData) => item.uid !== action.uid)
             }
         
         case MOVE_INGREDIENT: {
             
             const ingredientsNew = [...state.ingredients]
-            ingredientsNew.splice(action.dragIndex, 0, ingredientsNew.splice(action.hoverIndex, 1)[0])
+            ingredientsNew.splice(action.payload.dragIndex, 0, ingredientsNew.splice(action.payload.hoverIndex, 1)[0])
 
             return {
                 ...state,

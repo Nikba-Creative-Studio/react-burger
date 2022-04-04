@@ -16,7 +16,7 @@ import styles from './burger-constructor.module.css';
 
 import { Loader } from '../loader/loader';
 
-import { TIngredientData } from '../../types';
+import { TIngredientData } from '../../types/types';
 
 export const BurgerConstructor: FC = () => {
 

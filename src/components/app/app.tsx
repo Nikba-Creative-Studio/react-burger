@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 
 import styles from './app.module.css';
 
 // TS: Location State
-import { TLocationState} from '../../types';
+import { TLocationState} from '../../types/types';
 
 import {
     HomePage,

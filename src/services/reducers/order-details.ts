@@ -6,14 +6,16 @@ import {
 }
 from '../actions/order-details';
 
-const orderDetailsInitialState = {
+import { IOrderDetailsState, TPostOrderActions } from '../../types/order-details';
+
+const orderDetailsInitialState: IOrderDetailsState = {
     order: {},
     orderDetailsModal: false,
     isLoading: false,
     error: null,
 }
 
-export const orderDetailsReducer = (state = orderDetailsInitialState, action) => {
+export const orderDetailsReducer = (state = orderDetailsInitialState, action: TPostOrderActions) => {
     switch (action.type) {
         case POST_ORDER_REQUEST:
             return {
