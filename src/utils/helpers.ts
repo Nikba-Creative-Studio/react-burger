@@ -1,15 +1,12 @@
+import moment from 'moment';
+
+
 export const checkResponse = (response: Response): Response | PromiseLike<Response> => {
     if (response && response.ok) {
         return response;
     }
     throw Error(`${response.status} ${response.statusText}`);
 }
-    /*    
-    return response.ok
-        ? response
-        : response.json().then((err) => Promise.reject(err));
-}
-*/
 
 export function setCookie(name: string, value: string, props: any = false) {
     props = props || {};
@@ -44,3 +41,23 @@ export function getCookie(name: string) {
 export function deleteCookie(name: string) {
     setCookie(name, '', { expires: -1 });
 }
+
+
+export function formatDate (date: string|undefined): string {
+
+    const day = moment(date).format('DD');
+    const time = moment(date).format('HH:mm');
+    const today = moment().format('DD');
+    if (day === today) {
+        return `Сегодня в ${time}`;
+    
+    }
+    else {
+        return `Вчера в ${time}`;
+    }
+}
+
+
+
+
+

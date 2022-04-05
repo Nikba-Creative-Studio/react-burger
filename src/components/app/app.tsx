@@ -15,20 +15,20 @@ import {
     Register,
     NotFound404,
     ProfilePage,
-    IngredientsPage
+    IngredientsPage,
+    Feed,
+    FeedItem,
+    Orders,
+    OrdersItem
 } from '../../pages';
 
 import { AppHeader } from "../app-header/app-header";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { OrderDetails } from '../burger-constructor/order-details/order-details';
-
 import { Modal } from '../modal/modal';
-
 import { fetchIngredients } from "../../services/actions/burger-ingredients";
 import { hideOrderModal } from "../../services/actions/order-details";
-
 import { ProtectedRoute } from '../protected-route/protected-route';
-
 import { getUser } from '../../services/actions/auth';
 
 export const App: FC = () => {
@@ -93,6 +93,19 @@ export const App: FC = () => {
 
                         <ProtectedRoute path='/profile' exact={true}>
                             <ProfilePage />
+                        </ProtectedRoute>
+
+                        <Route path="/feed" exact={true}>
+                            <Feed/>
+                        </Route>
+                        <Route path="/feed/:id">
+                                <FeedItem/>
+                        </Route>
+                        <ProtectedRoute path="/profile/orders" exact={true}>
+                            <Orders/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/profile/orders/:id">
+                                <OrdersItem/>
                         </ProtectedRoute>
 
                         <Route>

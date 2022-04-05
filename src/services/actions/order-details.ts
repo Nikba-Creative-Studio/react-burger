@@ -36,12 +36,13 @@ export const postOrder: AppThunk = (ingredients: TIngredientData[]) => (dispatch
     dispatch(postOrderReqest());
 
     const accessToken: string | undefined = getCookie('accessToken');
+
     if (accessToken) {
         fetch(`${baseUrl}orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': accessToken
+                'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify({
                 "ingredients": ingredients

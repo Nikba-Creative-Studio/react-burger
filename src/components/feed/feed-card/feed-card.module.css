@@ -1,0 +1,53 @@
+.link {
+    composes: p-6 mb-10 from global;
+    background-color: var(--background);
+    border-radius: 40px;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    width: 100%;
+}
+
+.link:hover {
+    background-color: var(--background-element);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+    .id {
+        composes: text_type_digits-default from global;
+    }
+    .time {
+        color: var(--text-inactive-color);
+    }
+
+.cardBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ingredientImages {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    padding-left: 15px;
+}
+
+.cardBodyRight {
+    composes: text_type_digits-default from global;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardBodyRight svg {
+    margin-left: 5px;
+}
