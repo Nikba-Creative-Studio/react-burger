@@ -7,7 +7,7 @@ import { TIngredientData } from '../../../types/types';
 
 export const FeedDetails = ({ item } ) => {
 
-    const status = orderStatus(item.status)
+    const status = orderStatus(item.status);
     const date = formatDate(item.createdAt);
 
     const allIngredients = useSelector((state: any) => state.ingredients.ingredients);

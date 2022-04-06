@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { wsUserRequest, wsConnectClose } from "../../services/actions/feed"
 import styles from "./orders.module.css";
 import { Profile } from "../../components/profile/profile";
-import { IWsOrders, IFeedCardStatus } from "../../types/feed"
+import { IWsOrders } from "../../types/feed"
 import { Loader } from "../../components/loader/loader"
-import { FeedCard } from "../../components/feed/feed-card/feed-card"
+import { OrderCard } from "../../components/orders/orders-card/orders-card"
 
 
 export const Orders: FC = () => {
@@ -13,6 +13,10 @@ export const Orders: FC = () => {
     const dispatch = useDispatch();
 
     const { orders } = useSelector((state: any) => state.feed);
+
+    const sortedOrders = orders.sort((a: any, b: any) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
     useEffect(() => {
         dispatch(wsUserRequest());
@@ -34,13 +38,14 @@ export const Orders: FC = () => {
                 <h1>История заказов</h1>
 
                 <div className={styles.feedWrapper}>
-                    {orders.length &&
-                        orders.map((item: IWsOrders) => (
-                            <FeedCard
+                    {sortedOrders.length &&
+                        sortedOrders.map((item: IWsOrders) => (
+                            <OrderCard
                                 key={item._id}
                                 id={item._id}
                                 time={item.createdAt}
                                 name={item.name}
+                                status={item.status}
                                 orderNumber={item.number}
                                 ingredients={item.ingredients}
                                 pageName={'profile/orders'}

@@ -13,7 +13,7 @@ from '../services/actions/feed';
 export interface IWsOrders {
     _id: string;
     ingredients: string[];
-    status: 'done' | 'pending' | 'created';
+    status?: 'done' | 'pending' | 'created';
     name: 'string';
     number: number;
     createdAt?: string;
@@ -69,17 +69,17 @@ export interface IWsConnectUserRequest {
     type: typeof WS_CONNECT_USER_REQUEST;
 }
 
+export type IFeedCardStatus = 'done' | 'pending' | 'created';
+
 export interface IFeedCard {
     readonly time: string | undefined;
     readonly name: string;
     readonly ingredients: Array<string>;
     readonly orderNumber: number;
-    readonly status?: string | null;
+    readonly status?: IFeedCardStatus | null | string;
     readonly id: string;
     readonly pageName: string | undefined;
 }
-
-export type IFeedCardStatus = 'done' | 'pending' | 'created';
 
 export type TFeedActionTypes =
     | IWsConnectSuccess

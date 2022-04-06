@@ -56,7 +56,12 @@ export function formatDate (date: string|undefined): string {
     }
 }
 
-export function orderStatus(status: string): any {
+type TStatusResult = {
+    color: string;
+    statusText: string;
+}
+
+export function orderStatus(status: string | null | undefined): TStatusResult  {
 
     // color
     let color = '#000';

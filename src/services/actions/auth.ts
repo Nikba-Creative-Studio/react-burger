@@ -6,7 +6,7 @@ import {
     deleteCookie
 } from "../../utils/helpers";
 
-import { updateToken, fetchUpdateToken } from '../api';
+import { fetchUpdateToken } from '../api';
 
 
 import {

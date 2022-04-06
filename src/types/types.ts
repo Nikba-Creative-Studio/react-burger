@@ -8,6 +8,7 @@ export type TLocationState = {
     from: Location;
     ingredientModal?: Location;
     feedModal?: Location;
+    ordersModal?: Location;
 };
 
 

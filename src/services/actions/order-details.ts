@@ -1,7 +1,7 @@
 import { baseUrl } from '../../utils/config';
 import { cleanConstructor } from './burger-constructor';
 import { checkResponse, getCookie } from '../../utils/helpers'; 
-import { updateToken, fetchUpdateToken } from '../api'
+import { fetchUpdateToken } from '../api'
 
 import { AppThunk, AppDispatch } from '../../types/index';
 import { IPostData, IPostOrderSuccess, IPostOrderFailure, IPostOrderRequest } from '../../types/order-details';

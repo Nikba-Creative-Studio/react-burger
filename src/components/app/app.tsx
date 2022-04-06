@@ -49,6 +49,7 @@ export const App: FC = () => {
         const history = useHistory();
         const ingredientModal = location.state && location.state.ingredientModal;
         const feedModal = location.state && location.state.feedModal;
+        const ordersModal = location.state && location.state.ordersModal;
 
         // Статус модального окна заказа
         const orderDetailsModal = useSelector((state: any) => state.orderDetails.orderDetailsModal);
@@ -72,7 +73,7 @@ export const App: FC = () => {
             <>
                 <AppHeader />
                 <main className={styles.main}>
-                    <Switch location={ingredientModal || feedModal || location}>
+                    <Switch location={ingredientModal || feedModal || ordersModal || location}>
                         <Route path='/' exact={true}>
                             <HomePage />
                         </Route>
@@ -132,6 +133,14 @@ export const App: FC = () => {
                         <Route path='/feed/:id'>
                             <Modal onClose={toggleFeedModal} title="Информация о заказе">
                                 <FeedItem />
+                            </Modal>
+                        </Route>
+                    }
+
+                    {ordersModal &&
+                        <Route path='/profile/orders/:id'>
+                            <Modal onClose={toggleFeedModal} title="Информация о заказе">
+                                <OrdersItem />
                             </Modal>
                         </Route>
                     }
