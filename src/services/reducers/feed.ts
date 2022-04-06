@@ -1,7 +1,7 @@
 import {
     WS_CONNECT_SUCCESS,
     WS_CONNECT_CLOSE,
-    WS_GET_ORDERS,
+    WS_GET_ORDER,
     GET_ORDER
 }
 from '../actions/feed';
@@ -29,7 +29,7 @@ export const feedReducer = (state = initialState, action: TFeedActionTypes): IFe
                 ...initialState 
             };
 
-        case WS_GET_ORDERS:
+        case WS_GET_ORDER:
             return { 
                 ...state, 
                 ...action.payload.orders

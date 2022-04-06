@@ -7,6 +7,7 @@ export type RootState = ReturnType<typeof rootReducer>
 export type TLocationState = {
     from: Location;
     ingredientModal?: Location;
+    feedModal?: Location;
 };
 
 

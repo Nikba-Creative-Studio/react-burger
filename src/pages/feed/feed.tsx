@@ -1,4 +1,4 @@
-import { FC, useEffect, useCallback } from "react"
+import { FC, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { wsConnectRequest, wsConnectClose } from "../../services/actions/feed"
 import { FeedCard } from "../../components/feed/feed-card/feed-card"

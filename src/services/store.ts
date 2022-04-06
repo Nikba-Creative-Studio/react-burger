@@ -11,7 +11,7 @@ import {
   WS_CONNECT_REQUEST,
   WS_CONNECT_SUCCESS,
   WS_CONNECT_USER_REQUEST,
-  WS_GET_ORDERS,
+  WS_GET_ORDER,
 } from './actions/feed';
 
 import { TWsActions } from '../types/feed';
@@ -21,7 +21,7 @@ export const wsFeedActions: TWsActions = {
   onFeedSuccess: WS_CONNECT_SUCCESS,
   onFeedClose: WS_CONNECT_FAILURE,
   onFeedError: WS_CONNECT_CLOSE,
-  onFeedOrders: WS_GET_ORDERS,
+  onFeedOrders: WS_GET_ORDER,
   wsFeedUserStart: WS_CONNECT_USER_REQUEST,
 };
 

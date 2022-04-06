@@ -1,7 +1,7 @@
 import { baseUrl } from '../../utils/config';
 import { cleanConstructor } from './burger-constructor';
 import { checkResponse, getCookie } from '../../utils/helpers'; 
-import { updateToken } from '../api'
+import { updateToken, fetchUpdateToken } from '../api'
 
 import { AppThunk, AppDispatch } from '../../types/index';
 import { IPostData, IPostOrderSuccess, IPostOrderFailure, IPostOrderRequest } from '../../types/order-details';
@@ -20,11 +20,8 @@ export const postOrderSuccess = (data: IPostData[]): IPostOrderSuccess => ({
     }
 });
 
-export const postOrderFailure = (error: string): IPostOrderFailure => ({
+export const postOrderFailure = (): IPostOrderFailure => ({
     type: POST_ORDER_FAILURE,
-    payload: {
-        error
-    }
 });
 
 export const postOrderReqest = (): IPostOrderRequest => ({
@@ -32,40 +29,37 @@ export const postOrderReqest = (): IPostOrderRequest => ({
 });
 
 
-export const postOrder: AppThunk = (ingredients: TIngredientData[]) => (dispatch: AppDispatch) => {
+export const postOrder: AppThunk = (ingredients: TIngredientData[]) => async (dispatch: AppDispatch) => { 
     dispatch(postOrderReqest());
 
     const accessToken: string | undefined = getCookie('accessToken');
 
-    if (accessToken) {
-        fetch(`${baseUrl}orders`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify({
-                "ingredients": ingredients
+    try {
+        if(accessToken) {
+            const response = await fetchUpdateToken(`${baseUrl}orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    "ingredients": ingredients
+                })
             })
-        })
-        .then(checkResponse)
-        .then(response => response.json())
-        .then((data) => {
-            dispatch(postOrderSuccess(data))
-            dispatch(cleanConstructor())
-        })
-        .catch(error => {
-            if(error.message === 'jwt expired') {
-                updateToken()
+
+            const data = await response.json();
+
+            if (checkResponse(response)) {
+                dispatch(postOrderSuccess(data));
+                dispatch(cleanConstructor())
             }
             else {
-                dispatch(postOrderFailure(error))
-            }    
-        })
+                dispatch(postOrderFailure())
+            }
+        }
     }
-    else {
-        updateToken()
-        return postOrder(ingredients)
+    catch (error) {
+        dispatch(postOrderFailure())
     }
 }
 

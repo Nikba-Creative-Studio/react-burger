@@ -14,6 +14,8 @@ export const FeedCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber, 
     
     const allIngredients = useSelector((state: any) => state.ingredients.ingredients);
 
+    const location = useLocation();
+
     const getIngredientsById = (id: string) => {
         return allIngredients.filter((ingredient: { _id: string; }) => ingredient._id === id);
     }
@@ -40,9 +42,9 @@ export const FeedCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber, 
     const date = formatDate(time);
     
     return (
-        <Link
+        <Link 
+            to={{ pathname: `/${pageName}/${id}`, state: { feedModal: location } }}
             className={styles.link}
-            to={`/${pageName}/${id}`}
         >
             <div className={styles.cardHeader}>
                 <span className={styles.id}>{'#' + orderNumber}</span>

@@ -31,7 +31,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middlewa
                     break;
                 case onFeedError:
                     socket = null;
-                    break;
+                    break; 
                     
             }
 

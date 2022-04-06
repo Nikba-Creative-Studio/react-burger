@@ -34,8 +34,6 @@ export const orderDetailsReducer = (state = orderDetailsInitialState, action: TP
             return {
                 ...state,
                 order: {},
-                error: action.payload.error,
-
             }
         case HIDE_MODAL:
             return {

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import image from '../../../images/done.png'
+import image from '../../../images/checkmark.gif'
 import  styles from './order-details.module.css'
 
 import { TOrderDetailsProps } from '../../../types/types'

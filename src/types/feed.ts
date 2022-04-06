@@ -2,7 +2,7 @@ import {
     WS_CONNECT_REQUEST,
     WS_CONNECT_SUCCESS,
     WS_CONNECT_FAILURE,
-    WS_GET_ORDERS,
+    WS_GET_ORDER,
     WS_CONNECT_CLOSE,
     WS_CONNECT_USER_REQUEST,
     GET_ORDER
@@ -44,7 +44,7 @@ export interface IWsConnectClose {
 }
 
 export interface IWsGetOrders {
-    type: typeof WS_GET_ORDERS;
+    type: typeof WS_GET_ORDER;
     payload: {
         orders: IWsOrders[];
     };
@@ -83,6 +83,6 @@ export type TWsActions = {
     onFeedSuccess: typeof WS_CONNECT_SUCCESS;
     onFeedClose: typeof WS_CONNECT_FAILURE;
     onFeedError: typeof WS_CONNECT_CLOSE;
-    onFeedOrders: typeof WS_GET_ORDERS;
+    onFeedOrders: typeof WS_GET_ORDER;
     wsFeedUserStart: typeof WS_CONNECT_USER_REQUEST;
 };

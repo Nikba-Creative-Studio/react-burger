@@ -18,7 +18,7 @@ export const WS_CONNECT_USER_SUCCESS: 'WS_CONNECT_USER_SUCCESS' = 'WS_CONNECT_US
 export const WS_CONNECT_USER_FAILURE: 'WS_CONNECT_USER_FAILURE' = 'WS_CONNECT_USER_FAILURE';
 export const WS_CONNECT_USER_CLOSE: 'WS_CONNECT_USER_CLOSE' = 'WS_CONNECT_USER_CLOSE';
 
-export const WS_GET_ORDERS: 'WS_GET_ORDERS' = 'WS_GET_ORDERS';
+export const WS_GET_ORDER: 'WS_GET_ORDER' = 'WS_GET_ORDER';
 export const WS_GET_USER_ORDERS: 'WS_GET_USER_ORDERS' = 'WS_GET_USER_ORDERS';
 
 export const GET_ORDER: 'GET_ORDER' = 'GET_ORDER';
@@ -40,12 +40,11 @@ export const wsConnectClose = (): IWsConnectClose => ({
 });
 
 export const wsGetOrders = (orders: any ): IWsGetOrders => ({
-    type: WS_GET_ORDERS,
+    type: WS_GET_ORDER,
     payload: {
         orders
     }
 });
-
 
 export const getFeed = () => (dispatch: AppDispatch) => {
     fetch(`${baseUrl}orders/all`)

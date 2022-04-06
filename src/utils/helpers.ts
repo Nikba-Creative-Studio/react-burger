@@ -44,7 +44,6 @@ export function deleteCookie(name: string) {
 
 
 export function formatDate (date: string|undefined): string {
-
     const day = moment(date).format('DD');
     const time = moment(date).format('HH:mm');
     const today = moment().format('DD');
@@ -54,6 +53,39 @@ export function formatDate (date: string|undefined): string {
     }
     else {
         return `Вчера в ${time}`;
+    }
+}
+
+export function orderStatus(status: string): any {
+
+    // color
+    let color = '#000';
+
+    // status
+    let statusText = '';
+
+    switch (status) {
+        case 'done':
+            color = 'done';
+            statusText = 'Выполнен';
+            break;
+        case 'pending':
+            color = 'pending';
+            statusText = 'Готовится';
+            break;
+        case 'created':
+            color = 'created';
+            statusText = 'Создан';
+            break;
+        default:
+            color = 'pending';
+            statusText = 'Статус заказа неизвестен...';
+            break;
+    }
+
+    return {
+        color,
+        statusText
     }
 }
 

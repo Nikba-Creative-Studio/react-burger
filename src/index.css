@@ -5,3 +5,11 @@
 body {
   font-family: "Jet Brains Mono";
 }
+
+.done {
+  color: var(--colors-interface-success);
+}
+
+.pending {
+  color: #fff;
+}

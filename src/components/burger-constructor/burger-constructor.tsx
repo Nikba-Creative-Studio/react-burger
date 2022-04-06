@@ -78,10 +78,24 @@ export const BurgerConstructor: FC = () => {
         <section className={styles.constructor_container}>
             <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
                 
+                {!constructorData.length && !constructorBunsData &&        
+                    <div className={styles.empty_constructor}>Выберите ингредиенты</div>
+                }
+
                 <Ingredient item={constructorBunsData} type='top' isLocked={true} />
                 
                 <div className={styles.ingredients}>
-                    {constructorData.map((item, index) => ( <Ingredient  key={item.uid}  item={item} isLocked={false} id={item._id} index={index} moveIngredient={moveIngredient} /> ))}
+                    {constructorData.length > 0 &&
+                        constructorData.map((item, index) => ( 
+                            <Ingredient  
+                                key={item.uid}  
+                                item={item} 
+                                isLocked={false} 
+                                id={item._id} 
+                                index={index} 
+                                moveIngredient={moveIngredient} 
+                            /> ))
+                    }
                 </div>
                 
                 <Ingredient item={constructorBunsData} type='bottom' isLocked={true} />

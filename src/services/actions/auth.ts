@@ -6,7 +6,7 @@ import {
     deleteCookie
 } from "../../utils/helpers";
 
-import { updateToken } from '../api';
+import { updateToken, fetchUpdateToken } from '../api';
 
 
 import {
@@ -186,15 +186,13 @@ export const userInfoRequest = (): IUserInfoRequest => ({
     type: USER_INFO_REQUEST
 });
 
-export const getUser: AppThunk = () => async (dispatch: AppDispatch): Promise<void> => { 
+export const getUser: AppThunk = () => async (dispatch: AppDispatch) => { 
     dispatch(userInfoRequest());
-
-    const accessToken = getCookie('accessToken')
-    const refreshToken = localStorage.getItem('refreshToken');
-
+    const accessToken = getCookie('accessToken');
+    
     try {
         if (accessToken) {
-            const response = await fetch(`${baseUrl}auth/user`, {
+            const response = await fetchUpdateToken(`${baseUrl}auth/user`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
@@ -202,13 +200,6 @@ export const getUser: AppThunk = () => async (dispatch: AppDispatch): Promise<vo
             });
 
             const data = await response.json();
-
-            if(data.message  === 'jwt expired') {
-                if (refreshToken) {
-                    await updateToken()
-                    getUser()
-                }
-            }
 
             if (checkResponse(response)) {
                 dispatch(userInfoSuccess(data.user));
@@ -221,6 +212,7 @@ export const getUser: AppThunk = () => async (dispatch: AppDispatch): Promise<vo
         dispatch(userInfoFailure());
     }
 }
+
 
 // Редактирование пользователя
 export const editUserSuccess = (user: IUser): IEditUserSuccess => ({
@@ -245,7 +237,7 @@ export const editUser: AppThunk = (body: IUser) => async (dispatch: AppDispatch)
     dispatch(editUserRequest(body));
 
     try {
-        const response = await fetch(`${baseUrl}auth/user`, {
+        const response = await fetchUpdateToken(`${baseUrl}auth/user`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -255,11 +247,6 @@ export const editUser: AppThunk = (body: IUser) => async (dispatch: AppDispatch)
         });
 
         const data = await response.json();
-
-        if(data.message  === 'jwt expired') {
-            await updateToken();
-            return editUser(body);
-        }
 
         if (checkResponse(response)) {
             dispatch(editUserSuccess(data.user));

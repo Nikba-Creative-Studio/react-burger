@@ -1,0 +1,116 @@
+.feeDetails__number {
+    composes: text text_type_digits-default mt-3 from global;
+    display: block;
+}
+.feedDetails__title {
+    composes: mt-3 mb-3 from global;
+    font-size: 24px;
+    line-height: 1.25;
+}
+
+.feedDetails__subTitle {
+    composes: m-0 from global;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.feedDetails__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time {
+    color: var(--text-inactive-color);
+}
+
+.count {
+    composes: mr-2 from global;
+}
+
+.price {
+    composes: text_type_digits-default ml-2 from global;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price svg {
+    margin-left: 5px;
+}
+
+.feedDetails__list {
+    composes: mt-3 mb-3 from global;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 16px;
+    overflow-y: scroll;
+    max-height: 300px
+}
+
+.feedDetails__item {
+    composes: mt-2 from global;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.feedDetails__item__name {
+    text-align: left;
+    flex: 1;
+}
+
+.ingredientImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: block;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+    .ingredientImage::before {
+        background: linear-gradient(-135deg,var(--colors-interface-accent),var(--colors-interface-error));
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .imageWrapper {
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        z-index: 1;
+        background: #000;
+        margin: 2px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .image {
+            height: 100%;
+        }
+    
+.feedDetails__item__count {
+    composes: text_type_digits-default ml-4 from global;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

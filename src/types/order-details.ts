@@ -34,9 +34,6 @@ export interface IPostOrderSuccess {
 
 export interface IPostOrderFailure {
     readonly type: typeof POST_ORDER_FAILURE;
-    readonly payload: {
-        error: string;
-    };
 }
 
 export interface IPostOrderRequest {
