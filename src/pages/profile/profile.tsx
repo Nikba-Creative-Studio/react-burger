@@ -1,12 +1,9 @@
 import { useRef, useState, useEffect, FC } from 'react';
-import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
-
 import styles from './profile.module.css';
-
-import { editUser, userLogout } from '../../services/actions/auth';
+import { editUser } from '../../services/actions/auth';
+import { Profile } from '../../components/profile/profile';
 
 import { TProfile } from '../../types/types';
 
@@ -51,38 +48,13 @@ export const ProfilePage: FC = () => {
         dispatch(editUser(input))
     }
 
-    // Выход из профиля
-    const onLogout = () => {
-        dispatch(userLogout())
-    }
+    
 
     return (
         <div className={styles.wrapper}>
-            <aside className={styles.nav}>
-                <NavLink 
-                    to="/profile" 
-                    exact={true} 
-                    className={styles.link}
-                    activeClassName={styles.active}
-                >
-                    Профиль
-                </NavLink>
+            
+            <Profile />
 
-                <NavLink 
-                    to="/profile/orders" 
-                    className={styles.link}
-                    activeClassName={styles.active}
-                >
-                    История заказов
-                </NavLink>
-                <Button
-                    onClick={onLogout}
-                    type="primary" 
-                    size="small"
-                >
-                    Выход
-                </Button>
-            </aside>
             <main>
                 <form onSubmit={onSubmit}>
                     <div className={styles.input}>
