@@ -26,7 +26,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middlewa
                     accessToken = getCookie('accessToken'); 
                     if (accessToken) {
                         getUser();
-                        socket = new WebSocket(`${wsUrl}?token=${accessToken.split(' ')[1]}`);   
+                        socket = new WebSocket(`${wsUrl}?token=${accessToken}`);   
                     }
                     break;
                 case onFeedError:

@@ -5,7 +5,8 @@ import {
     WS_GET_ORDER,
     WS_CONNECT_CLOSE,
     WS_CONNECT_USER_REQUEST,
-    GET_ORDER
+    GET_ORDER,
+    WS_GET_USER_ORDERS
 }
 from '../services/actions/feed';
 
@@ -50,11 +51,22 @@ export interface IWsGetOrders {
     };
 }
 
+export interface IWsGetUserOrders {
+    type: typeof WS_GET_USER_ORDERS;
+    payload: {
+        orders: IWsOrders[];
+    };
+}
+
 export interface IGetOrderById {
     type: typeof GET_ORDER;
     payload: {
         order: IWsOrders;
     };
+}
+
+export interface IWsConnectUserRequest {
+    type: typeof WS_CONNECT_USER_REQUEST;
 }
 
 export interface IFeedCard {
@@ -75,7 +87,10 @@ export type TFeedActionTypes =
     | IWsConnectClose
     | IWsGetOrders
     | IGetOrderById
-    | IWsConnectFailure;
+    | IWsConnectFailure
+    | IWsGetUserOrders
+    | IWsConnectUserRequest
+    ;
 ;
 
 export type TWsActions = {

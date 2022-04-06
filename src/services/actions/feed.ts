@@ -5,7 +5,9 @@ import {
     IWsConnectSuccess,
     IWsConnectFailure,
     IWsGetOrders,
-    IWsConnectClose
+    IWsConnectClose,
+    IWsGetUserOrders,
+    IWsConnectUserRequest
  } from '../../types/feed';
 
 export const WS_CONNECT_REQUEST: 'WS_CONNECT_REQUEST' = 'WS_CONNECT_REQUEST';
@@ -39,8 +41,19 @@ export const wsConnectClose = (): IWsConnectClose => ({
     type: WS_CONNECT_CLOSE,
 });
 
+export const wsUserRequest = (): IWsConnectUserRequest => ({
+    type: WS_CONNECT_USER_REQUEST,
+});
+
 export const wsGetOrders = (orders: any ): IWsGetOrders => ({
     type: WS_GET_ORDER,
+    payload: {
+        orders
+    }
+});
+
+export const wsGetUserOrders = (orders: any ): IWsGetUserOrders => ({
+    type: WS_GET_USER_ORDERS,
     payload: {
         orders
     }
