@@ -24,6 +24,7 @@ export const updateToken = async (): Promise<any> => {
             const data = await request.json();
 
             if (data.success) {
+                deleteCookie('accessToken');
                 setCookie('accessToken', data.accessToken.split('Bearer ')[1]);
                 localStorage.setItem('refreshToken', data.refreshToken);
             }

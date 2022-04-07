@@ -37,17 +37,17 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middlewa
 
             if (socket) {
                 socket.onopen = (event) => {
-                    console.log('socket - открыт');
+                    //console.log('socket - открыт');
                     dispatch(wsConnectSuccess());
                 };
 
                 socket.onerror = (event) => {
-                    console.log('socket - ошибка');
+                    //console.log('socket - ошибка');
                     dispatch({ type: onFeedClose });
                 };
 
                 socket.onmessage = (event) => {
-                    console.log('socket - сообщение');
+                    //console.log('socket - сообщение');
                     const { data } = event;
                     const parsedData = JSON.parse(data);
                     dispatch(wsGetOrders(parsedData));
@@ -58,7 +58,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWsActions): Middlewa
                 }
 
                 socket.onclose = (event) => {
-                    console.log('socket - закрыт');
+                    //console.log('socket - закрыт');
                     if (event.code !== 1000) {
                         console.log(event.code);
                     }
