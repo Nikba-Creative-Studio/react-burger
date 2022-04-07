@@ -3,7 +3,7 @@ import { useAppSelector } from '../../../services/hooks'
 import styles from './orders-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { TIngredientData } from '../../../types/types';
+import { TIngredientData, TIngredientDataList } from '../../../types/types';
 import { IWsOrders } from '../../../types/feed';
 
 import { OrderCardDate } from "../order-card-date/order-card-date";
@@ -69,7 +69,7 @@ export const OrderDetails: FC<{ item: IWsOrders }> = ({ item }) => {
             <h4 className={styles.feedDetails__subTitle}>Состав:</h4>
 
             <div className={styles.feedDetails__list}>
-                {items.map((ingredient: any) => (
+                {items.map((ingredient: TIngredientDataList) => ( 
                     <div className={styles.feedDetails__item} key={ingredient.key}>
                         <div className={styles.ingredientImage}>
                             <div className={styles.imageWrapper}>

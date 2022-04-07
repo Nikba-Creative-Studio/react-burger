@@ -31,6 +31,11 @@ export type TIngredientData = {
     readonly counter: number;
 }
 
+export type TIngredientDataList = {
+    readonly key: string;
+    readonly ingredients: TIngredientData[];
+}
+
 // components: IngredientDetails
 export type TIngredientId = {
     readonly id: string;
