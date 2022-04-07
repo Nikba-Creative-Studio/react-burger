@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/hooks'
 
 import styles from "./burger-ingredients.module.css";
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,13 +7,13 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Ingredient } from './ingredient/ingredient';
 import { Loader } from '../loader/loader';
 
-import { TIngrefientsTab } from '../../types/';
+import { TIngrefientsTab } from '../../types/types';
 
 export const BurgerIngredients: FC = () => {
 
     // Загружаем ингредиенты из хранилища
-    const ingredientsData = useSelector((state: any) => state.ingredients.ingredients);
-    const isLoading = useSelector((state: any) => state.ingredients.isLoading);
+    const ingredientsData = useAppSelector((state) => state.ingredients.ingredients);
+    const isLoading = useAppSelector((state) => state.ingredients.isLoading);
 
     //Рефы для переключения вкладок
     const bunRef = useRef<HTMLLIElement>(null);

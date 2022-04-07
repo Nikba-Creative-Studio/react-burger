@@ -22,8 +22,9 @@ import {
     USER_INFO_FAILURE,
 } from '../actions/auth';
 
-const authInitialState = {
-    // Первоначальное состояние авторизации
+import { IAuthInitialState, TAuthAction } from '../../types/auth';   
+
+const authInitialState: IAuthInitialState = {
     registerData: null,
     registerError: false,
     registerLoading: false,
@@ -44,7 +45,7 @@ const authInitialState = {
     userInfoError: false,
 }
 
-export const authReducer = (state = authInitialState, action) => {
+export const authReducer = (state = authInitialState, action: TAuthAction): IAuthInitialState => {
     switch (action.type) {
         case REGISTER_USER_REQUEST:
             return {
@@ -57,8 +58,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfo: action.payload,
-                name: action.payload.user.user.name,
-                email: action.payload.user.user.email,
+                name: action.payload.user.name,
+                email: action.payload.user.email,
                 registerData: action.payload,
                 registerError: false,
                 registerLoading: false,
@@ -81,8 +82,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 userInfo: action.payload,
-                name: action.payload.user.user.name,
-                email: action.payload.user.user.email,
+                name: action.payload.user.name,
+                email: action.payload.user.email,
                 loginData: action.payload,
                 loginLoading: false,
                 loginError: false,
@@ -95,6 +96,7 @@ export const authReducer = (state = authInitialState, action) => {
                 loginLoading: false,
                 isLogin: false
             }
+        
         case EDIT_USER_REQUEST:
             return {
                 ...state,
@@ -104,8 +106,8 @@ export const authReducer = (state = authInitialState, action) => {
             return {
                 ...state,
                 editData: action.payload,
-                name: action.payload.user.user.name,
-                email: action.payload.user.user.email,
+                name: action.payload.user.name,
+                email: action.payload.user.email,
                 editError: false
             }
         case EDIT_USER_FAILURE:
@@ -162,18 +164,19 @@ export const authReducer = (state = authInitialState, action) => {
                 resetPasswordSuccess: false,
                 resetPasswordError: true
             }
+        
         case USER_INFO_REQUEST:
             return {
                 ...state,
-                userInfo: action.payload,
+                //userInfo: action.payload,
                 userInfoLoading: true,
             }
         case USER_INFO_SUCCESS:
             return {
                 ...state,
                 userInfo: action.payload,
-                name: action.payload.user.user.name,
-                email: action.payload.user.user.email,
+                name: action.payload.user.name,
+                email: action.payload.user.email,
                 userInfoLoading: false,
                 userInfoError: false,
                 isLogin: true

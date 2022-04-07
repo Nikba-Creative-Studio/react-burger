@@ -1,11 +1,11 @@
 import { useEffect, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { BrowserRouter as Router, Switch, Route, useLocation, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
 
 // TS: Location State
-import { TLocationState} from '../../types';
+import { TLocationState} from '../../types/types';
 
 import {
     HomePage,
@@ -15,25 +15,25 @@ import {
     Register,
     NotFound404,
     ProfilePage,
-    IngredientsPage
+    IngredientsPage,
+    Feed,
+    FeedItem,
+    Orders,
+    OrdersItem
 } from '../../pages';
 
 import { AppHeader } from "../app-header/app-header";
 import { IngredientDetails } from '../burger-ingredients/ingredient-details/ingredient-details';
 import { OrderDetails } from '../burger-constructor/order-details/order-details';
-
 import { Modal } from '../modal/modal';
-
 import { fetchIngredients } from "../../services/actions/burger-ingredients";
 import { hideOrderModal } from "../../services/actions/order-details";
-
 import { ProtectedRoute } from '../protected-route/protected-route';
-
 import { getUser } from '../../services/actions/auth';
 
 export const App: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         // Данные пользователя
@@ -48,12 +48,18 @@ export const App: FC = () => {
         const location = useLocation<TLocationState>();
         const history = useHistory();
         const ingredientModal = location.state && location.state.ingredientModal;
+        const ordersModal = location.state && location.state.ordersModal;
 
         // Статус модального окна заказа
-        const orderDetailsModal = useSelector((state: any) => state.orderDetails.orderDetailsModal);
+        const orderDetailsModal = useAppSelector((state) => state.orderDetails.orderDetailsModal);
 
         // Функция закрытия модального окна ингредиентов
         const toggleModalIngredients = () => {
+            history.goBack()
+        }
+
+        // Функция закрытия модального окна заказа
+        const toggleFeedModal = () => {
             history.goBack()
         }
 
@@ -66,7 +72,7 @@ export const App: FC = () => {
             <>
                 <AppHeader />
                 <main className={styles.main}>
-                    <Switch location={ingredientModal || location}>
+                    <Switch location={ingredientModal || ordersModal || location}>
                         <Route path='/' exact={true}>
                             <HomePage />
                         </Route>
@@ -95,6 +101,20 @@ export const App: FC = () => {
                             <ProfilePage />
                         </ProtectedRoute>
 
+                        <Route path="/feed" exact={true}>
+                            <Feed/>
+                        </Route>
+                        <Route path="/feed/:id" exact={true}>
+                            <FeedItem/>
+                        </Route>
+
+                        <ProtectedRoute path="/profile/orders" exact={true}>
+                            <Orders/>
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/profile/orders/:id">
+                            <OrdersItem/>
+                        </ProtectedRoute>
+
                         <Route>
                             <NotFound404 />
                         </Route>
@@ -106,6 +126,22 @@ export const App: FC = () => {
                                 <IngredientDetails />
                             </Modal>
                         </Route>
+                    }
+
+                    {ordersModal &&
+                        <>
+                        <Route path='/profile/orders/:id' exact={true}>
+                            <Modal onClose={toggleFeedModal} title="Информация о заказе">
+                                <OrdersItem />
+                            </Modal>
+                        </Route>
+
+                        <Route path='/feed/:id' exact={true}>
+                            <Modal onClose={toggleFeedModal} title="Информация о заказе">
+                                <OrdersItem />
+                            </Modal>
+                        </Route>
+                        </>
                     }
 
                 </main>

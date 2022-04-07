@@ -1,12 +1,14 @@
 import { baseUrl } from '../utils/config';
 
 import {
-    checkResponse,
     setCookie,
-    getCookie
+    getCookie,
+    deleteCookie,
+    checkResponse
 } from "../utils/helpers";
 
-export const updateToken = async () => {
+// Возобновление сессии
+export const updateToken = async (): Promise<any> => {
     const refreshToken = localStorage.getItem('refreshToken');
 
     const requestOptions = {
@@ -18,10 +20,11 @@ export const updateToken = async () => {
     if (refreshToken) {
 
         try {
-            const response = await fetch(`${baseUrl}auth/token`, requestOptions);
-            const data = await checkResponse(response);
+            const request = await fetch(`${baseUrl}auth/token`, requestOptions);
+            const data = await request.json();
 
             if (data.success) {
+                deleteCookie('accessToken');
                 setCookie('accessToken', data.accessToken.split('Bearer ')[1]);
                 localStorage.setItem('refreshToken', data.refreshToken);
             }
@@ -32,7 +35,8 @@ export const updateToken = async () => {
     }
 }
 
-export const fetchUpdateToken = async (url, options) => {
+export const fetchUpdateToken = async (url: string, options: RequestInit) => {
+    
     try {
         const response = await fetch(url, options);
         return await checkResponse(response);
@@ -42,14 +46,17 @@ export const fetchUpdateToken = async (url, options) => {
         console.log('Refreshing token');
 
         await updateToken();
-
+        
         const response = await fetch(url, {
             method: options.method,
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + getCookie('accessToken')
-            }
+            },
+            body: options.body,
         });
+        
         return await checkResponse(response);
     }
 }
+

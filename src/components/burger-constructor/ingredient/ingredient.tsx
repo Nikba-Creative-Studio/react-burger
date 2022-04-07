@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/hooks'
 import { useDrag, useDrop, DragObjectFactory, DropTargetMonitor} from 'react-dnd';
 
 import { 
@@ -8,15 +8,15 @@ import {
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient.module.css';
-import { TIngredientData, TConstructorIngredientProps } from "../../../types";
+import { TIngredientData, TConstructorIngredientProps } from "../../../types/types";
 
 export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }: TConstructorIngredientProps ) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const ref = useRef<HTMLDivElement>(null);
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
-    const removeItem = (id: any): void => {
+    const removeItem = (id: string | undefined): void => {
         dispatch(removeIngredient(id))
     }
 

@@ -7,25 +7,12 @@
     height: calc(100vh - 88px);
 }
 
+.main {
+    width: 100%;
+}
+
 .input {
     composes: mb-6 from global;
-}
-
-.nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
-.link {
-    composes: text text_type_main-medium mb-10 mr-10 from global;
-    color: var(--text-inactive-color);
-    text-decoration: none;
-}
-
-.active {
-    color: var(--text-primary-color);
 }
 
 .error {

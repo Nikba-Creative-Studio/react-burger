@@ -5,15 +5,17 @@ import {
 }
 from '../actions/burger-ingredients';
 
-const ingredientsInitialState = {
+import { IIngredientsState, TBurgerIngredientsActionTypes } from '../../types/burger-ingredients';
+
+const ingredientsInitialState: IIngredientsState = {
     // Первоначальное состояние ингредиентов бургера
     ingredients: [], // Список ингредиентов
     constructorIngredients: [], // Список ингредиентов в конструкторе
     isLoading: false, // Флаг загрузки ингредиентов
-    error: null, // Ошибка при загрузке ингредиентов
-}
+    error: '', // Ошибка при загрузке ингредиентов 
+} 
 
-export const ingredientsReducer = (state = ingredientsInitialState, action) => {
+export const ingredientsReducer = (state = ingredientsInitialState, action: TBurgerIngredientsActionTypes): IIngredientsState => {
     
     // Редюсеры для изменения состояния ингредиентов бургера
     switch(action.type) {
@@ -21,7 +23,7 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
             return {
                 ...state,
                 isLoading: true,
-                error: null,
+                error: '',
             }
 
         // Загрузка ингредиентов бургера

@@ -10,26 +10,40 @@
 
 .constructor_space {
     composes: p-5 from global;
-    border: 1px solid #2f2f37;
+    outline: 1px dashed var(--colors-interface-accent);
     border-radius: 20px;
     width: 100%;
     min-height: calc(100vh - 290px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center
 }
 
 .active {
-    border: 1px solid #4c4cff;
+    box-shadow: 0 0 5000px 1px var(--colors-interface-accent);
 }
 
 .ingredients {
     composes: mt-3 mb-3 from global;
-    
     list-style: none;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 16px;
     overflow-y: scroll;
     max-height: calc(100vh - 470px);
+}
+
+.empty_constructor {
+    color: var(--colors-interface-accent);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    margin-top: calc(50vh - 200px);
 }
 
 .constructor_footer {

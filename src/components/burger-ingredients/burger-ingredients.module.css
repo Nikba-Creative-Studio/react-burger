@@ -1,7 +1,7 @@
 .ingredients_container {
     composes: pr-5 from global;
     width: 50%;
-    max-height: calc(100vh - 88px);
+    max-height: calc(100vh - 190px);
     display: grid;
     grid-template-rows: min-content min-content minmax(0,1fr);
 }
@@ -28,6 +28,7 @@
     padding-top: 0;
     padding-bottom: 0;
     padding-left: 0;
+    border-bottom: 1px solid var(--colors-interface-accent)
 }
 
 .ingredients_collection {
@@ -35,7 +36,7 @@
 }
 
 .ingredients_title {
-    composes: pt-5 from global;
+    composes: pt-5 ml-5 from global;
 }
 
 .ingredients_list {

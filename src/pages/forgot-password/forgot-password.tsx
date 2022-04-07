@@ -1,16 +1,16 @@
 import { useState, FC } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
 
 import { forgotPassword } from '../../services/actions/auth';
 
-import { TProfile, TAuth } from '../../types';
+import { TProfile, TAuth } from '../../types/types';
 
 export const ForgotPassword: FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     type TEmail = Pick<TProfile, 'email'>
 
@@ -18,7 +18,7 @@ export const ForgotPassword: FC = () => {
         email: '',
     })
 
-    const { isLogin, forgotPasswordSuccess, forgotPasswordError }: TAuth = useSelector((state: any) => state.auth)
+    const { isLogin, forgotPasswordSuccess, forgotPasswordError }: TAuth = useAppSelector((state) => state.auth)
 
     // Отправка формы
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {

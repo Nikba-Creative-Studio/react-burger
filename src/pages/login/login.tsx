@@ -1,17 +1,17 @@
 import { useState, useRef, FC } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './login.module.css';
 
 import { loginUser } from '../../services/actions/auth';
 
-import { TLocationState, TProfile, TAuth } from '../../types';
+import { TLocationState, TProfile, TAuth } from '../../types/types';
 
 export const Login: FC = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const location = useLocation<TLocationState>()
     const inputRef = useRef(null)
 
@@ -22,7 +22,7 @@ export const Login: FC = () => {
         password: ''
     })
 
-    const { isLogin, loginError, resetPasswordSuccess }: TAuth = useSelector((state: any) => state.auth)
+    const { isLogin, loginError, resetPasswordSuccess }: TAuth = useAppSelector((state) => state.auth)
     
     // Перенаправление на страницу после авторизации
     if(isLogin) {

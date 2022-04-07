@@ -1,0 +1,50 @@
+
+
+    .ingredientImage {
+        width: 64px;
+        height: 64px;
+        margin-left: -15px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: block;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .ingredientImage::before {
+            background: linear-gradient(-135deg,var(--colors-interface-accent),var(--colors-interface-error));
+            content: "";
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .imageWrapper {
+            width: 60px;
+            height: 60px;
+            position: absolute;
+            z-index: 1;
+            background: #000;
+            margin: 2px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .image {
+                height: 100%;
+            }
+
+            .imageMore {
+                opacity: .4;
+            }
+        
+        .more {
+            composes: text_type_digits-default from global;
+            position: absolute;
+            z-index: 2;
+        }

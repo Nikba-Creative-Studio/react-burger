@@ -29,7 +29,7 @@ export const AppHeader: FC = () => {
                         
                         <li className={styles.nav_item}>
                             <NavLink
-                                to="/orders"
+                                to="/feed"
                                 className={styles.nav_link}
                                 activeClassName={styles['nav_link--active']}
                                 exact={true}

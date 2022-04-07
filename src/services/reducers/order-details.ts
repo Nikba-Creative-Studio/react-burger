@@ -6,14 +6,15 @@ import {
 }
 from '../actions/order-details';
 
-const orderDetailsInitialState = {
-    order: {},
+import { IOrderDetailsState, TPostOrderActions } from '../../types/order-details';
+
+const orderDetailsInitialState: IOrderDetailsState = {
+    order: null,
     orderDetailsModal: false,
     isLoading: false,
     error: null,
 }
-
-export const orderDetailsReducer = (state = orderDetailsInitialState, action) => {
+export const orderDetailsReducer = (state = orderDetailsInitialState, action: TPostOrderActions): IOrderDetailsState => { 
     switch (action.type) {
         case POST_ORDER_REQUEST:
             return {
@@ -31,9 +32,6 @@ export const orderDetailsReducer = (state = orderDetailsInitialState, action) =>
         case POST_ORDER_FAILURE:
             return {
                 ...state,
-                order: {},
-                error: action.payload.error,
-
             }
         case HIDE_MODAL:
             return {
