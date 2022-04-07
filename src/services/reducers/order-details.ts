@@ -14,8 +14,7 @@ const orderDetailsInitialState: IOrderDetailsState = {
     isLoading: false,
     error: null,
 }
-
-export const orderDetailsReducer = (state = orderDetailsInitialState, action: TPostOrderActions) => {
+export const orderDetailsReducer = (state = orderDetailsInitialState, action: TPostOrderActions): IOrderDetailsState => { 
     switch (action.type) {
         case POST_ORDER_REQUEST:
             return {

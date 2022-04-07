@@ -12,7 +12,7 @@ export const FETCH_INGREDIENTS_FAILURE: 'FETCH_INGREDIENTS_FAILURE' = 'FETCH_ING
 export const fetchIngredientsSuccess = (ingredients: TIngredientData[]): IIngredientsSuccess => ({
     type: FETCH_INGREDIENTS_SUCCESS,
     payload: {
-        ingredients
+        ingredients 
     }
 });
 

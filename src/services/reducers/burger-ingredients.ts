@@ -12,7 +12,7 @@ const ingredientsInitialState: IIngredientsState = {
     ingredients: [], // Список ингредиентов
     constructorIngredients: [], // Список ингредиентов в конструкторе
     isLoading: false, // Флаг загрузки ингредиентов
-    error: '', // Ошибка при загрузке ингредиентов
+    error: '', // Ошибка при загрузке ингредиентов 
 } 
 
 export const ingredientsReducer = (state = ingredientsInitialState, action: TBurgerIngredientsActionTypes): IIngredientsState => {

@@ -61,7 +61,7 @@ export type TModalProps = {
 
 // components: BurgerConstructor/Ingredient
 export type TConstructorIngredientProps = {
-    readonly item: TIngredientData;
+    readonly item: TIngredientData | null;
     readonly type?: string;
     readonly isLocked: boolean;
     readonly id?: string;

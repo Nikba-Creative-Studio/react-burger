@@ -9,9 +9,9 @@ from '../actions/burger-constructor';
 import { TIngredientData } from '../../types/types';
 import { IConstructorInitialState, TBurgerConstructorActionTypes } from '../../types/burger-constructor';
 
-const constructorInitialState = {
-    ingredients: [] as TIngredientData[],
-    buns: null,
+const constructorInitialState: IConstructorInitialState = {
+    ingredients: [],
+    buns: null, 
 }
 
 export const constructorReducer = (state = constructorInitialState, action: TBurgerConstructorActionTypes): IConstructorInitialState => {

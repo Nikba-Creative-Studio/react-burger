@@ -20,7 +20,7 @@ export const ResetPassword: FC = () => {
         token: '',
     })
 
-    const { isLogin, resetPasswordSuccess, resetPasswordError, forgotPasswordSuccess }: TAuth = useAppSelector((state: any) => state.auth)
+    const { isLogin, resetPasswordSuccess, resetPasswordError, forgotPasswordSuccess }: TAuth = useAppSelector((state) => state.auth)
 
     // Отправка формы
     const onSubmit = (e) => {

@@ -16,7 +16,7 @@ export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }: 
     const ref = useRef<HTMLDivElement>(null);
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)
-    const removeItem = (id: any): void => {
+    const removeItem = (id: string | undefined): void => {
         dispatch(removeIngredient(id))
     }
 

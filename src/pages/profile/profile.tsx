@@ -11,7 +11,7 @@ export const ProfilePage: FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const { editError, editData, name, email }: TProfile = useAppSelector((state: any) => state.auth)
+    const { editError, editData, name, email } = useAppSelector((state) => state.auth)
 
     const inputNameRef = useRef<HTMLInputElement>(null);
     const inputEmailRef = useRef<HTMLInputElement>(null);

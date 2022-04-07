@@ -29,7 +29,7 @@ export interface ISetBuns {
 
 export interface IRemoveIngredient {
     readonly type: typeof REMOVE_INGREDIENT;
-    readonly uid: string
+    readonly uid: string | undefined;
 }
 
 export interface IMoveIngredients {

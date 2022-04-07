@@ -24,7 +24,7 @@ export const setBuns = (item: TIngredientData, uid: string): ISetBuns => ({
     }
 });
 
-export const removeIngredient = (uid: string): IRemoveIngredient => ({
+export const removeIngredient = (uid: string | undefined): IRemoveIngredient => ({
     type: REMOVE_INGREDIENT,
     uid: uid
 });

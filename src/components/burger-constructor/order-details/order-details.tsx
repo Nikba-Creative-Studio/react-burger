@@ -7,7 +7,7 @@ import { TOrderDetailsProps } from '../../../types/types'
 export const OrderDetails = () => {
     
     // Загружаем данные из хранилища
-    const { order }: TOrderDetailsProps = useAppSelector((state: any) => state.orderDetails);
+    const { order } = useAppSelector((state: any) => state.orderDetails);
     
     return (
         <div className={styles.order_details}>

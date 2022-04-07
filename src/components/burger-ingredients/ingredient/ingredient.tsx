@@ -15,7 +15,7 @@ export const Ingredient: FC<TIngredientProps> = ({ item }) => {
     const { image, price, name } = item;
     
     // Загружаем данные из хранилища
-    const { ingredients, buns }= useAppSelector((state: any) => state.constructorIngredients);
+    const { ingredients, buns }= useAppSelector((state) => state.constructorIngredients);
 
     // Количество ингредиента в конструкторе
     const count = (item.type === 'bun') 
