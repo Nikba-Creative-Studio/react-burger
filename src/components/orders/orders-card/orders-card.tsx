@@ -3,6 +3,7 @@ import { useAppSelector } from '../../../services/hooks'
 
 import { Link, useLocation } from "react-router-dom";
 import { IFeedCard } from "../../../types/feed";
+import { TLocationState } from "../../../types/types";
 
 import { OrderCardImages } from "../order-card-image/order-card-image";
 import { OrderCardDate } from "../order-card-date/order-card-date";
@@ -15,7 +16,7 @@ export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber,
     
     const allIngredients = useAppSelector((state) => state.ingredients.ingredients);
 
-    const location = useLocation();
+    const location = useLocation<TLocationState>();
 
     const getIngredientsById = (id: string) => {
         return allIngredients.filter((ingredient: { _id: string; }) => ingredient._id === id);

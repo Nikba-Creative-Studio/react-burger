@@ -50,7 +50,7 @@ export const postOrder: AppThunk = (ingredients: TIngredientData[]) => async (di
             const data = await response.json();
 
             if (checkResponse(response)) {
-                dispatch(postOrderSuccess(data));
+                dispatch(postOrderSuccess(data.order.number));
                 dispatch(cleanConstructor())
             }
             else {

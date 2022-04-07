@@ -6,25 +6,26 @@ import {
 }
 from '../services/actions/order-details';
 
-export interface IOrderDetailsState {
-    readonly order: {},
-    readonly orderDetailsModal: boolean,
-    readonly isLoading: boolean,
-    readonly error: string | null,
-}
-
 export interface IPostData {
     readonly success: boolean;
     readonly name: string;
     readonly order: {
         readonly number: number,
-    }
+    } 
 }
+export interface IOrderDetailsState {
+    readonly order: IPostData[] | null;
+    readonly orderDetailsModal: boolean;
+    readonly isLoading: boolean;
+    readonly error: string | null;
+}
+
+
 
 export interface IPostOrderSuccess {
     readonly type: typeof POST_ORDER_SUCCESS;
     readonly payload: {
-        data: IPostData[];
+        data: IPostData[] | null;
     };
 }
 

@@ -130,13 +130,13 @@ export const App: FC = () => {
 
                     {ordersModal &&
                         <>
-                        <Route path='/profile/orders/:id'>
+                        <Route path='/profile/orders/:id' exact={true}>
                             <Modal onClose={toggleFeedModal} title="Информация о заказе">
                                 <OrdersItem />
                             </Modal>
                         </Route>
 
-                        <Route path='/feed/:id'>
+                        <Route path='/feed/:id' exact={true}>
                             <Modal onClose={toggleFeedModal} title="Информация о заказе">
                                 <OrdersItem />
                             </Modal>

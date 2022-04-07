@@ -2,16 +2,14 @@ import { useAppSelector } from '../../../services/hooks'
 import image from '../../../images/checkmark.gif'
 import  styles from './order-details.module.css'
 
-import { TOrderDetailsProps } from '../../../types/types'
-
 export const OrderDetails = () => {
     
     // Загружаем данные из хранилища
-    const { order } = useAppSelector((state: any) => state.orderDetails);
+    const { order } = useAppSelector((state) => state.orderDetails);
     
     return (
         <div className={styles.order_details}>
-            <h2 className={styles.number}>{order.order.number}</h2>
+            <h2 className={styles.number}>{order}</h2>
             <p className={styles.title}>идентификатор заказа</p>
             <img src={image} alt="✓" className={styles.image} />
             <p className={styles.status}>Ваш заказ начали готовить</p>

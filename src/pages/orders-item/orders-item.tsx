@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { useParams} from "react-router-dom";
 import { OrderDetails } from "../../components/orders/orders-details/orders-details";
 import { FeedParams } from "../../types/feed";
+import styles from "./orders-item.module.css";
 
 export const OrdersItem: FC = () => {
 
@@ -28,6 +29,10 @@ export const OrdersItem: FC = () => {
     }
 
     return (
-        <OrderDetails item={item} />
+        <div className={styles.wrapper}>
+            <div className={styles.card}>
+                <OrderDetails item={item} />
+            </div>
+        </div>
     )
 }
