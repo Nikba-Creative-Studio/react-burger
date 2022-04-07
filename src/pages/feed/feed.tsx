@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { wsConnectRequest, wsConnectClose } from "../../services/actions/feed"
-import { FeedCard } from "../../components/feed/feed-card/feed-card"
+import { OrderCard } from "../../components/orders/orders-card/orders-card"
 import { IWsOrders, IFeedCardStatus } from "../../types/feed"
 import { Loader } from "../../components/loader/loader"
 
@@ -9,11 +9,10 @@ import styles from "./feed.module.css"
 
 export const Feed: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { total, totalToday, orders } = useSelector((state: any) => state.feed);
+    const { total, totalToday, orders } = useAppSelector((state) => state.feed);
     
-
     useEffect(() => {
         dispatch(wsConnectRequest());
         return () => {
@@ -30,7 +29,6 @@ export const Feed: FC = () => {
         return <Loader />
     }
 
-
     return (
         <div className={styles.wrapper}>
             
@@ -39,7 +37,7 @@ export const Feed: FC = () => {
                 <div className={styles.feedWrapper}> 
                     {orders.length &&
                         orders.map((item: IWsOrders) => (
-                            <FeedCard
+                            <OrderCard
                                 key={item._id}
                                 id={item._id}
                                 time={item.createdAt}

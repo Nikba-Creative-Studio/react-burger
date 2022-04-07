@@ -1,0 +1,11 @@
+.price {
+    composes: text_type_digits-default from global;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price svg {
+    margin-left: 5px;
+}

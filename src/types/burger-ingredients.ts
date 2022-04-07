@@ -8,10 +8,10 @@ import {
 from '../services/actions/burger-ingredients';
 
 export interface IIngredientsState {
-    ingredients: TIngredientData[];
-    constructorIngredients: TIngredientData[];
-    isLoading: boolean;
-    error: string;
+    readonly ingredients: TIngredientData[];
+    readonly constructorIngredients: TIngredientData[];
+    readonly isLoading: boolean;
+    readonly error: string;
 }
 
 export interface IIngredientsRequest {

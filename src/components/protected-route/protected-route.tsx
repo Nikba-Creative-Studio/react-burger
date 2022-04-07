@@ -1,11 +1,11 @@
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../services/hooks'
 
 import {RouteProps} from "react-router";
 
 export const ProtectedRoute = ({ children, ...rest }: RouteProps) => {
 
-    const isLogin = useSelector((state: any) => state.auth.isLogin);
+    const isLogin = useAppSelector((state) => state.auth.isLogin);
 
     return (
         <Route

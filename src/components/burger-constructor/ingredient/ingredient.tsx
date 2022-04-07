@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../../services/hooks'
 import { useDrag, useDrop, DragObjectFactory, DropTargetMonitor} from 'react-dnd';
 
 import { 
@@ -12,7 +12,7 @@ import { TIngredientData, TConstructorIngredientProps } from "../../../types/typ
 
 export const Ingredient = ({ item, type, isLocked, id, index, moveIngredient }: TConstructorIngredientProps ) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const ref = useRef<HTMLDivElement>(null);
 
     //Експериментальная функция для удаления ингредиентов (Проверка работаспособности totalPrice)

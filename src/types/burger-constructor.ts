@@ -10,8 +10,8 @@ import {
 from '../services/actions/burger-constructor';
 
 export interface IConstructorInitialState {
-    ingredients: TIngredientData[];
-    buns: TIngredientData | null;
+    readonly ingredients: TIngredientData[];
+    readonly buns: TIngredientData | null;
 }
 
 export interface ISetIngredients {

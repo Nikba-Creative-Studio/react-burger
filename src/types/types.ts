@@ -5,106 +5,105 @@ export type RootState = ReturnType<typeof rootReducer>
 
 // components: Ingredient
 export type TLocationState = {
-    from: Location;
-    ingredientModal?: Location;
-    feedModal?: Location;
-    ordersModal?: Location;
+    readonly from: Location;
+    readonly ingredientModal?: Location;
+    readonly ordersModal?: Location;
 };
 
 
 // components: IngredientDetails, BurgerConstructor
 export type TIngredientData = {
-    _id: string;
-    uid?: string;
-    id: string;
-    name: string;
-    type: string;
-    proteins: number;
-    fat: number;
-    carbohydrates: number;
-    calories: number;
-    image: string;
-    image_mobile: string;
-    image_large: string;
-    price: number;
-    __v: number;
-    key: string;
-    counter: number;
+    readonly _id: string;
+    readonly uid?: string;
+    readonly id: string;
+    readonly name: string;
+    readonly type: string;
+    readonly proteins: number;
+    readonly fat: number;
+    readonly carbohydrates: number;
+    readonly calories: number;
+    readonly image: string;
+    readonly image_mobile: string;
+    readonly image_large: string;
+    readonly price: number;
+    readonly __v: number;
+    readonly key: string;
+    readonly counter: number;
 }
 
 // components: IngredientDetails
 export type TIngredientId = {
-    id: string;
+    readonly id: string;
 }
 
 // components: Ingredient
 export type TIngredientProps = {
-    item: TIngredientData;
+    readonly item: TIngredientData;
 }
 
 // components: IngredientDetails
 export type TIngredients = {
-    ingredients: TIngredientData[];
-    isLoading: boolean;
+    readonly ingredients: TIngredientData[];
+    readonly isLoading: boolean;
 }
 
 // components: BurgerIngredients
 export type TIngredientsType = {
-    type: string;
+    readonly type: string;
 }
 
 // components: modal
 export type TModalProps = {
-    onClose: () => void;
-    title?: string;
-    children: React.ReactNode;
+    readonly onClose: () => void;
+    readonly title?: string;
+    readonly children: React.ReactNode;
 }
 
 // components: BurgerConstructor/Ingredient
 export type TConstructorIngredientProps = {
-    item: TIngredientData;
-    type?: string;
-    isLocked: boolean;
-    id?: string;
-    index?: any;
+    readonly item: TIngredientData;
+    readonly type?: string;
+    readonly isLocked: boolean;
+    readonly id?: string;
+    readonly index?: any;
     //moveIngredient?: (dragIndex: any, hoverIndex: any) => void;
-    moveIngredient?: any;   
+    readonly moveIngredient?: any;   
 }
 
 // components: OrderDetails
 export type TOrderDetailsProps = {
-    order: {
-        order: {
-            number: number;
+    readonly order: {
+        readonly order: {
+            readonly number: number;
         }
     }
 }
 
 // components: Profile
 export type TProfile = {
-    password: string;
-    email: string;
-    name: string;
-    token: string;
-    editError: boolean;
-    editData: {
-        name: string;
-        email: string;
-        password: string;
+    readonly password: string;
+    readonly email: string;
+    readonly name: string;
+    readonly token: string;
+    readonly editError: boolean;
+    readonly editData: {
+        readonly name: string;
+        readonly email: string;
+        readonly password: string;
     }
 }
 
 export type TAuth = {
-    isLogin: boolean;
-    resetPasswordSuccess: boolean;
-    resetPasswordError: boolean;
-    forgotPasswordSuccess: boolean;
-    forgotPasswordError: boolean;
-    loginError: boolean;
-    registerError: boolean;
+    readonly isLogin: boolean;
+    readonly resetPasswordSuccess: boolean;
+    readonly resetPasswordError: boolean;
+    readonly forgotPasswordSuccess: boolean;
+    readonly forgotPasswordError: boolean;
+    readonly loginError: boolean;
+    readonly registerError: boolean;
 }
 
 export type TIngrefientsTab = {
-    type: string;
-    scrollTo: any;
+    readonly type: string;
+    readonly scrollTo: any;
 }

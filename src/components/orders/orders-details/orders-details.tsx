@@ -1,16 +1,18 @@
-import { useSelector } from 'react-redux';
-import styles from './feed-details.module.css';
-import { orderStatus, formatDate } from '../../../utils/helpers'
+import { FC } from 'react';
+import { useAppSelector } from '../../../services/hooks'
+import styles from './orders-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { TIngredientData } from '../../../types/types';
+import { IWsOrders } from '../../../types/feed';
 
-export const FeedDetails = ({ item } ) => {
+import { OrderCardDate } from "../order-card-date/order-card-date";
+import { OrderCardPrice } from "../order-card-price/order-card-price";
+import { OrderCardStatus } from "../order-card-status/order-card-status";
 
-    const status = orderStatus(item.status);
-    const date = formatDate(item.createdAt);
+export const OrderDetails: FC<{ item: IWsOrders }> = ({ item }) => {
 
-    const allIngredients = useSelector((state: any) => state.ingredients.ingredients);
+    const allIngredients = useAppSelector((state) => state.ingredients.ingredients);
 
     const getIngredientsById = (id: string) => {
         return allIngredients.filter((ingredient: { _id: string; }) => ingredient._id === id);
@@ -62,12 +64,11 @@ export const FeedDetails = ({ item } ) => {
                 {item.name}
             </div>
 
-            <span className={status.color}>{status.statusText}</span>
+            <OrderCardStatus status={item.status} />
 
             <h4 className={styles.feedDetails__subTitle}>Состав:</h4>
 
             <div className={styles.feedDetails__list}>
-
                 {items.map((ingredient: any) => (
                     <div className={styles.feedDetails__item} key={ingredient.key}>
                         <div className={styles.ingredientImage}>
@@ -94,18 +95,13 @@ export const FeedDetails = ({ item } ) => {
                                 <CurrencyIcon type="primary" />
                             </span>
                         </div>
-
-                        
                     </div>
                 ))}
             </div>
 
             <div className={styles.feedDetails__footer}>
-                <time className={styles.time}>{date}</time>
-                <span className={styles.price}>
-                {ingredientsTotal}
-                    <CurrencyIcon type="primary" />
-                </span>
+                <OrderCardDate time={item.createdAt} />
+                <OrderCardPrice price={ingredientsTotal} />
             </div>
 
         </div>

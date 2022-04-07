@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../services/hooks'
 import image from '../../../images/checkmark.gif'
 import  styles from './order-details.module.css'
 
@@ -7,7 +7,7 @@ import { TOrderDetailsProps } from '../../../types/types'
 export const OrderDetails = () => {
     
     // Загружаем данные из хранилища
-    const { order }: TOrderDetailsProps = useSelector((state: any) => state.orderDetails);
+    const { order }: TOrderDetailsProps = useAppSelector((state: any) => state.orderDetails);
     
     return (
         <div className={styles.order_details}>

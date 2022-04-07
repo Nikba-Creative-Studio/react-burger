@@ -1,19 +1,20 @@
 import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { wsUserRequest, wsConnectClose } from "../../services/actions/feed"
-import styles from "./orders.module.css";
+
 import { Profile } from "../../components/profile/profile";
 import { IWsOrders } from "../../types/feed"
 import { Loader } from "../../components/loader/loader"
 import { OrderCard } from "../../components/orders/orders-card/orders-card"
 
+import styles from "./orders.module.css";
 
 export const Orders: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { orders } = useSelector((state: any) => state.feed);
-
+    const { orders } = useAppSelector((state) => state.feed);
+    
     const sortedOrders = orders.sort((a: any, b: any) => {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });

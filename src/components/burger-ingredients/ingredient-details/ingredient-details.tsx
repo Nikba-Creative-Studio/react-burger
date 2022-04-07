@@ -1,5 +1,5 @@
 import { useMemo, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../../../services/hooks'
 import { useParams } from "react-router-dom";
 import { Loader } from '../../loader/loader';
 
@@ -11,7 +11,7 @@ export const IngredientDetails: FC = () => {
     
     const { id } = useParams<TIngredientId>();
 
-    const { ingredients, isLoading }: TIngredients = useSelector((state: any) => state.ingredients);
+    const { ingredients, isLoading }: TIngredients = useAppSelector((state) => state.ingredients);
     
     const ingredient = useMemo(() => {
         return ingredients.find(ingredient => ingredient._id === id)

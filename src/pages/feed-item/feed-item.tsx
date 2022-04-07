@@ -1,22 +1,17 @@
 import { FC, useEffect, useMemo } from "react";
 import { getFeed } from "../../services/actions/feed";
 import { Loader } from "../../components/loader/loader";
-
-import { useSelector, useDispatch } from "react-redux"
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { useParams} from "react-router-dom";
-import { FeedDetails } from "../../components/feed/feed-details/feed-details";
-
-
-type FeedParams = {
-    id: string;
-};
+import { OrderDetails } from "../../components/orders/orders-details/orders-details";
+import { FeedParams } from "../../types/feed";
 
 export const FeedItem: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const params = useParams<FeedParams>();
 
-    const { orders } = useSelector((state: any) => state.feed);
+    const { orders } = useAppSelector((state) => state.feed);
 
     useEffect(() => {
         dispatch(getFeed());
@@ -32,9 +27,7 @@ export const FeedItem: FC = () => {
         return <Loader />
     }
     
-
-
     return (
-        <FeedDetails item={item} />
+        <OrderDetails item={item} />
     )
 }

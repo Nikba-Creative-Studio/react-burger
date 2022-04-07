@@ -7,21 +7,17 @@ import {
 from '../services/actions/order-details';
 
 export interface IOrderDetailsState {
-    order: {},
-    orderDetailsModal: boolean,
-    isLoading: boolean,
-    error: string | null,
-}
-
-export interface IOrderRequest {
-
+    readonly order: {},
+    readonly orderDetailsModal: boolean,
+    readonly isLoading: boolean,
+    readonly error: string | null,
 }
 
 export interface IPostData {
-    success: boolean;
-    name: string;
-    order: {
-        number: number,
+    readonly success: boolean;
+    readonly name: string;
+    readonly order: {
+        readonly number: number,
     }
 }
 

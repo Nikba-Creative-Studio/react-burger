@@ -1,18 +1,19 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useAppSelector } from '../../../services/hooks'
+
 import { Link, useLocation } from "react-router-dom";
 import { IFeedCard } from "../../../types/feed";
 
-import { orderStatus, formatDate } from "../../../utils/helpers";
-
-import { OrderCardImages } from "./orders-card-image/orders-card-image";
+import { OrderCardImages } from "../order-card-image/order-card-image";
+import { OrderCardDate } from "../order-card-date/order-card-date";
+import { OrderCardPrice } from "../order-card-price/order-card-price";
+import { OrderCardStatus } from "../order-card-status/order-card-status";
 
 import styles from "./orders-card.module.css";
 
-export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber, id, status, pageName }) => {
+export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber, id, status = null, pageName }) => {
     
-    const allIngredients = useSelector((state: any) => state.ingredients.ingredients);
+    const allIngredients = useAppSelector((state) => state.ingredients.ingredients);
 
     const location = useLocation();
 
@@ -34,14 +35,9 @@ export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber,
         });
     }
 
-
     const ingredientsImages = getIngredientsImages(ingredients);
-
     const ingredientsTotal = getInredientsPrice(ingredients).reduce((acc: number, price: number) => acc + price, 0);
 
-    const date = formatDate(time);
-    const statusData = orderStatus(status)
-    
     return (
         <Link 
             to={{ pathname: `/${pageName}/${id}`, state: { ordersModal: location } }}
@@ -49,12 +45,12 @@ export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber,
         >
             <div className={styles.cardHeader}>
                 <span className={styles.id}>{'#' + orderNumber}</span>
-                <time className={styles.time}>{date}</time>
+                <OrderCardDate time={time} />
             </div>
 
             <h2 className={styles.name}>{name}</h2>
 
-            <span className={statusData.color}>{statusData.statusText}</span>
+            {status && <OrderCardStatus status={status} />}
             
             <div className={styles.cardBody}>
                 <div className={styles.cardBodyLeft}>
@@ -65,8 +61,7 @@ export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber,
                     </ul>
                 </div>
                 <div className={styles.cardBodyRight}>
-                    {ingredientsTotal}
-                    <CurrencyIcon type="primary" />
+                    <OrderCardPrice price={ingredientsTotal} />
                 </div>
             </div>
 

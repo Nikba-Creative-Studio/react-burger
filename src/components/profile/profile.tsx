@@ -1,7 +1,8 @@
 import { FC } from "react";
 import styles from './profile.module.css';
 import { NavLink } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from '../../services/hooks'
+
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { userLogout } from "../../services/actions/auth";
 
@@ -9,12 +10,12 @@ import { userLogout } from "../../services/actions/auth";
 
 export const Profile : FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     // Выход из профиля
-const onLogout = () => {
-    dispatch(userLogout())
-}
+    const onLogout = () => {
+        dispatch(userLogout())
+    }
 
     return (
         <aside className={styles.nav}>

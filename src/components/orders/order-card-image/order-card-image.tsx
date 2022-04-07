@@ -1,6 +1,7 @@
-import styles from './feed-card.module.css';
+import { FC } from 'react';
+import styles from './order-card-image.module.css';
 
-export const FeedCardImages = ({ images }) => {
+export const OrderCardImages: FC<{ images: string[] }> = ({ images }) => {
     return (
         <>
             {images.slice(0, 6).map((item, index) => {

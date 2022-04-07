@@ -7,11 +7,13 @@
     height: calc(100vh - 88px);
 }
 
+.main {
+    width: 100%;
+}
+
 .input {
     composes: mb-6 from global;
 }
-
-
 
 .error {
     composes: text text_type_main-medium mb-6 from global;

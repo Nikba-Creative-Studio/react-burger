@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './profile.module.css';
 import { editUser } from '../../services/actions/auth';
@@ -9,9 +9,9 @@ import { TProfile } from '../../types/types';
 
 export const ProfilePage: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
-    const { editError, editData, name, email }: TProfile = useSelector((state: any) => state.auth)
+    const { editError, editData, name, email }: TProfile = useAppSelector((state: any) => state.auth)
 
     const inputNameRef = useRef<HTMLInputElement>(null);
     const inputEmailRef = useRef<HTMLInputElement>(null);
@@ -55,7 +55,7 @@ export const ProfilePage: FC = () => {
             
             <Profile />
 
-            <main>
+            <main className={styles.main}>
                 <form onSubmit={onSubmit}>
                     <div className={styles.input}>
                         <Input

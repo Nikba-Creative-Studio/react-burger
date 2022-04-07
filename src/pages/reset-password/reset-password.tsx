@@ -1,6 +1,6 @@
 import { useState, FC } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
@@ -11,7 +11,7 @@ import { TAuth, TProfile } from '../../types/types';
 
 export const ResetPassword: FC = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     type TLogin = Pick<TProfile, 'token' | 'password'>
 
@@ -20,7 +20,7 @@ export const ResetPassword: FC = () => {
         token: '',
     })
 
-    const { isLogin, resetPasswordSuccess, resetPasswordError, forgotPasswordSuccess }: TAuth = useSelector((state: any) => state.auth)
+    const { isLogin, resetPasswordSuccess, resetPasswordError, forgotPasswordSuccess }: TAuth = useAppSelector((state: any) => state.auth)
 
     // Отправка формы
     const onSubmit = (e) => {

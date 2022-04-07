@@ -1,6 +1,6 @@
 import { useCallback, FC } from "react";
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 import { useDrop } from 'react-dnd';
 
 //Уникальный идентификатор для ингредиента
@@ -20,18 +20,18 @@ import { TIngredientData } from '../../types/types';
 
 export const BurgerConstructor: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const history = useHistory();
 
     // Читаем данные из стора
-    const constructorData: TIngredientData[] = useSelector((state: any) => state.constructorIngredients.ingredients);
-    const constructorBunsData: TIngredientData = useSelector((state: any) => state.constructorIngredients.buns);
-    const isLogin: boolean = useSelector((state: any) => state.auth.isLogin)
-    const isLoading: boolean = useSelector((state: any) => state.orderDetails.isLoading);
+    const ingredients: TIngredientData[] = useAppSelector((state: any) => state.constructorIngredients.ingredients);
+    const constructorBunsData: TIngredientData = useAppSelector((state: any) => state.constructorIngredients.buns);
+    const isLogin: boolean = useAppSelector((state) => state.auth.isLogin)
+    const isLoading: boolean = useAppSelector((state) => state.orderDetails.isLoading);
 
     
     // Обшая стоимость бургера, пока берем из масива ингредиентов
-    const total_ingredients: number | null = constructorData.reduce((acc, cur) => acc + cur.price, 0)
+    const total_ingredients: number | null = ingredients.reduce((acc, cur) => acc + cur.price, 0)
     const total_buns: number | null = (constructorBunsData) ? constructorBunsData.price : 0
     const total: number | null = total_ingredients + total_buns
 
@@ -43,7 +43,7 @@ export const BurgerConstructor: FC = () => {
             return;
         }
         // Создаем объект заказа
-        const orderIds = constructorData.map(item => item._id)
+        const orderIds = ingredients.map(item => item._id)
         if(constructorBunsData) orderIds.push(constructorBunsData._id)
         dispatch(postOrder(orderIds))
     }
@@ -78,15 +78,15 @@ export const BurgerConstructor: FC = () => {
         <section className={styles.constructor_container}>
             <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
                 
-                {!constructorData.length && !constructorBunsData &&        
+                {!ingredients.length && !constructorBunsData &&        
                     <div className={styles.empty_constructor}>Выберите ингредиенты</div>
                 }
 
                 <Ingredient item={constructorBunsData} type='top' isLocked={true} />
                 
                 <div className={styles.ingredients}>
-                    {constructorData.length > 0 &&
-                        constructorData.map((item, index) => ( 
+                    {ingredients.length > 0 &&
+                        ingredients.map((item, index) => ( 
                             <Ingredient  
                                 key={item.uid}  
                                 item={item} 
@@ -109,7 +109,7 @@ export const BurgerConstructor: FC = () => {
                 <Button 
                     type="primary" 
                     size="medium"
-                    disabled={(constructorData.length === 0 || !constructorBunsData) ? true : false}
+                    disabled={(ingredients.length === 0 || !constructorBunsData) ? true : false}
                     onClick={sendOrder}
                 >
                     Оформить заказ

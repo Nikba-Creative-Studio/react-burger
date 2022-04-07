@@ -20,9 +20,7 @@
     .id {
         composes: text_type_digits-default from global;
     }
-    .time {
-        color: var(--text-inactive-color);
-    }
+
 
 .cardBody {
     composes: mt-4 from global;
@@ -41,14 +39,3 @@
     padding-left: 15px;
 }
 
-.cardBodyRight {
-    composes: text_type_digits-default from global;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cardBodyRight svg {
-    margin-left: 5px;
-}

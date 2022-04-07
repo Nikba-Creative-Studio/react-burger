@@ -1,6 +1,6 @@
 import { useState, FC } from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../../services/hooks'
 
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from '../login/login.module.css';
@@ -11,7 +11,7 @@ import { TLocationState, TAuth, TProfile } from '../../types/types';
 
 export const Register: FC = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation<TLocationState>()
 
     type TInfo = Pick<TProfile, 'name' | 'email' | 'password'>
@@ -22,7 +22,7 @@ export const Register: FC = () => {
         password: ''
     })
 
-    const { isLogin, registerError }: TAuth = useSelector((state: any) => state.auth)
+    const { isLogin, registerError }: TAuth = useAppSelector((state) => state.auth)
 
     // Перенаправление на страницу после авторизации
     if(isLogin) {
