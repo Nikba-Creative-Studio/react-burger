@@ -50,5 +50,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^9.5.3",
+    "eslint-plugin-cypress": "^2.12.1",
+    "fetch-mock": "^9.11.0",
+    "jest": "^27.5.1",
+    "react-test-renderer": "^17.0.2",
+    "typescript-plugin-css-modules": "^3.4.0"
   }
 }
