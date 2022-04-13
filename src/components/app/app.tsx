@@ -77,6 +77,11 @@ export const App: FC = () => {
                             <HomePage />
                         </Route>
 
+                        <Route path='/react-burger/' exact={true}>
+                            <HomePage />
+                        </Route>
+                        
+
                         <Route path='/ingredients/:id' exact={true}>
                             <IngredientsPage />
                         </Route>
