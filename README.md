@@ -5,7 +5,7 @@
   <p align="center">
     <a href="https://demo5.nikba-dev.com/">Собственный сервер</a>
     ·
-    <a href="#">GitHub Pages</a>
+    <a href="https://nikba-creative-studio.github.io/react-burger/">GitHub Pages</a>
   </p>
 </div>
 
