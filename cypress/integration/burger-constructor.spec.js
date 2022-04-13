@@ -1,4 +1,3 @@
-const baseUrl = 'https://norma.nomoreparties.space/api/';
 const servUrl = 'http://localhost:3000/';
 
 describe('Burger Constructor', () => {
@@ -6,7 +5,6 @@ describe('Burger Constructor', () => {
     it('Сервер запускается по адресу localhost:3000', () => {
         cy.visit(servUrl)
     });
-
     
     it('перетаскивание ингредиента в конструктор', () => {
         const dataTransfer = new DataTransfer();
@@ -30,7 +28,6 @@ describe('Burger Constructor', () => {
         })
 
     });
-    
 
     it('открытие модального окна с описанием ингредиента', () => {
         // Кликаем на ингредиент
@@ -44,7 +41,6 @@ describe('Burger Constructor', () => {
         cy.get('[data-test="ingredient-detail"] > h3').should('have.text', 'Флюоресцентная булка R2-D3');
         cy.get('[data-test="modal-close"]').click('center');
     });
-
     
     it('открытие модального окна с данными о заказе при клике по кнопке «Оформить заказ»', () => {
         // Проверяем сумму ингредиентов в конструкторе
@@ -88,11 +84,4 @@ describe('Burger Constructor', () => {
         // Конструктор очищается
         cy.get('[data-test="total-price"]').should('contain', '0')
     });
-    
-
-
-
-
-    
-
 });
