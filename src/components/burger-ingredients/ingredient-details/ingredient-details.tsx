@@ -27,7 +27,7 @@ export const IngredientDetails: FC = () => {
     const { name, calories, proteins, fat, carbohydrates, image_large } = ingredient
     
     return (
-        <div className={styles.ingredient_details}>
+        <div className={styles.ingredient_details} data-test="ingredient-detail">
             <img className={styles.image} src={image_large} alt={name} />
             <h3 className={styles.name}>{name}</h3>
             <ul className={styles.details}>

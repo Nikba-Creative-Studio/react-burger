@@ -38,6 +38,7 @@ export const Ingredient: FC<TIngredientProps> = ({ item }) => {
             to={{ pathname: `/ingredients/${item._id}`, state: { ingredientModal: location } }}
             className={styles.ingredient}
             ref={drag} 
+            data-test={item._id}
             >
                 <img alt={name} src={image} />
                 <div className={styles.price_wrapper}>

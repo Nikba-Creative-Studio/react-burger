@@ -77,7 +77,7 @@ export const BurgerConstructor: FC = () => {
 
     return (
         <section className={styles.constructor_container}>
-            <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop}>
+            <div className={!isOver ? styles.constructor_space : `${styles.constructor_space} ${styles.active}` } ref={drop} data-test="constructor">
                 
                 {!ingredients.length && !buns &&        
                     <div className={styles.empty_constructor}>Выберите ингредиенты</div>
@@ -102,9 +102,9 @@ export const BurgerConstructor: FC = () => {
                 <Ingredient item={buns} type='bottom' isLocked={true} />
             </div>
 
-            <div className={styles.constructor_footer}>
+            <div className={styles.constructor_footer} data-test="send-order">
                 <div className={styles.total_wrapper}>
-                    <span className={styles.total}>{total}</span>
+                    <span className={styles.total} data-test="total-price">{total}</span>
                     <CurrencyIcon type="primary" />
                 </div>
                 <Button 
