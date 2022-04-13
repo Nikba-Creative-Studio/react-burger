@@ -63,7 +63,7 @@ export const BurgerConstructor: FC = () => {
 
     const onDrop = (item: TIngredientData): void => {
         // Передаем ингредиент в конструктор
-        (item.type === 'bun') ? dispatch(setBuns(item, uuid())) : dispatch(setIngredients(item, uuid()));
+        (item.type === 'bun') ? dispatch(setBuns(item)) : dispatch(setIngredients(item, uuid()));
     }
 
     const moveIngredient = useCallback((dragIndex, hoverIndex) => {

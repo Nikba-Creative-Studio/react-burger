@@ -16,11 +16,11 @@ export const setIngredients = (item: TIngredientData, uid: string): ISetIngredie
     }
 });
 
-export const setBuns = (item: TIngredientData, uid: string): ISetBuns => ({
+export const setBuns = (item: TIngredientData): ISetBuns => ({
     type: SET_BUN_TYPE,
     item: {
-        item,
-        uid
+        item
+     
     }
 });
 

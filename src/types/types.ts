@@ -15,7 +15,7 @@ export type TLocationState = {
 export type TIngredientData = {
     readonly _id: string;
     readonly uid?: string;
-    readonly id: string;
+    //readonly id: string;
     readonly name: string;
     readonly type: string;
     readonly proteins: number;
@@ -27,8 +27,8 @@ export type TIngredientData = {
     readonly image_large: string;
     readonly price: number;
     readonly __v: number;
-    readonly key: string;
-    readonly counter: number;
+    //readonly key: string;
+    //readonly counter: number;
 }
 
 export type TIngredientDataList = {

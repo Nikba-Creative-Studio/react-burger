@@ -2,17 +2,16 @@ import {
     FETCH_INGREDIENTS_REQUEST,
     FETCH_INGREDIENTS_SUCCESS,
     FETCH_INGREDIENTS_FAILURE,
-}
+} 
 from '../actions/burger-ingredients';
 
 import { IIngredientsState, TBurgerIngredientsActionTypes } from '../../types/burger-ingredients';
 
-const ingredientsInitialState: IIngredientsState = {
-    // Первоначальное состояние ингредиентов бургера
-    ingredients: [], // Список ингредиентов
-    constructorIngredients: [], // Список ингредиентов в конструкторе
-    isLoading: false, // Флаг загрузки ингредиентов
-    error: '', // Ошибка при загрузке ингредиентов 
+export const ingredientsInitialState: IIngredientsState = {
+    ingredients: [],
+    constructorIngredients: [],
+    isLoading: false,
+    error: '', 
 } 
 
 export const ingredientsReducer = (state = ingredientsInitialState, action: TBurgerIngredientsActionTypes): IIngredientsState => {

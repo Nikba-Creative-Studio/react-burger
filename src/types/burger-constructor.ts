@@ -23,7 +23,7 @@ export interface ISetBuns {
     readonly type: typeof SET_BUN_TYPE;
     readonly item: {
         readonly item: TIngredientData;
-        readonly uid: string;
+       
     };
 }
 

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useAppSelector } from '../../../services/hooks'
 import styles from './orders-details.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,13 +10,24 @@ import { OrderCardDate } from "../order-card-date/order-card-date";
 import { OrderCardPrice } from "../order-card-price/order-card-price";
 import { OrderCardStatus } from "../order-card-status/order-card-status";
 
+import { fetchIngredients } from "../../../services/actions/burger-ingredients";
+import { useAppDispatch } from "../../../services/hooks";
+
 export const OrderDetails: FC<{ item: IWsOrders }> = ({ item }) => {
 
     const allIngredients = useAppSelector((state) => state.ingredients.ingredients);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if ((!allIngredients || allIngredients.length <= 0)) {
+            dispatch(fetchIngredients());
+        }
+    }, [allIngredients, dispatch]);
 
     const getIngredientsById = (id: string) => {
         return allIngredients.filter((ingredient: { _id: string; }) => ingredient._id === id);
     }
+
 
     const getIngredients = (ingredients: string[]) => {
         return ingredients.map((ingredient: string) => {

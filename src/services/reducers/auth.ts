@@ -24,7 +24,7 @@ import {
 
 import { IAuthInitialState, TAuthAction } from '../../types/auth';   
 
-const authInitialState: IAuthInitialState = {
+export const authInitialState: IAuthInitialState = {
     registerData: null,
     registerError: false,
     registerLoading: false,

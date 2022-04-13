@@ -9,7 +9,7 @@ from '../actions/burger-constructor';
 import { TIngredientData } from '../../types/types';
 import { IConstructorInitialState, TBurgerConstructorActionTypes } from '../../types/burger-constructor';
 
-const constructorInitialState: IConstructorInitialState = {
+export const constructorInitialState: IConstructorInitialState = {
     ingredients: [],
     buns: null, 
 }
