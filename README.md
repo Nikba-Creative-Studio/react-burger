@@ -1,46 +1,64 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <img src="src/images/logo.svg" alt="Stellar Burgers" height="80">
+  <h3 align="center">Лучшая заведение во Вселенной</h3>
+  <p align="center">
+    <a href="https://demo5.nikba-dev.com/">Собственный сервер</a>
+    ·
+    <a href="https://nikba-creative-studio.github.io/react-burger/">GitHub Pages</a>
+  </p>
+</div>
 
-## Available Scripts
 
-In the project directory, you can run:
+На краю вселенной затерялась бургерная, которая едва сводит концы с концами.
+<br />
+Испльзуя новые технологий в Фронтенде мы помогли сделать из закусочной на краю света одно из лучших заведений во Вселенной. 
 
-### `yarn start`
+## О проекте
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Stellar Burgers это клиентский интерфейс для заказа бургеров работающее на React и Redux, с функционалом для сборки бургера по ингредиентам.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Функционал
 
-### `yarn test`
+* Регистрация
+* Авторизация
+* Востановление пароля
+* Общая лента заказов
+* Профиль пользователя
+* Личная лента заказов пользователя
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Технологии
 
-### `yarn build`
+* React
+* TypeScript
+* Redux
+* WebSockets
+* Jest
+* Cypress
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Установка
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+* Клонирование репозитория
+  ```sh
+   git clone https://github.com/Nikba-Creative-Studio/react-burger.git
+   ```
+* Установка зависимостей
+   ```sh
+   npm install
+   ```
+* Запуск приложения
+   ```sh
+   npm start
+   ```
+## Тестирование
+* Тестирование бизнес-логики приложения
+   ```sh
+   npm test
+   ```
+* Тестирование функционала с использованием Cypress
+   ```sh
+   npm run cypress
+   ```
