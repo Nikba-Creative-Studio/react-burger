@@ -55,11 +55,11 @@ export const Modal = ( { ...props }:TModalProps ) => {
     return createPortal(
         <>
             <ModalOverlay />
-            <div className={styles.modal}>
+            <div className={styles.modal} data-test="modal">
                 <div className={styles.modal_content} ref={modalRef} >
                     <div className={styles.modal_header}>
                         <h2 className={styles.title}>{title}</h2>
-                        <span onClick={onClose} className={styles.close}>
+                        <span onClick={onClose} className={styles.close} data-test="modal-close">
                             <CloseIcon type='primary'/>
                         </span>
                     </div>

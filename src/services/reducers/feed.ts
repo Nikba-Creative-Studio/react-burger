@@ -10,7 +10,7 @@ from '../actions/feed';
 
 import { IFeedState, TFeedActionTypes } from '../../types/feed';
 
-const initialState: IFeedState = {
+export const initialState: IFeedState = {
     isConnected: false,
     success: false,
     total: 0,

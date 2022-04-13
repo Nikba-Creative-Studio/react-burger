@@ -14,10 +14,10 @@ export interface IWsOrders {
     readonly _id: string;
     readonly ingredients: string[];
     readonly status?: 'done' | 'pending' | 'created';
-    readonly name: 'string';
+    readonly name: string;
     readonly number: number;
     readonly createdAt?: string;
-    readonly updateAt?: string;
+    readonly updatedAt?: string;
 }
 
 export interface IFeedState {

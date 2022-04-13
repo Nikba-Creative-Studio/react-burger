@@ -8,7 +8,7 @@ from '../actions/order-details';
 
 import { IOrderDetailsState, TPostOrderActions } from '../../types/order-details';
 
-const orderDetailsInitialState: IOrderDetailsState = {
+export const orderDetailsInitialState: IOrderDetailsState = {
     order: null,
     orderDetailsModal: false,
     isLoading: false,
@@ -31,7 +31,7 @@ export const orderDetailsReducer = (state = orderDetailsInitialState, action: TP
             }
         case POST_ORDER_FAILURE:
             return {
-                ...state,
+                ...state
             }
         case HIDE_MODAL:
             return {

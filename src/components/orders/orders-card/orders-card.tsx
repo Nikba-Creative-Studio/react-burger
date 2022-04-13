@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useAppSelector } from '../../../services/hooks'
 
 import { Link, useLocation } from "react-router-dom";
@@ -10,37 +10,54 @@ import { OrderCardDate } from "../order-card-date/order-card-date";
 import { OrderCardPrice } from "../order-card-price/order-card-price";
 import { OrderCardStatus } from "../order-card-status/order-card-status";
 
+import { fetchIngredients } from "../../../services/actions/burger-ingredients";
+import { useAppDispatch } from "../../../services/hooks";
+
 import styles from "./orders-card.module.css";
 
 export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber, id, status = null, pageName }) => {
-    
+
     const allIngredients = useAppSelector((state) => state.ingredients.ingredients);
 
     const location = useLocation<TLocationState>();
+    const dispatch = useAppDispatch();
 
-    const getIngredientsById = (id: string) => {
-        return allIngredients.filter((ingredient: { _id: string; }) => ingredient._id === id);
-    }
+    useEffect(() => {
+        if ((!allIngredients || allIngredients.length <= 0)) {
+            dispatch(fetchIngredients());
+        }
+    }, [allIngredients, dispatch]);
 
-    const getIngredientsImages = (ingredients: string[]) => {
-        return ingredients.map((ingredient: string) => {
-            const ingredientData = getIngredientsById(ingredient);
-            return ingredientData[0].image;
+    const getIngredientsById = useMemo(() => {
+        return allIngredients?.filter(ingredient => {
+            return ingredients?.includes(ingredient._id)
         });
-    }
+    }, [allIngredients, ingredients]);
 
-    const getInredientsPrice = (ingredients: string[]) => {
-        return ingredients.map((ingredient: string) => {
-            const ingredientData = getIngredientsById(ingredient);
-            return ingredientData[0].price;
+    const getInredientsPrice = useMemo(() => {
+        let sum = 0;
+
+        if (getIngredientsById) {
+            getIngredientsById.map((item) => {
+                if (item.type === 'bun') {
+                    return sum += item.price * 2;
+
+                } else {
+                    return sum += item.price;
+                }
+            });
+        }
+        return sum;
+    }, [getIngredientsById]);
+
+    const getIngredientsImages = useMemo(() => {
+        return getIngredientsById?.map(item => {
+            return item.image;
         });
-    }
-
-    const ingredientsImages = getIngredientsImages(ingredients);
-    const ingredientsTotal = getInredientsPrice(ingredients).reduce((acc: number, price: number) => acc + price, 0);
+    }, [getIngredientsById]);
 
     return (
-        <Link 
+        <Link
             to={{ pathname: `/${pageName}/${id}`, state: { ordersModal: location } }}
             className={styles.link}
         >
@@ -52,21 +69,21 @@ export const OrderCard: FC<IFeedCard> = ({ time, name, ingredients, orderNumber,
             <h2 className={styles.name}>{name}</h2>
 
             {status && <OrderCardStatus status={status} />}
-            
+
             <div className={styles.cardBody}>
                 <div className={styles.cardBodyLeft}>
                     <ul className={styles.ingredientImages}>
-                    {ingredientsImages.length > 0 && (
-                        <OrderCardImages images={ingredientsImages} />
-                    )}
+
+                        {getIngredientsImages.length > 0 && (
+                            <OrderCardImages images={getIngredientsImages} />
+                        )}
+
                     </ul>
                 </div>
                 <div className={styles.cardBodyRight}>
-                    <OrderCardPrice price={ingredientsTotal} />
+                    <OrderCardPrice price={getInredientsPrice} />
                 </div>
             </div>
-
-            
         </Link>
     );
 };

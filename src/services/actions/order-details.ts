@@ -4,7 +4,7 @@ import { checkResponse, getCookie } from '../../utils/helpers';
 import { fetchUpdateToken } from '../api'
 
 import { AppThunk, AppDispatch } from '../../types/index';
-import { IPostData, IPostOrderSuccess, IPostOrderFailure, IPostOrderRequest } from '../../types/order-details';
+import { IPostData, IPostOrderSuccess, IPostOrderFailure, IPostOrderRequest, IHideModal} from '../../types/order-details';
 import { TIngredientData } from '../../types/types';
 
 export const POST_ORDER_REQUEST: 'POST_ORDER_REQUEST' = 'POST_ORDER_REQUEST';
@@ -21,7 +21,7 @@ export const postOrderSuccess = (data: IPostData[]): IPostOrderSuccess => ({
 });
 
 export const postOrderFailure = (): IPostOrderFailure => ({
-    type: POST_ORDER_FAILURE,
+    type: POST_ORDER_FAILURE
 });
 
 export const postOrderReqest = (): IPostOrderRequest => ({
@@ -63,8 +63,6 @@ export const postOrder: AppThunk = (ingredients: TIngredientData[]) => async (di
     }
 }
 
-export const hideOrderModal: AppThunk = () => (dispatch: AppDispatch) => {
-    dispatch({
-        type: HIDE_MODAL
-    })
-}
+export const hideOrderModal = (): IHideModal => ({
+    type: HIDE_MODAL
+});
